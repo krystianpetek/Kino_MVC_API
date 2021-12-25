@@ -4,18 +4,19 @@ namespace ProjektAPI.Models
 {
     public class FilmModel
     {
+        [Required, Display(Name = "Lp.")]
         public int Id { get; set; }
-        [Required]
+        [Required, StringLength(80), Display(Name = "Nazwa")]
         public string Nazwa { get; set; }
-        [Required]
+        [Required, StringLength(255), Display(Name = "Opis")]
         public string Opis { get; set; }
-        [Required]
+        [Required, Display(Name = "Gatunek")]
         public string Gatunek { get; set; }
-        [Required]
+        [Required, Display(Name = "Wiek")]
         public Wiek OgraniczeniaWiek { get; set; }
-        [Required]
+        [Required, Display(Name = "Czas trwania")]
         public string CzasTrwania { get; set; }
-        [Required]
+        [Required, Display(Name = "Kwota")]
         public float Cena { get; set; }
     }
     public enum Wiek

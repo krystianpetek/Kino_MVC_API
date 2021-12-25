@@ -14,7 +14,7 @@ namespace ProjektMVC.Models
         [DataType(DataType.Password)]
         public string Haslo { get; set; }
 
-        [Display(Name = " Nie wylogowywuj")]
+        [Display(Name = " Zapamiętaj mnie")]
         public bool PamietajMnie { get; set; }
 
         public string URL { get; set; }

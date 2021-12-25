@@ -20,23 +20,42 @@ namespace ProjektMVC.Controllers
         {
             _context = context;
             _uzytkownicy = _context.Login.ToList();
-            if(!_context.Klienci.Any())
+            if (!_context.Klienci.Any())
             {
-                _context.Klienci.Add(new KlientModel()
+                _context.Klienci.AddRange(
+                    new KlientModel()
+                    {
+
+                        Imie = "Krystian",
+                        Nazwisko = "Petek",
+                        DataUrodzenia = new System.DateTime(1998, 10, 06),
+                        Miasto = "Koziniec",
+                        Ulica = "2",
+                        NumerTelefonu = "884284782",
+                        KodPocztowy = "34-106",
+                        Email = "krystianpetek2@gmail.com",
+                        Uzytkownik = new UzytkownikModel()
+                        {
+                            Login = "krystianpetek",
+                            Haslo = "qwerty123",
+                            RodzajUzytkownika = Rola.Admin
+                        }
+                    },
+                new KlientModel()
                 {
-                    Imie = "Krystian",
-                    Nazwisko = "Petek",
-                    DataUrodzenia = new System.DateTime(1998, 10, 06),
-                    Miasto = "Koziniec",
-                    Ulica = "2",
-                    NumerTelefonu = "884284782",
+                    Imie = "Gabriel",
+                    Nazwisko = "Warchał",
+                    DataUrodzenia = new System.DateTime(1993, 03, 20),
+                    Miasto = "Świnna Poręba",
+                    Ulica = "158",
+                    NumerTelefonu = "889410340",
                     KodPocztowy = "34-106",
-                    Email = "krystianpetek2@gmail.com",
+                    Email = "mr.warchal@gmail.com",
                     Uzytkownik = new UzytkownikModel()
                     {
-                        Login = "krystianpetek",
-                        Haslo = "qwerty123",
-                        RodzajUzytkownika = Rola.Admin
+                        Login = "gabrys.158",
+                        Haslo = "123qweasdzxc",
+                        RodzajUzytkownika = Rola.Klient
                     }
                 });
                 _context.SaveChanges();
@@ -46,7 +65,7 @@ namespace ProjektMVC.Controllers
         public IActionResult Informacje()
         {
             return View();
-        } 
+        }
 
         public IActionResult Login(string url = "/")
         {
@@ -62,10 +81,10 @@ namespace ProjektMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var uzytkownik = _uzytkownicy.Where(x => x.Login == model.Login && x.Haslo == model.Haslo).FirstOrDefault();
-                if(uzytkownik == null)
+                if (uzytkownik == null)
                 {
                     ViewBag.Message = "Provided crediential is not valid.";
                     return View(model);
@@ -82,7 +101,7 @@ namespace ProjektMVC.Controllers
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);
                     await HttpContext.SignInAsync(
-                        CookieAuthenticationDefaults.AuthenticationScheme, 
+                        CookieAuthenticationDefaults.AuthenticationScheme,
                         principal, new AuthenticationProperties() { IsPersistent = model.PamietajMnie });
 
                     return LocalRedirect(model.URL);
@@ -93,7 +112,6 @@ namespace ProjektMVC.Controllers
 
         public async Task<IActionResult> LogOut()
         {
-            //logout and remove cookie
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return LocalRedirect("/");
         }

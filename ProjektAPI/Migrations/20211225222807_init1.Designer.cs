@@ -10,8 +10,8 @@ using ProjektAPI.Models;
 namespace ProjektAPI.Migrations
 {
     [DbContext(typeof(APIDatabaseContext))]
-    [Migration("20211225162652_x")]
-    partial class x
+    [Migration("20211225222807_init1")]
+    partial class init1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,14 +41,16 @@ namespace ProjektAPI.Migrations
 
                     b.Property<string>("Nazwa")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
 
                     b.Property<int>("OgraniczeniaWiek")
                         .HasColumnType("int");
 
                     b.Property<string>("Opis")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 
@@ -107,6 +109,57 @@ namespace ProjektAPI.Migrations
                     b.ToTable("Klienci");
                 });
 
+            modelBuilder.Entity("ProjektAPI.Models.RezerwacjeModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("FilmyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("GodzinaEmisji")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IdFilm")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdKlient")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdSaleKinowe")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("KlienciId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LiczbaPorzadkowa")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Miejsce")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rzad")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SaleKinoweId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Zajete")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FilmyId");
+
+                    b.HasIndex("KlienciId");
+
+                    b.HasIndex("SaleKinoweId");
+
+                    b.ToTable("Rezerwacja");
+                });
+
             modelBuilder.Entity("ProjektAPI.Models.SalaModel", b =>
                 {
                     b.Property<int>("Id")
@@ -122,9 +175,12 @@ namespace ProjektAPI.Migrations
 
                     b.Property<string>("NazwaSali")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NazwaSali")
+                        .IsUnique();
 
                     b.ToTable("SaleKinowe");
                 });
@@ -166,6 +222,27 @@ namespace ProjektAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Uzytkownik");
+                });
+
+            modelBuilder.Entity("ProjektAPI.Models.RezerwacjeModel", b =>
+                {
+                    b.HasOne("ProjektAPI.Models.FilmModel", "Filmy")
+                        .WithMany()
+                        .HasForeignKey("FilmyId");
+
+                    b.HasOne("ProjektAPI.Models.KlientModel", "Klienci")
+                        .WithMany()
+                        .HasForeignKey("KlienciId");
+
+                    b.HasOne("ProjektAPI.Models.SalaModel", "SaleKinowe")
+                        .WithMany()
+                        .HasForeignKey("SaleKinoweId");
+
+                    b.Navigation("Filmy");
+
+                    b.Navigation("Klienci");
+
+                    b.Navigation("SaleKinowe");
                 });
 
             modelBuilder.Entity("ProjektAPI.Models.UzytkownikModel", b =>

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjektAPI.Migrations
 {
-    public partial class x : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,8 +13,8 @@ namespace ProjektAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nazwa = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Opis = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nazwa = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
+                    Opis = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Gatunek = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OgraniczeniaWiek = table.Column<int>(type: "int", nullable: false),
                     CzasTrwania = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -46,7 +46,7 @@ namespace ProjektAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NazwaSali = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NazwaSali = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IloscRzedow = table.Column<int>(type: "int", nullable: false),
                     IloscMiejsc = table.Column<int>(type: "int", nullable: false)
                 },
@@ -98,6 +98,12 @@ namespace ProjektAPI.Migrations
                 name: "IX_Login_Login",
                 table: "Login",
                 column: "Login",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SaleKinowe_NazwaSali",
+                table: "SaleKinowe",
+                column: "NazwaSali",
                 unique: true);
         }
 

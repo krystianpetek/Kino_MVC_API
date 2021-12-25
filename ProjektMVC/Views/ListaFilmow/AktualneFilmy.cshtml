@@ -3,12 +3,10 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Aktualnie filmy w naszym kinie</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="text-center">
+    <h1 class="display-4">Aktualnie emitowane filmy</h1>
+    <br />
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -19,16 +17,16 @@
                 @Html.DisplayNameFor(model => model.Opis)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CzasTrwania)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cena)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Gatunek)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.CzasTrwania)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.OgraniczeniaWiek)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cena)
             </th>
             <th></th>
         </tr>
@@ -43,21 +41,16 @@
                 @Html.DisplayFor(modelItem => item.Opis)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CzasTrwania)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cena)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Gatunek)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CzasTrwania)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.OgraniczeniaWiek)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.Cena)
             </td>
         </tr>
 }

@@ -5,50 +5,59 @@ using System.Collections.Generic;
 using System.Net.Http;
 using ProjektAPI.Models;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjektMVC.Controllers
 {
     [Authorize]
-
-    public class ListaKlientowController : Controller
+    public class ListaSalKinowychController : Controller
     {
         private readonly HttpClient client;
-        private readonly string KlienciPath;
+        private readonly string SaleKinowePath;
         private readonly IConfiguration _configuration;
         private readonly APIDatabaseContext _context;
 
-        public ListaKlientowController(IConfiguration configuration)
+        public ListaSalKinowychController(IConfiguration configuration, APIDatabaseContext context)
         {
+            _context = context;
             _configuration = configuration;
-            KlienciPath = _configuration["ProjektAPIConfig:Url2"];
+            SaleKinowePath = _configuration["ProjektAPIConfig:Url3"];
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
         public async Task<ActionResult> Index()
         {
-            ZabronDostepu();
-            List<KlientModel> listaOsob = null;
-            HttpResponseMessage response = await client.GetAsync(KlienciPath);
+                ZabronDostepu();
+
+            List<SalaModel> listaSal = null;
+            HttpResponseMessage response = await client.GetAsync(SaleKinowePath);
             if (response.IsSuccessStatusCode)
             {
-                listaOsob = await response.Content.ReadAsAsync<List<KlientModel>>();
+                listaSal = await response.Content.ReadAsAsync<List<SalaModel>>();
             }
-            return View(listaOsob);
+            return View(listaSal);
         }
 
-        public ActionResult Create()
+        public IActionResult Create()
+        {
+            ZabronDostepu();
+            return View();
+        }
+
+        public IActionResult Podglad()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("Imie,Nazwisko,DataUrodzenia,NumerTelefonu,Email,Miasto,Ulica,KodPocztowy,Uzytkownik")] KlientModel model)
+        public async Task<ActionResult> Create([Bind("NazwaSali, IloscRzedow, IloscMiejsc")] SalaModel model)
         {
             ZabronDostepu();
             if (ModelState.IsValid)
             {
-                HttpResponseMessage response = await client.PostAsJsonAsync(KlienciPath, model);
+                ZabronDostepu();
+                HttpResponseMessage response = await client.PostAsJsonAsync(SaleKinowePath, model);
                 response.EnsureSuccessStatusCode();
                 return RedirectToAction(nameof(Index));
             }

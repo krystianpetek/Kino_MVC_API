@@ -1,8 +1,7 @@
-﻿@model IEnumerable<ProjektAPI.Models.FilmModel>
+﻿@model IEnumerable<ProjektAPI.Models.SalaModel>
 
 @{
     ViewData["Title"] = "Index";
-
 }
 
 <h1>Index</h1>
@@ -14,22 +13,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Nazwa)
+                @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Opis)
+                @Html.DisplayNameFor(model => model.NazwaSali)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CzasTrwania)
+                @Html.DisplayNameFor(model => model.IloscMiejsc)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cena)
+                @Html.DisplayNameFor(model => model.IloscRzedow)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Gatunek)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OgraniczeniaWiek)
+                @Html.DisplayNameFor(model => model.LiczbaMiejsc)
             </th>
             <th></th>
         </tr>
@@ -38,22 +34,19 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Nazwa)
+                @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Opis)
+                @Html.DisplayFor(modelItem => item.NazwaSali)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CzasTrwania)
+                @Html.DisplayFor(modelItem => item.IloscMiejsc)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cena)
+                @Html.DisplayFor(modelItem => item.IloscRzedow)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Gatunek)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OgraniczeniaWiek)
+                @Html.DisplayFor(modelItem => item.LiczbaMiejsc)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

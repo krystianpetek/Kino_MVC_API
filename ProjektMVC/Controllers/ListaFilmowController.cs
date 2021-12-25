@@ -26,8 +26,10 @@ namespace ProjektMVC.Controllers
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
+        [Authorize]
         public async Task<ActionResult> Index()
         {
+            ZabronDostepu();
             List<FilmModel> listaOsob = null;
             HttpResponseMessage response = await client.GetAsync(FilmyPath);
             if (response.IsSuccessStatusCode)
@@ -39,16 +41,17 @@ namespace ProjektMVC.Controllers
 
         public IActionResult AktualneFilmy()
         {
-            List<FilmModel> x = new List<FilmModel>();
+            List<FilmModel> x = new();
             x.AddRange(_context.Filmy);
             return View(x);
-
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind("Nazwa,Opis,Gatunek,OgraniczeniaWiek,CzasTrwania,Cena")] FilmModel model)
         {
+            ZabronDostepu();
             if (ModelState.IsValid)
             {
                 HttpResponseMessage response = await client.PostAsJsonAsync(FilmyPath, model);
@@ -56,6 +59,11 @@ namespace ProjektMVC.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
+        }
+
+        public void ZabronDostepu()
+        {
+            if (!User.IsInRole("Admin")) HttpContext.Response.Redirect("/");
         }
     }
 }

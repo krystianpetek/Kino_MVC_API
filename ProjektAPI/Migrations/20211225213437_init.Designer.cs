@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjektAPI.Models;
 
 namespace ProjektAPI.Migrations
 {
     [DbContext(typeof(APIDatabaseContext))]
-    partial class APIDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20211225213437_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,57 +109,6 @@ namespace ProjektAPI.Migrations
                     b.ToTable("Klienci");
                 });
 
-            modelBuilder.Entity("ProjektAPI.Models.RezerwacjeModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("FilmyId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("GodzinaEmisji")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("IdFilm")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdKlient")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdSaleKinowe")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("KlienciId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LiczbaPorzadkowa")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Miejsce")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Rzad")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SaleKinoweId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Zajete")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FilmyId");
-
-                    b.HasIndex("KlienciId");
-
-                    b.HasIndex("SaleKinoweId");
-
-                    b.ToTable("Rezerwacja");
-                });
-
             modelBuilder.Entity("ProjektAPI.Models.SalaModel", b =>
                 {
                     b.Property<int>("Id")
@@ -220,27 +171,6 @@ namespace ProjektAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Uzytkownik");
-                });
-
-            modelBuilder.Entity("ProjektAPI.Models.RezerwacjeModel", b =>
-                {
-                    b.HasOne("ProjektAPI.Models.FilmModel", "Filmy")
-                        .WithMany()
-                        .HasForeignKey("FilmyId");
-
-                    b.HasOne("ProjektAPI.Models.KlientModel", "Klienci")
-                        .WithMany()
-                        .HasForeignKey("KlienciId");
-
-                    b.HasOne("ProjektAPI.Models.SalaModel", "SaleKinowe")
-                        .WithMany()
-                        .HasForeignKey("SaleKinoweId");
-
-                    b.Navigation("Filmy");
-
-                    b.Navigation("Klienci");
-
-                    b.Navigation("SaleKinowe");
                 });
 
             modelBuilder.Entity("ProjektAPI.Models.UzytkownikModel", b =>
