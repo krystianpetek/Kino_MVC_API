@@ -33,8 +33,7 @@ namespace ProjektAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Login = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Haslo = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    RodzajUzytkownika = table.Column<int>(type: "int", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    RodzajUzytkownika = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,6 +68,7 @@ namespace ProjektAPI.Migrations
                     Miasto = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     Ulica = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     KodPocztowy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UzytkownikId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -81,6 +81,12 @@ namespace ProjektAPI.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Klienci_Email",
+                table: "Klienci",
+                column: "Email",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Klienci_UzytkownikId",

@@ -31,14 +31,15 @@ namespace ProjektMVC.Controllers
                     Ulica = "2",
                     NumerTelefonu = "884284782",
                     KodPocztowy = "34-106",
+                    Email = "krystianpetek2@gmail.com",
                     Uzytkownik = new UzytkownikModel()
                     {
                         Login = "krystianpetek",
                         Haslo = "qwerty123",
-                        Email = "krystianpetek2@gmail.com",
                         RodzajUzytkownika = Rola.Admin
                     }
                 });
+                _context.SaveChanges();
             }
         }
         [Authorize]
@@ -50,7 +51,7 @@ namespace ProjektMVC.Controllers
         public IActionResult Login(string url = "/")
         {
             if (User.Identity.IsAuthenticated)
-                HttpContext.Response.Redirect("/ListaFilmow");
+                HttpContext.Response.Redirect("/");
             LoginModel model = new()
             {
                 URL = url
@@ -75,8 +76,7 @@ namespace ProjektMVC.Controllers
                     {
                         new Claim(ClaimTypes.NameIdentifier, uzytkownik.Id.ToString()),
                         new Claim(ClaimTypes.Name, uzytkownik.Login),
-                        new Claim(ClaimTypes.Role, uzytkownik.RodzajUzytkownika.ToString()),
-                        new Claim(ClaimTypes.Email, uzytkownik.Email)
+                        new Claim(ClaimTypes.Role, uzytkownik.RodzajUzytkownika.ToString())
 
                     };
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

@@ -63,6 +63,10 @@ namespace ProjektAPI.Migrations
                     b.Property<DateTime>("DataUrodzenia")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Imie")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -91,6 +95,9 @@ namespace ProjektAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.HasIndex("UzytkownikId")
                         .IsUnique();
@@ -126,9 +133,6 @@ namespace ProjektAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Haslo")
                         .IsRequired()

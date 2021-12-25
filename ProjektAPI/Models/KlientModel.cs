@@ -21,6 +21,8 @@ namespace ProjektAPI.Models
         public string Ulica { get; set; }
         [Display(Name = "Kod pocztowy")]
         public string KodPocztowy { get; set; }
+        [EmailAddress,Required]
+        public string Email { get; set; }
         [Required]
         public int UzytkownikId { get; set; }
         [Required]

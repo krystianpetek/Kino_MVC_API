@@ -12,8 +12,6 @@ namespace ProjektAPI.Models
         public string Haslo { get; set; }
         [Required]
         public Rola RodzajUzytkownika { get; set; }
-        [EmailAddress]
-        public string Email { get; set; }
         public virtual KlientModel Klient { get; set; }
 
 

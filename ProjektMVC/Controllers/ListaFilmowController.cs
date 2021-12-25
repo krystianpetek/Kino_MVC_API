@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace ProjektMVC.Controllers
 {
-    [Authorize]
-    
+
+
     public class ListaFilmowController : Controller
     {
         private readonly HttpClient client;

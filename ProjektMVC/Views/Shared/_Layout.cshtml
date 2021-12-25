@@ -11,8 +11,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="ListaFilmow" asp-action="Index">ProjektMVC</a>
-                <a class="navbar-brand" asp-area="" asp-controller="ListaKlientow" asp-action="Index">ProjektMVC</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">KINO</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -29,8 +28,18 @@
                                 <a asp-controller="Logowanie" asp-action="Login">Login</a>
                             }
                         </li>
+                        <li class="nav-link">
+                            <a asp-area="" asp-controller="Home" asp-action="Filmy">Aktualne filmy</a>
+
+                        </li>
+                        <li class="nav-link">
+                            <a asp-area="" asp-controller="Logowanie" asp-action="Login">Rezerwacja</a>
+
+                        </li>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin") == true)
-                            {
+                        {
+
+
 
                             <li class="nav-link">
                                 <a asp-controller="ListaKlientow" asp-action="Index">Klieni</a>
@@ -39,9 +48,14 @@
                                 <a asp-controller="Logowanie" asp-action="Privacy">Informacje</a>
                             </li>
 
-                            }
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a class="navbar-brand" asp-area="" asp-controller="ListaKlientow" asp-action="Index">ProjektMVC</a>
+                        }
                     </ul>
                 </div>
+                @User.Identity.Name
             </div>
         </nav>
     </header>

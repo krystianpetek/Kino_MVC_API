@@ -19,6 +19,7 @@ namespace ProjektAPI.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UzytkownikModel>().HasIndex(x => x.Login).IsUnique();
+            modelBuilder.Entity<KlientModel>().HasIndex(x => x.Email).IsUnique();
         }
     } 
 }
