@@ -43,7 +43,7 @@ namespace ProjektMVC.Controllers
             }
         }
         [Authorize]
-        public IActionResult Privacy()
+        public IActionResult Informacje()
         {
             return View();
         } 

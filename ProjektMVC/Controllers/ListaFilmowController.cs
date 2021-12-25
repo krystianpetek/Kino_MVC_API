@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using ProjektAPI.Models;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjektMVC.Controllers
 {
@@ -15,9 +16,11 @@ namespace ProjektMVC.Controllers
         private readonly HttpClient client;
         private readonly string FilmyPath;
         private readonly IConfiguration _configuration;
+        private readonly APIDatabaseContext _context;
 
-        public ListaFilmowController(IConfiguration configuration)
+        public ListaFilmowController(IConfiguration configuration, APIDatabaseContext context)
         {
+            _context = context;
             _configuration = configuration;
             FilmyPath = _configuration["ProjektAPIConfig:Url"];
             client = new HttpClient();
@@ -33,9 +36,13 @@ namespace ProjektMVC.Controllers
             }
             return View(listaOsob);
         }
-        public ActionResult Create()
+
+        public IActionResult AktualneFilmy()
         {
-            return View();
+            List<FilmModel> x = new List<FilmModel>();
+            x.AddRange(_context.Filmy);
+            return View(x);
+
         }
 
         [HttpPost]

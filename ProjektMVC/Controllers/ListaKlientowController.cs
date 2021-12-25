@@ -33,6 +33,7 @@ namespace ProjektMVC.Controllers
             }
             return View(listaOsob);
         }
+
         public ActionResult Create()
         {
             return View();

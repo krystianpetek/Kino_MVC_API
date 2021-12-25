@@ -21,7 +21,7 @@
                         <li class="nav-link">
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <a asp-controller="Logowanie" asp-action="Logout">Logout</a>
+                                
                             }
                             else
                             {
@@ -29,33 +29,34 @@
                             }
                         </li>
                         <li class="nav-link">
-                            <a asp-area="" asp-controller="Home" asp-action="Filmy">Aktualne filmy</a>
+                            <a asp-area="" asp-controller="ListaFilmow" asp-action="AktualneFilmy">Aktualne filmy</a>
 
                         </li>
                         <li class="nav-link">
                             <a asp-area="" asp-controller="Logowanie" asp-action="Login">Rezerwacja</a>
 
                         </li>
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin") == true)
-                        {
-
-
-
-                            <li class="nav-link">
-                                <a asp-controller="ListaKlientow" asp-action="Index">Klieni</a>
-                            </li>
-                            <li class="nav-link">
-                                <a asp-controller="Logowanie" asp-action="Privacy">Informacje</a>
-                            </li>
-
-                        }
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <a class="navbar-brand" asp-area="" asp-controller="ListaKlientow" asp-action="Index">ProjektMVC</a>
-                        }
                     </ul>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="przykladowaListaPrimary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @User.Identity.Name
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="przykladowaListaPrimary">
+                            @if(User.IsInRole("Admin"))
+                                {
+                                    <a class="dropdown-item" asp-controller="ListaKlientow" asp-action="Index">Klienci</a>
+                                }
+                                
+                            
+                                <a class="dropdown-item" asp-controller="Logowanie" asp-action="Informacje">Informacje</a>
+                            
+                                <a class="dropdown-item" asp-controller="Logowanie" asp-action="Logout">Wyloguj</a>
+                        </div>
+                    </div>}
+
                 </div>
-                @User.Identity.Name
             </div>
         </nav>
     </header>
