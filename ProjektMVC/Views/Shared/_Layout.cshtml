@@ -9,9 +9,9 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">KINO</a>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
+            <div class="container ">
+                <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index">KINO</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -19,46 +19,47 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-link">
-                            <a asp-area="" asp-controller="ListaFilmow" asp-action="AktualneFilmy">Aktualne filmy</a>
+                            <a class="text-light" asp-area="" asp-controller="ListaFilmow" asp-action="AktualneFilmy">Aktualne filmy</a>
 
                         </li>
                         <li class="nav-link">
-                            <a asp-area="" asp-controller="Logowanie" asp-action="Login">Rezerwacja</a>
+                            <a class="text-light" asp-area="" asp-controller="Logowanie" asp-action="Login">Rezerwacja</a>
 
                         </li>
                     </ul>
+
+
                     @if (User.Identity.IsAuthenticated)
                     {
                         <div class="dropdown">
                             <button class="btn btn-primary dropdown-toggle" type="button" id="przykladowaListaPrimary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            @User.Identity.Name
-                        </button>
+                                @User.Identity.Name
+                            </button>
 
-                            
 
-                        <div class="dropdown-menu" aria-labelledby="przykladowaListaPrimary">
-                            @if(User.IsInRole("Admin"))
+
+                            <div class="dropdown-menu" aria-labelledby="przykladowaListaPrimary">
+                                @if (User.IsInRole("Admin"))
                                 {
                                     <a class="dropdown-item" asp-controller="ListaKlientow" asp-action="Index">Klienci</a>
                                     <a class="dropdown-item" asp-controller="ListaFilmow" asp-action="Index">Filmy</a>
                                     <a class="dropdown-item" asp-controller="ListaSalKinowych" asp-action="Index">Sale kinowe</a>
                                 }
-                                
-                            
+
+
                                 <a class="dropdown-item" asp-controller="Logowanie" asp-action="Informacje">Informacje</a>
-                            
+
                                 <a class="dropdown-item" asp-controller="Logowanie" asp-action="Logout">Wyloguj</a>
-                        </div>
+                            </div>
                         </div>
                     }
                     else
                     {
                         <div class="dropdown">
-                          
-                                <a asp-controller="Logowanie" asp-action="Login">Logowanie</a>
-                            </div>
-                    }
 
+                            <a class="text-light" asp-controller="Logowanie" asp-action="Login">Logowanie</a>
+                        </div>
+                    }
                 </div>
             </div>
         </nav>
@@ -71,7 +72,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - ProjektMVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2021 - Krystian Petek
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -4,13 +4,13 @@ namespace ProjektAPI.Models
 {
     public class UzytkownikModel
     {
-        [Required]
+        [Required, Display(Name = "ID")]
         public int Id { get; set; }
-        [Required, MinLength(5), StringLength(20)]
+        [Required, MinLength(5), StringLength(20), Display(Name ="Login")]
         public string Login { get; set; }
-        [Required, MinLength(8), StringLength(30)]
+        [Required, MinLength(8), StringLength(30), Display(Name = " Hasło")]
         public string Haslo { get; set; }
-        [Required]
+        [Required, Display(Name = "Autoryzacja")]
         public Rola RodzajUzytkownika { get; set; }
         public virtual KlientModel Klient { get; set; }
 

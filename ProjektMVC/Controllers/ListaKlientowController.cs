@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using ProjektAPI.Models;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace ProjektMVC.Controllers
 {
@@ -17,8 +18,9 @@ namespace ProjektMVC.Controllers
         private readonly IConfiguration _configuration;
         private readonly APIDatabaseContext _context;
 
-        public ListaKlientowController(IConfiguration configuration)
+        public ListaKlientowController(IConfiguration configuration, APIDatabaseContext context)
         {
+            _context = context;
             _configuration = configuration;
             KlienciPath = _configuration["ProjektAPIConfig:Url2"];
             client = new HttpClient();
@@ -28,10 +30,24 @@ namespace ProjektMVC.Controllers
         {
             ZabronDostepu();
             List<KlientModel> listaOsob = null;
+
             HttpResponseMessage response = await client.GetAsync(KlienciPath);
             if (response.IsSuccessStatusCode)
             {
+                List<UzytkownikModel> listaLogin = new List<UzytkownikModel>();
+                foreach (var item in _context.Login)
+                    listaLogin.Add(item);
+
                 listaOsob = await response.Content.ReadAsAsync<List<KlientModel>>();
+
+                foreach (var item in listaOsob)
+                {
+                    foreach (var item2 in listaLogin)
+                        if (item.UzytkownikId == item2.Id)
+                        {
+                            item.Uzytkownik = item2;
+                        }
+                }
             }
             return View(listaOsob);
         }

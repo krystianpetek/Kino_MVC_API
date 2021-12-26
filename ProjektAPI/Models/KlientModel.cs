@@ -15,7 +15,7 @@ namespace ProjektAPI.Models
         public DateTime DataUrodzenia { get; set; } 
         [Phone, Display(Name = "Numer telefonu")]
         public string NumerTelefonu { get; set; }
-        [Required, Display(Name = "Miasto"), StringLength(60)]
+        [Display(Name = "Miasto"), StringLength(60)]
         public string Miasto { get; set; }
         [Display(Name = "Ulica i numer")]
         public string Ulica { get; set; }
