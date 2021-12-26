@@ -9,7 +9,7 @@
 
 <h3 style="font-weight:400" class="text-center">Czy napewno chcesz usunąć są sale?</h3>
 <hr />
-<div class="row">
+<div class="row justify-content-center">
     <div class="col-md-6">
         <dl class="row">
             <dt class="col-sm-4">
@@ -36,7 +36,7 @@
         <form asp-action="DeleteConfirmed" asp-route-id="@Model.Id">
             <input type="hidden" asp-for="Id" />
             <br />
-            <input type="submit" value="Usuń klienta" class="btn btn-danger" />
+            <input type="submit" value="Usuń sale kinową" class="btn btn-dark" />
         </form>
     </div>
 </div>

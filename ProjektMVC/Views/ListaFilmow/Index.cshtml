@@ -1,18 +1,18 @@
 ﻿@model IEnumerable<ProjektAPI.Models.FilmModel>
 
 @{
-    ViewData["Title"] = "Index";
-
+    ViewData["Title"] = "Lista filmów";
 }
 
-<h1>Index</h1>
+<h1 style="font-weight:400" class="text-center">Lista filmów</h1>
+<br />
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nazwa)
             </th>
@@ -20,17 +20,19 @@
                 @Html.DisplayNameFor(model => model.Opis)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CzasTrwania)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cena)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Gatunek)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CzasTrwania)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.OgraniczeniaWiek)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cena)
+            </th>
+            <th></th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -38,29 +40,36 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Nazwa)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Opis)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CzasTrwania)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cena)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Gatunek)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CzasTrwania)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.OgraniczeniaWiek)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.Cena)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a>
+               <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a>
+               <a asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+<br />
+<div>
+<a class="text-light btn btn-dark" asp-action="Create">Dodaj nowy film</a>
+</div>

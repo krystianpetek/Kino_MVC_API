@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Net.Http;
 using ProjektAPI.Models;
 using System.Threading.Tasks;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace ProjektMVC.Controllers
 {
-
-
+    [Authorize]
+    [Route("[controller]")]
     public class ListaFilmowController : Controller
     {
         private readonly HttpClient client;
@@ -26,39 +27,101 @@ namespace ProjektMVC.Controllers
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
-        [Authorize]
-        public async Task<ActionResult> Index()
+
+        [HttpGet("Index")]
+        public ActionResult Index()
         {
             ZabronDostepu();
-            List<FilmModel> listaOsob = null;
-            HttpResponseMessage response = await client.GetAsync(FilmyPath);
-            if (response.IsSuccessStatusCode)
-            {
-                listaOsob = await response.Content.ReadAsAsync<List<FilmModel>>();
-            }
-            return View(listaOsob);
+            List<FilmModel> listaFilmow = _context.Filmy.ToList();
+            return View(listaFilmow);
         }
 
-        public IActionResult AktualneFilmy()
+        [HttpGet("Create")]
+        public ActionResult Create()
         {
-            List<FilmModel> x = new();
-            x.AddRange(_context.Filmy);
-            return View(x);
+            ZabronDostepu();
+            return View();
         }
 
-        [Authorize]
-        [HttpPost]
+        [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("Nazwa,Opis,Gatunek,OgraniczeniaWiek,CzasTrwania,Cena")] FilmModel model)
+        public ActionResult Create([Bind("Nazwa, Opis, Gatunek, OgraniczeniaWiek, CzasTrwania, Cena")] FilmModel model)
         {
             ZabronDostepu();
-            if (ModelState.IsValid)
-            {
-                HttpResponseMessage response = await client.PostAsJsonAsync(FilmyPath, model);
-                response.EnsureSuccessStatusCode();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(model);
+            _context.Filmy.Add(model);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet("Edit/{id}")]
+        public ActionResult Edit([FromRoute] int? id)
+        {
+            ZabronDostepu();
+            if (id is null)
+                return NotFound();
+            List<FilmModel> listaFilmow = _context.Filmy.ToList();
+            var film = listaFilmow.FirstOrDefault(d => d.Id == id);
+            if (film is null)
+                return NotFound();
+            return View(film);
+        }
+
+        [HttpPost("Edit/{id}")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([FromRoute] int id, [Bind("Nazwa, Opis, Gatunek, OgraniczeniaWiek, CzasTrwania, Cena")] FilmModel model)
+        {
+            ZabronDostepu();
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var film = _context.Filmy.FirstOrDefault(q => q.Id == id);
+            if (film is null)
+                return NotFound();
+
+            film.Nazwa = model.Nazwa;
+            film.Opis = model.Opis;
+            film.Gatunek= model.Gatunek;
+            film.OgraniczeniaWiek = model.OgraniczeniaWiek;
+            film.CzasTrwania = model.CzasTrwania;
+            film.Cena = model.Cena;
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet("Delete")]
+        public ActionResult Delete(int? id)
+        {
+            ZabronDostepu();
+            if (id is null)
+                return NotFound();
+            var film = _context.Filmy.FirstOrDefault(q => q.Id == id);
+            if (film is null)
+                return NotFound();
+            return View(film);
+        }
+
+        [HttpPost("Delete/{id}")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            ZabronDostepu();
+            var film = _context.Filmy.FirstOrDefault(q => q.Id == id);
+            _context.Remove(film);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet("Details/{id}")]
+        public ActionResult Details(int? id)
+        {
+            ZabronDostepu();
+            if (id is null)
+                return NotFound();
+            var film = _context.Filmy.FirstOrDefault(q => q.Id == id);
+            if (film is null)
+                return NotFound();
+            return View(film);
         }
 
         public void ZabronDostepu()

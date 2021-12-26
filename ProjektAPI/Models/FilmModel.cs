@@ -4,7 +4,7 @@ namespace ProjektAPI.Models
 {
     public class FilmModel
     {
-        [Required, Display(Name = "Lp.")]
+        [Required, Display(Name = "ID")]
         public int Id { get; set; }
         [Required, StringLength(80), Display(Name = "Nazwa")]
         public string Nazwa { get; set; }

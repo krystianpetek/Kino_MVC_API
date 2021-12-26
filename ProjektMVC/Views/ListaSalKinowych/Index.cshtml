@@ -25,7 +25,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.LiczbaMiejsc)
             </th>
-            <th>Edycja</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -47,9 +47,9 @@
                 @Html.DisplayFor(modelItem => item.LiczbaMiejsc)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a>
+               <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a>
+               <a asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
             </td>
         </tr>
 }
@@ -57,5 +57,5 @@
 </table>
 <br />
 <div>
-<a class="text-light btn btn-dark" asp-action="Create">Dodaj nowego klienta</a>
+<a class="text-light btn btn-dark" asp-action="Create">Dodaj nową sale kinową</a>
 </div>

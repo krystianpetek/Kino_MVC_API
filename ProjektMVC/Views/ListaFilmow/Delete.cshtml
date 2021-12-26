@@ -1,5 +1,65 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ProjektAPI.Models.FilmModel;
+
 @{
+    ViewData["Title"] = "Usuwanie filmu";
 }
+
+<h1 style="font-weight:400" class="text-center">Usuwanie filmu</h1>
+<hr />
+
+<h3 style="font-weight:400" class="text-center">Czy napewno chcesz usunąć ten film?</h3>
+    <hr />
+<div class="row justify-content-center">
+<div class="col-md-6">
+    <dl class="row">
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Nazwa)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Nazwa)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Opis)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Opis)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Gatunek)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Gatunek)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.CzasTrwania)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.CzasTrwania)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.OgraniczeniaWiek)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.OgraniczeniaWiek)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Cena)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Cena)
+        </dd>
+    </dl>
+    
+    <form asp-action="DeleteConfirmed" asp-route-id="@Model.Id">
+        <input type="hidden" asp-for="Id" />
+        <br />
+        <input type="submit" value="Usuń klienta" class="btn btn-dark" />
+    </form>
+</div>
+</div>
