@@ -68,6 +68,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpPost("Edit/{id}")]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit([FromRoute] int id, [Bind("Id,Imie,Nazwisko,DataUrodzenia,NumerTelefonu,Email,Miasto,Ulica,KodPocztowy,Uzytkownik")] KlientModel model)
         {
             ZabronDostepu();
