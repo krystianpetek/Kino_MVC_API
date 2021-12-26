@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProjektAPI.Models.FilmModel>
+﻿@model IEnumerable<ProjektMVC.Models.AktualneFilmyModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -20,10 +20,7 @@
                 @Html.DisplayNameFor(model => model.Gatunek)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CzasTrwania)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OgraniczeniaWiek)
+                @Html.DisplayNameFor(model => model.Wiek)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Cena)
@@ -44,10 +41,7 @@
                 @Html.DisplayFor(modelItem => item.Gatunek)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CzasTrwania)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OgraniczeniaWiek)
+                @Html.DisplayFor(modelItem => item.Wiek)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Cena)
