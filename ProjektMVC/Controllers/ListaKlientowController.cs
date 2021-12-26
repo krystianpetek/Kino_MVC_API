@@ -32,9 +32,9 @@ namespace ProjektMVC.Controllers
         public ActionResult Index()
         {
             ZabronDostepu();
-            List<KlientModel> listaOsob = _context.Klienci.Include(r => r.Uzytkownik).ToList();
-            //List<KlientModel> listaOsob = ListaKlientow();
-            return View(listaOsob);
+            List<KlientModel> listaKlientow = _context.Klienci.Include(q => q.Uzytkownik).ToList();
+            //List<KlientModel> listaKlientow = ListaKlientow();
+            return View(listaKlientow);
         }
 
         [HttpGet("Create")]
@@ -60,11 +60,11 @@ namespace ProjektMVC.Controllers
             ZabronDostepu();
             if (id is null)
                 return NotFound();
-            List<KlientModel> listaOsob = _context.Klienci.Include(r => r.Uzytkownik).ToList();
-            var osoba = listaOsob.FirstOrDefault(d => d.Id == id);
-            if (osoba is null)
+            List<KlientModel> listaKlientow = _context.Klienci.Include(q => q.Uzytkownik).ToList();
+            var klient = listaKlientow.FirstOrDefault(q => q.Id == id);
+            if (klient is null)
                 return NotFound();
-            return View(osoba);
+            return View(klient);
         }
 
         [HttpPost("Edit/{id}")]
@@ -75,19 +75,19 @@ namespace ProjektMVC.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var KlientZBazy = _context.Klienci.Include(s => s.Uzytkownik).FirstOrDefault(d => d.Id == id);
-            var loginZBazy = _context.Login.FirstOrDefault(d => d.Id == KlientZBazy.UzytkownikId);
-            if (KlientZBazy is null)
+            var klientZBazy= _context.Klienci.Include(q => q.Uzytkownik).FirstOrDefault(q => q.Id == id);
+            var loginZBazy = _context.Login.FirstOrDefault(q => q.Id == klientZBazy.UzytkownikId);
+            if (klientZBazy is null)
                 return NotFound();
 
-            KlientZBazy.Imie = model.Imie;
-            KlientZBazy.Nazwisko = model.Nazwisko;
-            KlientZBazy.DataUrodzenia = model.DataUrodzenia;
-            KlientZBazy.NumerTelefonu = model.NumerTelefonu;
-            KlientZBazy.Email = model.Email;
-            KlientZBazy.Miasto = model.Miasto;
-            KlientZBazy.Ulica = model.Ulica;
-            KlientZBazy.KodPocztowy = model.KodPocztowy;
+            klientZBazy.Imie = model.Imie;
+            klientZBazy.Nazwisko = model.Nazwisko;
+            klientZBazy.DataUrodzenia = model.DataUrodzenia;
+            klientZBazy.NumerTelefonu = model.NumerTelefonu;
+            klientZBazy.Email = model.Email;
+            klientZBazy.Miasto = model.Miasto;
+            klientZBazy.Ulica = model.Ulica;
+            klientZBazy.KodPocztowy = model.KodPocztowy;
             loginZBazy.Login = model.Uzytkownik.Login;
             loginZBazy.Haslo = model.Uzytkownik.Haslo;
             loginZBazy.RodzajUzytkownika = model.Uzytkownik.RodzajUzytkownika;
@@ -102,10 +102,10 @@ namespace ProjektMVC.Controllers
             ZabronDostepu();
             if (id is null)
                 return NotFound();
-            var osoba = _context.Klienci.Include(c => c.Uzytkownik).FirstOrDefault(m => m.Id == id);
-            if (osoba is null)
+            var klient = _context.Klienci.Include(q => q.Uzytkownik).FirstOrDefault(q => q.Id == id);
+            if (klient is null)
                 return NotFound();
-            return View(osoba);
+            return View(klient);
         }
 
         [HttpPost("Delete/{id}")]
@@ -113,10 +113,10 @@ namespace ProjektMVC.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             ZabronDostepu();
-            var osoba = _context.Klienci.FirstOrDefault(q => q.Id == id);
-            var loginOsoba = _context.Login.FirstOrDefault(m => m.Id == osoba.UzytkownikId);
-            _context.Remove(osoba);
-            _context.Remove(loginOsoba);
+            var klient = _context.Klienci.FirstOrDefault(q => q.Id == id);
+            var uzytkownik = _context.Login.FirstOrDefault(q => q.Id == klient.UzytkownikId);
+            _context.Remove(klient);
+            _context.Remove(uzytkownik);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
@@ -127,23 +127,23 @@ namespace ProjektMVC.Controllers
             ZabronDostepu();
             if (id is null)
                 return NotFound();
-            var osoba = _context.Klienci.Include(d => d.Uzytkownik).FirstOrDefault(g => g.Id == id);
-            if (osoba is null)
+            var klient = _context.Klienci.Include(q => q.Uzytkownik).FirstOrDefault(q => q.Id == id);
+            if (klient is null)
                 return NotFound();
-            return View(osoba);
+            return View(klient);
         }
 
         private List<KlientModel> ListaKlientow()
         {
-            List<UzytkownikModel> listaLogin = new List<UzytkownikModel>();
+            List<UzytkownikModel> listaUzytkownikow = new List<UzytkownikModel>();
             foreach (var item in _context.Login)
-                listaLogin.Add(item);
-            List<KlientModel> listaOsob = new List<KlientModel>();
+                listaUzytkownikow.Add(item);
+            List<KlientModel> listaKlientow = new List<KlientModel>();
             foreach (var item in _context.Klienci)
-                listaOsob.Add(item);
-            foreach (var item in listaOsob)
+                listaKlientow.Add(item);
+            foreach (var item in listaKlientow)
             {
-                foreach (var item2 in listaLogin)
+                foreach (var item2 in listaUzytkownikow)
                 {
                     if (item.UzytkownikId == item2.Id)
                     {
@@ -151,7 +151,7 @@ namespace ProjektMVC.Controllers
                     }
                 }
             }
-            return listaOsob;
+            return listaKlientow;
         }
 
         private void ZabronDostepu()

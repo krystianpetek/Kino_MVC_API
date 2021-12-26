@@ -1,5 +1,49 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ProjektAPI.Models.SalaModel;
+
 @{
+    ViewData["Title"] = "Szczegóły o sali kinowej";
 }
+
+<h1 style="font-weight:400" class="text-center">Szczegóły o sali kinowej</h1>
+<hr />
+<div class="row justify-content-center">
+    <br />
+    <div class="col">
+        <dl class="row">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.NazwaSali)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.NazwaSali)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.IloscMiejsc)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.IloscMiejsc)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.IloscRzedow)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.IloscRzedow)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.LiczbaMiejsc)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.LiczbaMiejsc)
+            </dd>
+        </dl>
+    </div>
+</div>
+<br />
+<div>
+    <a class="btn btn-dark" asp-action="Edit" asp-route-id="@Model.Id">Edytuj sale kinową</a>
+</div>

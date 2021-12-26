@@ -1,5 +1,42 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ProjektAPI.Models.SalaModel;
+
 @{
+    ViewData["Title"] = "Usuwanie sali kinowej";
 }
+
+<h1 style="font-weight:400" class="text-center">Usuwanie sali kinowej</h1>
+<hr />
+
+<h3 style="font-weight:400" class="text-center">Czy napewno chcesz usunąć są sale?</h3>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.NazwaSali)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.NazwaSali)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.LiczbaMiejsc)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.LiczbaMiejsc)
+            </dd>
+
+        </dl>
+
+        <form asp-action="DeleteConfirmed" asp-route-id="@Model.Id">
+            <input type="hidden" asp-for="Id" />
+            <br />
+            <input type="submit" value="Usuń klienta" class="btn btn-danger" />
+        </form>
+    </div>
+</div>

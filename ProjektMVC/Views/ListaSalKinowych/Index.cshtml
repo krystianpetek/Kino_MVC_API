@@ -1,14 +1,12 @@
 ﻿@model IEnumerable<ProjektAPI.Models.SalaModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista sal kinowych";
 }
 
-<h1>Index</h1>
+<h1 style="font-weight:400" class="text-center">Lista sal kinowych</h1>
+<br />
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -27,7 +25,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.LiczbaMiejsc)
             </th>
-            <th></th>
+            <th>Edycja</th>
         </tr>
     </thead>
     <tbody>
@@ -49,11 +47,15 @@
                 @Html.DisplayFor(modelItem => item.LiczbaMiejsc)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+<br />
+<div>
+<a class="text-light btn btn-dark" asp-action="Create">Dodaj nowego klienta</a>
+</div>

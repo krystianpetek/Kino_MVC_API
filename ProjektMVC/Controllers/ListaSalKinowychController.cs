@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using System.Net.Http;
 using ProjektAPI.Models;
 using System.Threading.Tasks;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace ProjektMVC.Controllers
 {
     [Authorize]
+    [Route("[controller]")]
     public class ListaSalKinowychController : Controller
     {
         private readonly HttpClient client;
@@ -25,44 +27,100 @@ namespace ProjektMVC.Controllers
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
-        public async Task<ActionResult> Index()
-        {
-                ZabronDostepu();
 
-            List<SalaModel> listaSal = null;
-            HttpResponseMessage response = await client.GetAsync(SaleKinowePath);
-            if (response.IsSuccessStatusCode)
-            {
-                listaSal = await response.Content.ReadAsAsync<List<SalaModel>>();
-            }
+        [HttpGet("Index")]
+        public ActionResult Index()
+        {
+            ZabronDostepu();
+            List<SalaModel> listaSal = _context.SaleKinowe.ToList();
             return View(listaSal);
         }
 
-        public IActionResult Create()
+        [HttpGet("Create")]
+        public ActionResult Create()
         {
             ZabronDostepu();
             return View();
         }
 
-        public IActionResult Podglad()
-        {
-            return View();
-        }
-
-        [HttpPost]
+        [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("NazwaSali, IloscRzedow, IloscMiejsc")] SalaModel model)
+        public ActionResult Create([Bind("NazwaSali, IloscRzedow, IloscMiejsc")] SalaModel model)
         {
             ZabronDostepu();
-            if (ModelState.IsValid)
-            {
-                ZabronDostepu();
-                HttpResponseMessage response = await client.PostAsJsonAsync(SaleKinowePath, model);
-                response.EnsureSuccessStatusCode();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(model);
+            _context.SaleKinowe.Add(model);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet("Edit/{id}")]
+        public ActionResult Edit([FromRoute] int? id)
+        {
+            ZabronDostepu();
+            if (id is null)
+                return NotFound();
+            List<SalaModel> listaSal = _context.SaleKinowe.ToList();
+            var sala = listaSal.FirstOrDefault(d => d.Id == id);
+            if (sala is null)
+                return NotFound();
+            return View(sala);
+        }
+
+        [HttpPost("Edit/{id}")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([FromRoute] int id, [Bind("NazwaSali, IloscRzedow, IloscMiejsc")] SalaModel model)
+        {
+            ZabronDostepu();
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var sala = _context.SaleKinowe.FirstOrDefault(q => q.Id == id);
+            if (sala is null)
+                return NotFound();
+
+            sala.NazwaSali = model.NazwaSali;
+            sala.IloscMiejsc= model.IloscMiejsc;
+            sala.IloscRzedow = model.IloscRzedow;
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet("Delete")]
+        public ActionResult Delete(int? id)
+        {
+            ZabronDostepu();
+            if (id is null)
+                return NotFound();
+            var sala = _context.SaleKinowe.FirstOrDefault(q => q.Id == id);
+            if (sala is null)
+                return NotFound();
+            return View(sala);
+        }
+
+        [HttpPost("Delete/{id}")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            ZabronDostepu();
+            var sala = _context.SaleKinowe.FirstOrDefault(q => q.Id == id);
+            _context.Remove(sala);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet("Details/{id}")]
+        public ActionResult Details(int? id)
+        {
+            ZabronDostepu();
+            if (id is null)
+                return NotFound();
+            var sala = _context.SaleKinowe.FirstOrDefault(q => q.Id == id);
+            if (sala is null)
+                return NotFound();
+            return View(sala);
+        }
+
         public void ZabronDostepu()
         {
             if (!User.IsInRole("Admin")) HttpContext.Response.Redirect("/");
