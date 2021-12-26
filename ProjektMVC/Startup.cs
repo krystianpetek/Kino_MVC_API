@@ -56,8 +56,7 @@ namespace ProjektMVC
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    //pattern: "{controller=Home}/{action=Index}/{id?}")
-                    pattern: "{controller=ListaKlientow}/{action=Create}");
+                    pattern: "{controller=Home}/{action=Index}");
             });
         }
     }

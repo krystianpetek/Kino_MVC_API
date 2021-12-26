@@ -5,7 +5,7 @@ namespace ProjektAPI.Models
 {
     public class KlientModel
     {
-        [Display(Name = "Lp.")]
+        [Display(Name = "ID")]
         public int Id { get; set; }
         [Required, Display(Name = "Imię"), StringLength(30)]
         public string Imie { get; set; }

@@ -1,7 +1,7 @@
 ﻿@model ProjektAPI.Models.KlientModel;
 @using ProjektAPI.Models;
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Dodawanie nowego klienta";
 }
 
 <h1 style="font-weight:400" class="text-center">Dodawanie nowego klienta</h1>
@@ -66,7 +66,6 @@
                     <span asp-validation-for="KodPocztowy" class="text-danger"></span>
                 </div>
             </div>
-
             <div class="form-group row">
                 <label asp-for="Uzytkownik.Login" class="col-sm-4 col-form-label"></label>
                 <div class="col-sm-8">
@@ -84,24 +83,20 @@
             <div class="form-group row">
                 <label for="inputState" asp-for="Uzytkownik.RodzajUzytkownika" class="col-sm-4 col-form-label"></label>
                 <div class="col-sm-8">
-                    <select id="inputState" class="form-control">
-                        <option selected>@Rola.Klient</option>
-                        <option>@Rola.Pracownik</option>
-                        <option>@Rola.Admin</option>
+                    <select asp-for="Uzytkownik.RodzajUzytkownika" id="inputState" class="form-control">
+                        <option selected>@Rola.Klient.ToString()</option>
+                        <option>@Rola.Pracownik.ToString()</option>
+                        <option>@Rola.Admin.ToString()</option>
                     </select>
                     <span asp-validation-for="Uzytkownik.RodzajUzytkownika" class="text-danger"></span>
                 </div>
             </div>
             <br />
             <div class="form-group row">
-                <input type="submit" value="Dodaj nowego klienta" class="text-light btn btn-dark" />
+                <input type="submit" value="Dodaj klienta" class="text-light btn btn-dark" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
