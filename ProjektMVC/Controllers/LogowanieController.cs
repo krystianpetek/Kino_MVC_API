@@ -14,18 +14,17 @@ namespace ProjektMVC.Controllers
     public class LogowanieController : Controller
     {
         private APIDatabaseContext _context;
-
         private readonly List<UzytkownikModel> _uzytkownicy;
         public LogowanieController(APIDatabaseContext context)
         {
             _context = context;
             _uzytkownicy = _context.Login.ToList();
+
             if (!_context.Klienci.Any())
             {
                 _context.Klienci.AddRange(
                     new KlientModel()
                     {
-
                         Imie = "Krystian",
                         Nazwisko = "Petek",
                         DataUrodzenia = new System.DateTime(1998, 10, 06),
@@ -58,9 +57,49 @@ namespace ProjektMVC.Controllers
                         RodzajUzytkownika = Rola.Klient
                     }
                 });
+            }
+                if (!_context.SaleKinowe.Any())
+                {
+                    _context.SaleKinowe.AddRange(
+                        new SalaModel()
+                        {
+                            NazwaSali = "Sala 1",
+                            IloscMiejsc = 10,
+                            IloscRzedow = 10
+
+                        },
+                        new SalaModel()
+                        {
+                            NazwaSali = "Sala 2",
+                            IloscMiejsc = 12,
+                            IloscRzedow = 8
+                        });
+                }
+            
+            if (!_context.Filmy.Any())
+                {
+                    _context.Filmy.AddRange(
+                        new FilmModel()
+                        {
+                            Nazwa = "Skazani na Shawshank",
+                            Opis = "Adaptacja opowiadania Stephena Kinga. Niesłusznie skazany na dożywocie bankier, stara się przetrwać w brutalnym, więziennym świecie.",
+                            Gatunek = "Dramat",
+                            CzasTrwania = "2 godz. 22 min.",
+                            OgraniczeniaWiek = Wiek.Od16lat,
+                            Cena = 35
+                        },
+                        new FilmModel()
+                        {
+                            Nazwa = "Nietykalni",
+                            Opis = "Sparaliżowany milioner zatrudnia do opieki młodego chłopaka z przedmieścia, który właśnie wyszedł z więzienia.",
+                            Gatunek = "Biograficzny, Dramat, Komedia",
+                            CzasTrwania = "1 godz. 52 min.",
+                            OgraniczeniaWiek = Wiek.Od12lat,
+                            Cena = 40
+                        });
+                }
                 _context.SaveChanges();
             }
-        }
         [Authorize]
         public IActionResult Informacje()
         {

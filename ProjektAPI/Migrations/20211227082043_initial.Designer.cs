@@ -10,8 +10,8 @@ using ProjektAPI.Models;
 namespace ProjektAPI.Migrations
 {
     [DbContext(typeof(APIDatabaseContext))]
-    [Migration("20211225222807_init1")]
-    partial class init1
+    [Migration("20211227082043_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -80,7 +80,6 @@ namespace ProjektAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Miasto")
-                        .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 

@@ -78,7 +78,6 @@ namespace ProjektAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Miasto")
-                        .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 

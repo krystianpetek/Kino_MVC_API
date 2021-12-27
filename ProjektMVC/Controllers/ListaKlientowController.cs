@@ -29,11 +29,15 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Index")]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             ZabronDostepu();
-            List<KlientModel> listaKlientow = _context.Klienci.Include(q => q.Uzytkownik).ToList();
-            //List<KlientModel> listaKlientow = ListaKlientow();
+            List<KlientModel> listaKlientow = null;
+            HttpResponseMessage response = await client.GetAsync(KlienciPath);
+            if(response.IsSuccessStatusCode)
+            {
+                listaKlientow = await response.Content.ReadAsAsync<List<KlientModel>>();
+            }
             return View(listaKlientow);
         }
 
@@ -46,12 +50,16 @@ namespace ProjektMVC.Controllers
 
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("Id,Imie,Nazwisko,DataUrodzenia,NumerTelefonu,Email,Miasto,Ulica,KodPocztowy,Uzytkownik")] KlientModel model)
+        public async Task<ActionResult> Create([Bind("Id,Imie,Nazwisko,DataUrodzenia,NumerTelefonu,Email,Miasto,Ulica,KodPocztowy,Uzytkownik")] KlientModel model)
         {
             ZabronDostepu();
-            _context.Klienci.Add(model);
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            if(ModelState.IsValid)
+            {
+                HttpResponseMessage response = await client.PostAsJsonAsync(KlienciPath, model);
+                response.EnsureSuccessStatusCode();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
         }
 
         [HttpGet("Edit/{id}")]
