@@ -17,11 +17,9 @@ namespace ProjektMVC.Controllers
         private readonly HttpClient client;
         private readonly string KlienciPath;
         private readonly IConfiguration _configuration;
-        private readonly APIDatabaseContext _context;
 
-        public ListaKlientowController(IConfiguration configuration, APIDatabaseContext context)
+        public ListaKlientowController(IConfiguration configuration)
         {
-            _context = context;
             _configuration = configuration;
             KlienciPath = _configuration["ProjektAPIConfig:Url2"];
             client = new HttpClient();
@@ -63,7 +61,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Edit/{id}")]
-        public async Task<ActionResult> Edit(int? id)
+        public async Task<ActionResult> Edit([FromRoute]int? id)
         {
             ZabronDostepu();
             HttpResponseMessage response = await client.GetAsync(KlienciPath + id);
@@ -100,38 +98,30 @@ namespace ProjektMVC.Controllers
                 return View(model);
             }
             return NotFound();
-
-            //if (id is null)
-            //    return NotFound();
-            //var klient = _context.Klienci.Include(q => q.Uzytkownik).FirstOrDefault(q => q.Id == id);
-            //if (klient is null)
-            //    return NotFound();
-            //return View(klient);
         }
 
         [HttpPost("Delete/{id}")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
             ZabronDostepu();
-            var klient = _context.Klienci.FirstOrDefault(q => q.Id == id);
-            var uzytkownik = _context.Login.FirstOrDefault(q => q.Id == klient.UzytkownikId);
-            _context.Remove(klient);
-            _context.Remove(uzytkownik);
-            _context.SaveChanges();
+            HttpResponseMessage response = await client.DeleteAsync(KlienciPath + id);
+            response.EnsureSuccessStatusCode();
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet("Details/{id}")]
-        public ActionResult Details(int? id)
+
+    [HttpGet("Details/{id}")]
+        public async Task<ActionResult> Details(int? id)
         {
             ZabronDostepu();
-            if (id is null)
-                return NotFound();
-            var klient = _context.Klienci.Include(q => q.Uzytkownik).FirstOrDefault(q => q.Id == id);
-            if (klient is null)
-                return NotFound();
-            return View(klient);
+            HttpResponseMessage response = await client.GetAsync(KlienciPath + id);
+            if (response.IsSuccessStatusCode)
+            {
+                KlientModel model = await response.Content.ReadAsAsync<KlientModel>();
+                return View(model);
+            }
+            return NotFound();
         }
 
         private void ZabronDostepu()

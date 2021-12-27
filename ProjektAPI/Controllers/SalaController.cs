@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjektAPI.Attributes;
 using ProjektAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,6 +14,29 @@ namespace ProjektAPI.Controllers
         public SalaController(APIDatabaseContext context)
         {
             _context = context;
+            Inicjalizacja();
+        }
+
+        private void Inicjalizacja()
+        {
+            if (!_context.SaleKinowe.Any())
+            {
+                _context.SaleKinowe.AddRange(
+                    new SalaModel()
+                    {
+                        NazwaSali = "Sala 1",
+                        IloscMiejsc = 10,
+                        IloscRzedow = 10
+
+                    },
+                    new SalaModel()
+                    {
+                        NazwaSali = "Sala 2",
+                        IloscMiejsc = 12,
+                        IloscRzedow = 8
+                    });
+            }
+            _context.SaveChanges();
         }
 
         [HttpGet]

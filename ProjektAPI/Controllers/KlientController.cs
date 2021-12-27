@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProjektAPI.Attributes;
 using ProjektAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,6 +15,51 @@ namespace ProjektAPI.Controllers
         public KlientController(APIDatabaseContext context)
         {
             _context = context;
+
+            Inicjalizacja();
+        }
+
+        private void Inicjalizacja()
+        {
+            if (!_context.Klienci.Any())
+            {
+                _context.Klienci.AddRange(
+                    new KlientModel()
+                    {
+                        Imie = "Krystian",
+                        Nazwisko = "Petek",
+                        DataUrodzenia = new System.DateTime(1998, 10, 06),
+                        Miasto = "Koziniec",
+                        Ulica = "2",
+                        NumerTelefonu = "884284782",
+                        KodPocztowy = "34-106",
+                        Email = "krystianpetek2@gmail.com",
+                        Uzytkownik = new UzytkownikModel()
+                        {
+                            Login = "krystianpetek",
+                            Haslo = "qwerty123",
+                            RodzajUzytkownika = Rola.Admin
+                        }
+                    },
+                new KlientModel()
+                {
+                    Imie = "Gabriel",
+                    Nazwisko = "Warchał",
+                    DataUrodzenia = new System.DateTime(1993, 03, 20),
+                    Miasto = "Świnna Poręba",
+                    Ulica = "158",
+                    NumerTelefonu = "889410340",
+                    KodPocztowy = "34-106",
+                    Email = "mr.warchal@gmail.com",
+                    Uzytkownik = new UzytkownikModel()
+                    {
+                        Login = "gabrys.158",
+                        Haslo = "123qweasdzxc",
+                        RodzajUzytkownika = Rola.Klient
+                    }
+                });
+            }
+            _context.SaveChanges();
         }
 
         [HttpGet]
@@ -45,11 +91,17 @@ namespace ProjektAPI.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            var zapytanie = _context.Klienci.FirstOrDefault(q => q.Id == id);
-            if (zapytanie is null)
+            var zapytanieKlient = _context.Klienci.FirstOrDefault(q => q.Id == id);
+            if (zapytanieKlient is null)
                 return NotFound();
 
-            _context.Klienci.Remove(zapytanie);
+            var zapytanieUzytkownik = _context.Login.FirstOrDefault(q=>q.Id == zapytanieKlient.UzytkownikId);
+            if (zapytanieKlient is null)
+                return NotFound();
+
+            _context.Klienci.Remove(zapytanieKlient);
+            _context.Login.Remove(zapytanieUzytkownik);
+
             _context.SaveChanges();
             return NoContent();
         }

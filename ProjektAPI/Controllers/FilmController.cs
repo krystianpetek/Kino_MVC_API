@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjektAPI.Attributes;
 using ProjektAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,6 +14,34 @@ namespace ProjektAPI.Controllers
         public FilmController(APIDatabaseContext context)
         {
             _context = context;
+            Inicjalizacja();
+        }
+
+        private void Inicjalizacja()
+        {
+            if (!_context.Filmy.Any())
+            {
+                _context.Filmy.AddRange(
+                    new FilmModel()
+                    {
+                        Nazwa = "Skazani na Shawshank",
+                        Opis = "Adaptacja opowiadania Stephena Kinga. Niesłusznie skazany na dożywocie bankier, stara się przetrwać w brutalnym, więziennym świecie.",
+                        Gatunek = "Dramat",
+                        CzasTrwania = "2 godz. 22 min.",
+                        OgraniczeniaWiek = Wiek.Od16lat,
+                        Cena = 35
+                    },
+                    new FilmModel()
+                    {
+                        Nazwa = "Nietykalni",
+                        Opis = "Sparaliżowany milioner zatrudnia do opieki młodego chłopaka z przedmieścia, który właśnie wyszedł z więzienia.",
+                        Gatunek = "Biograficzny, Dramat, Komedia",
+                        CzasTrwania = "1 godz. 52 min.",
+                        OgraniczeniaWiek = Wiek.Od12lat,
+                        Cena = 40
+                    });
+            }
+            _context.SaveChanges();
         }
 
         [HttpGet]

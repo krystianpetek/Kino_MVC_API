@@ -31,7 +31,7 @@ namespace ProjektMVC.Controllers
         {
             ZabronDostepu();
             List<FilmModel> listaFilmow = null;
-            HttpResponseMessage response = await client.GetAsync(FilmyPath);//_context.Filmy.ToList();
+            HttpResponseMessage response = await client.GetAsync(FilmyPath);
             if(response.IsSuccessStatusCode)
             {
                 listaFilmow = await response.Content.ReadAsAsync<List<FilmModel>>();

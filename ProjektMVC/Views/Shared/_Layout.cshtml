@@ -39,7 +39,7 @@
 
 
                             <div class="dropdown-menu" aria-labelledby="przykladowaListaPrimary">
-                                @if (User.IsInRole("Admin"))
+                                @if (User.IsInRole("Admin") || User.IsInRole("Pracownik"))
                                 {
                                     <a class="dropdown-item" asp-controller="ListaKlientow" asp-action="Index">Klienci</a>
                                     <a class="dropdown-item" asp-controller="ListaFilmow" asp-action="Index">Filmy</a>

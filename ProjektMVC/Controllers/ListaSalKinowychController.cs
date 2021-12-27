@@ -17,11 +17,9 @@ namespace ProjektMVC.Controllers
         private readonly HttpClient client;
         private readonly string SaleKinowePath;
         private readonly IConfiguration _configuration;
-        private readonly APIDatabaseContext _context;
 
-        public ListaSalKinowychController(IConfiguration configuration, APIDatabaseContext context)
+        public ListaSalKinowychController(IConfiguration configuration)
         {
-            _context = context;
             _configuration = configuration;
             SaleKinowePath = _configuration["ProjektAPIConfig:Url3"];
             client = new HttpClient();
@@ -29,10 +27,15 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Index")]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             ZabronDostepu();
-            List<SalaModel> listaSal = _context.SaleKinowe.ToList();
+            List<SalaModel> listaSal = null;
+            HttpResponseMessage odpowiedz = await client.GetAsync(SaleKinowePath);
+            if(odpowiedz.IsSuccessStatusCode)
+            {
+                listaSal = await odpowiedz.Content.ReadAsAsync<List<SalaModel>>();
+            }
             return View(listaSal);
         }
 
@@ -45,80 +48,75 @@ namespace ProjektMVC.Controllers
 
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("NazwaSali, IloscRzedow, IloscMiejsc")] SalaModel model)
+        public async Task<ActionResult> Create([Bind("NazwaSali, IloscRzedow, IloscMiejsc")] SalaModel model)
         {
             ZabronDostepu();
-            _context.SaleKinowe.Add(model);
-            _context.SaveChanges();
+            HttpResponseMessage odpowiedz = await client.PostAsJsonAsync(SaleKinowePath, model);
+            odpowiedz.EnsureSuccessStatusCode();
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet("Edit/{id}")]
-        public ActionResult Edit([FromRoute] int? id)
+        public async Task<ActionResult> Edit([FromRoute] int? id)
         {
             ZabronDostepu();
-            if (id is null)
-                return NotFound();
-            List<SalaModel> listaSal = _context.SaleKinowe.ToList();
-            var sala = listaSal.FirstOrDefault(d => d.Id == id);
-            if (sala is null)
-                return NotFound();
-            return View(sala);
+            HttpResponseMessage odpowiedz = await client.GetAsync(SaleKinowePath + id);
+            if(odpowiedz.IsSuccessStatusCode)
+            {
+                SalaModel model = await odpowiedz.Content.ReadAsAsync<SalaModel>();
+                return View(model);
+            }
+            return NotFound();
         }
 
         [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([FromRoute] int id, [Bind("NazwaSali, IloscRzedow, IloscMiejsc")] SalaModel model)
+        public async Task<ActionResult> Edit([FromRoute] int id, [Bind("NazwaSali, IloscRzedow, IloscMiejsc")] SalaModel model)
         {
             ZabronDostepu();
-            if (!ModelState.IsValid)
-                return BadRequest();
-
-            var sala = _context.SaleKinowe.FirstOrDefault(q => q.Id == id);
-            if (sala is null)
-                return NotFound();
-
-            sala.NazwaSali = model.NazwaSali;
-            sala.IloscMiejsc= model.IloscMiejsc;
-            sala.IloscRzedow = model.IloscRzedow;
-            _context.SaveChanges();
-
-            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                HttpResponseMessage odpowiedz = await client.PutAsJsonAsync(SaleKinowePath + id, model);
+                odpowiedz.EnsureSuccessStatusCode();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
         }
 
         [HttpGet("Delete")]
-        public ActionResult Delete(int? id)
+        public async Task<ActionResult> Delete(int? id)
         {
             ZabronDostepu();
-            if (id is null)
-                return NotFound();
-            var sala = _context.SaleKinowe.FirstOrDefault(q => q.Id == id);
-            if (sala is null)
-                return NotFound();
-            return View(sala);
+            HttpResponseMessage odpowiedz = await client.GetAsync(SaleKinowePath + id);
+            if(odpowiedz.IsSuccessStatusCode)
+            {
+                SalaModel model = await odpowiedz.Content.ReadAsAsync<SalaModel>();
+                return View(model);
+            }
+            return NotFound();
         }
 
         [HttpPost("Delete/{id}")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
             ZabronDostepu();
-            var sala = _context.SaleKinowe.FirstOrDefault(q => q.Id == id);
-            _context.Remove(sala);
-            _context.SaveChanges();
+            HttpResponseMessage odpowiedz = await client.DeleteAsync(SaleKinowePath + id);
+            odpowiedz.EnsureSuccessStatusCode();
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet("Details/{id}")]
-        public ActionResult Details(int? id)
+        public async Task<ActionResult> Details(int? id)
         {
             ZabronDostepu();
-            if (id is null)
-                return NotFound();
-            var sala = _context.SaleKinowe.FirstOrDefault(q => q.Id == id);
-            if (sala is null)
-                return NotFound();
-            return View(sala);
+            HttpResponseMessage response = await client.GetAsync(SaleKinowePath + id);
+            if (response.IsSuccessStatusCode)
+            {
+                SalaModel model = await response.Content.ReadAsAsync<SalaModel>();
+                return View(model);
+            }
+            return NotFound();
         }
 
         public void ZabronDostepu()
