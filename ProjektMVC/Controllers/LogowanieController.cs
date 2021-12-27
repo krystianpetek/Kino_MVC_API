@@ -15,7 +15,6 @@ namespace ProjektMVC.Controllers
 {
     public class LogowanieController : Controller
     {
-
         private List<UzytkownikModel> _uzytkownicy = null;
         private readonly HttpClient client;
         private readonly string UzytkownikPath;
@@ -29,22 +28,11 @@ namespace ProjektMVC.Controllers
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
 
-        private async Task<ActionResult> Uzytkownicy()
-        {
-            HttpResponseMessage response = await client.GetAsync(UzytkownikPath);
-            if(response.IsSuccessStatusCode)
-            {
-                _uzytkownicy = await response.Content.ReadAsAsync<List<UzytkownikModel>>();
-            }
-            return View(_uzytkownicy);
-        }
-
         [Authorize]
         public IActionResult Informacje()
         {
             return View();
         }
-
         
         public IActionResult Login(string url = "/")
         {
@@ -62,6 +50,12 @@ namespace ProjektMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                HttpResponseMessage response = await client.GetAsync(UzytkownikPath);
+                if (response.IsSuccessStatusCode)
+                {
+                    _uzytkownicy = await response.Content.ReadAsAsync<List<UzytkownikModel>>();
+                }
+
                 var uzytkownik = _uzytkownicy.Where(x => x.Login == model.Login && x.Haslo == model.Haslo).FirstOrDefault();
                 if (uzytkownik == null)
                 {
