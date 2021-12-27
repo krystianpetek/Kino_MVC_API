@@ -63,57 +63,50 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Edit/{id}")]
-        public ActionResult Edit([FromRoute] int? id)
+        public async Task<ActionResult> Edit(int? id)
         {
             ZabronDostepu();
-            if (id is null)
-                return NotFound();
-            List<KlientModel> listaKlientow = _context.Klienci.Include(q => q.Uzytkownik).ToList();
-            var klient = listaKlientow.FirstOrDefault(q => q.Id == id);
-            if (klient is null)
-                return NotFound();
-            return View(klient);
+            HttpResponseMessage response = await client.GetAsync(KlienciPath + id);
+            if(response.IsSuccessStatusCode)
+            {
+                KlientModel model = await response.Content.ReadAsAsync<KlientModel>();
+                return View(model);
+            }
+            return NotFound();
         }
 
         [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([FromRoute] int id, [Bind("Id,Imie,Nazwisko,DataUrodzenia,NumerTelefonu,Email,Miasto,Ulica,KodPocztowy,Uzytkownik")] KlientModel model)
+        public async Task<ActionResult> Edit([FromRoute] int id, [Bind("Id,Imie,Nazwisko,DataUrodzenia,NumerTelefonu,Email,Miasto,Ulica,KodPocztowy,Uzytkownik")] KlientModel model)
         {
             ZabronDostepu();
-            if (!ModelState.IsValid)
-                return BadRequest();
-
-            var klientZBazy= _context.Klienci.Include(q => q.Uzytkownik).FirstOrDefault(q => q.Id == id);
-            var loginZBazy = _context.Login.FirstOrDefault(q => q.Id == klientZBazy.UzytkownikId);
-            if (klientZBazy is null)
-                return NotFound();
-
-            klientZBazy.Imie = model.Imie;
-            klientZBazy.Nazwisko = model.Nazwisko;
-            klientZBazy.DataUrodzenia = model.DataUrodzenia;
-            klientZBazy.NumerTelefonu = model.NumerTelefonu;
-            klientZBazy.Email = model.Email;
-            klientZBazy.Miasto = model.Miasto;
-            klientZBazy.Ulica = model.Ulica;
-            klientZBazy.KodPocztowy = model.KodPocztowy;
-            loginZBazy.Login = model.Uzytkownik.Login;
-            loginZBazy.Haslo = model.Uzytkownik.Haslo;
-            loginZBazy.RodzajUzytkownika = model.Uzytkownik.RodzajUzytkownika;
-            _context.SaveChanges();
-
-            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                HttpResponseMessage response = await client.PutAsJsonAsync(KlienciPath + id, model);
+                response.EnsureSuccessStatusCode();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
         }
 
         [HttpGet("Delete")]
-        public ActionResult Delete(int? id)
+        public async Task<ActionResult> Delete(int? id)
         {
             ZabronDostepu();
-            if (id is null)
-                return NotFound();
-            var klient = _context.Klienci.Include(q => q.Uzytkownik).FirstOrDefault(q => q.Id == id);
-            if (klient is null)
-                return NotFound();
-            return View(klient);
+            HttpResponseMessage response = await client.GetAsync(KlienciPath + id);
+            if (response.IsSuccessStatusCode)
+            {
+                KlientModel model = await response.Content.ReadAsAsync<KlientModel>();
+                return View(model);
+            }
+            return NotFound();
+
+            //if (id is null)
+            //    return NotFound();
+            //var klient = _context.Klienci.Include(q => q.Uzytkownik).FirstOrDefault(q => q.Id == id);
+            //if (klient is null)
+            //    return NotFound();
+            //return View(klient);
         }
 
         [HttpPost("Delete/{id}")]
@@ -139,27 +132,6 @@ namespace ProjektMVC.Controllers
             if (klient is null)
                 return NotFound();
             return View(klient);
-        }
-
-        private List<KlientModel> ListaKlientow()
-        {
-            List<UzytkownikModel> listaUzytkownikow = new List<UzytkownikModel>();
-            foreach (var item in _context.Login)
-                listaUzytkownikow.Add(item);
-            List<KlientModel> listaKlientow = new List<KlientModel>();
-            foreach (var item in _context.Klienci)
-                listaKlientow.Add(item);
-            foreach (var item in listaKlientow)
-            {
-                foreach (var item2 in listaUzytkownikow)
-                {
-                    if (item.UzytkownikId == item2.Id)
-                    {
-                        item.Uzytkownik = item2;
-                    }
-                }
-            }
-            return listaKlientow;
         }
 
         private void ZabronDostepu()

@@ -12,9 +12,6 @@ namespace ProjektAPI.Models
         public string Haslo { get; set; }
         [Required, Display(Name = "Autoryzacja")]
         public Rola RodzajUzytkownika { get; set; }
-        public virtual KlientModel Klient { get; set; }
-
-
     }
     public enum Rola
     {

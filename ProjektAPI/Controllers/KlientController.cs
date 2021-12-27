@@ -19,13 +19,14 @@ namespace ProjektAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<KlientModel>> Get()
         {
-            return _context.Klienci.ToList();
+            List<KlientModel> listaKlientow = ListaKlientow();
+            return Ok(listaKlientow);
         }
 
         [HttpGet("{id}")]
         public ActionResult<IEnumerable<KlientModel>> Get(int id)
         {
-            var zapytanie = _context.Klienci.FirstOrDefault(q => q.Id == id);
+            var zapytanie = _context.Klienci.Include(q=>q.Uzytkownik).FirstOrDefault(q => q.Id == id);
             if(zapytanie is null) return NotFound();
             return Ok(zapytanie);
         }
@@ -56,9 +57,10 @@ namespace ProjektAPI.Controllers
         [HttpPut("{id}")]
         public ActionResult EditAll(int id, [FromBody] KlientModel model)
         {
-            var zapytanie = _context.Klienci.FirstOrDefault(q => q.Id == id);
+            var klientZBazy = _context.Klienci.Include(q => q.Uzytkownik).FirstOrDefault(q => q.Id == id);
+            var loginZBazy = _context.Login.FirstOrDefault(q => q.Id == klientZBazy.UzytkownikId);
 
-            if (zapytanie is null)
+            if (klientZBazy is null)
                 return NotFound();
 
             if (id != model.Id)
@@ -66,16 +68,42 @@ namespace ProjektAPI.Controllers
 
             if (ModelState.IsValid)
             {
-                zapytanie.Imie = model.Imie;
-                zapytanie.Nazwisko = model.Nazwisko;
-                zapytanie.DataUrodzenia = model.DataUrodzenia;
-                zapytanie.NumerTelefonu = model.NumerTelefonu;
-                zapytanie.Miasto = model.Miasto;
-                zapytanie.Ulica = model.Ulica;
-                zapytanie.KodPocztowy = model.KodPocztowy;
+                klientZBazy.Imie = model.Imie;
+                klientZBazy.Nazwisko = model.Nazwisko;
+                klientZBazy.DataUrodzenia = model.DataUrodzenia;
+                klientZBazy.NumerTelefonu = model.NumerTelefonu;
+                klientZBazy.Email = model.Email;
+                klientZBazy.Miasto = model.Miasto;
+                klientZBazy.Ulica = model.Ulica;
+                klientZBazy.KodPocztowy = model.KodPocztowy;
+                loginZBazy.Login = model.Uzytkownik.Login;
+                loginZBazy.Haslo = model.Uzytkownik.Haslo;
+                loginZBazy.RodzajUzytkownika = model.Uzytkownik.RodzajUzytkownika;
             }
             _context.SaveChanges();
             return Ok();
         }
+        private List<KlientModel> ListaKlientow()
+        {
+            List<UzytkownikModel> listaUzytkownikow = new List<UzytkownikModel>();
+            foreach (var item in _context.Login)
+                listaUzytkownikow.Add(item);
+            List<KlientModel> listaKlientow = new List<KlientModel>();
+            foreach (var item in _context.Klienci)
+                listaKlientow.Add(item);
+            foreach (var item in listaKlientow)
+            {
+                foreach (var item2 in listaUzytkownikow)
+                {
+                    if (item.UzytkownikId == item2.Id)
+                    {
+                        item.Uzytkownik = item2;
+                    }
+                }
+            }
+            return listaKlientow;
+        }
+
     }
+
 }
