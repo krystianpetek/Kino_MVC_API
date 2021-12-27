@@ -126,7 +126,7 @@ namespace ProjektMVC.Controllers
 
         public void ZabronDostepu()
         {
-            if (!User.IsInRole("Admin")) HttpContext.Response.Redirect("/");
+            if (User.IsInRole("Klient")) HttpContext.Response.Redirect("/");
         }
     }
 }
