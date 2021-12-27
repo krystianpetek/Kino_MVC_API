@@ -14,19 +14,21 @@ namespace ProjektMVC.Controllers
     [Route("[controller]")]
     public class ListaSalKinowychController : Controller
     {
+        
         private readonly HttpClient client;
         private readonly string SaleKinowePath;
         private readonly IConfiguration _configuration;
 
         public ListaSalKinowychController(IConfiguration configuration)
         {
+
             _configuration = configuration;
             SaleKinowePath = _configuration["ProjektAPIConfig:Url3"];
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
 
-        [HttpGet("Index")]
+        [HttpGet("Index"), Authorize(Roles = "Admin,Pracownik")]
         public async Task<ActionResult> Index()
         {
             ZabronDostepu();
