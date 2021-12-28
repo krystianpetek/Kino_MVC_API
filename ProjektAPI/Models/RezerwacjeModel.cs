@@ -8,13 +8,7 @@ namespace ProjektAPI.Models
         public bool Zajete { get; set; }
         public int Rzad { get; set; }
         public int Miejsce { get; set; }
-        public int LiczbaPorzadkowa { get; set; } // rzad * miejsce
-        public DateTime GodzinaEmisji { get; set; }
-        public int IdSaleKinowe { get; set; }
-        public int IdFilm { get; set; }
-        public int IdKlient { get; set; }
-        public virtual SalaModel SaleKinowe { get; set; }
-        public virtual FilmModel Filmy { get; set; }
-        public virtual KlientModel Klienci{ get; set; }
+        public int IdEmisjiFilmu { get; set; }
+        public virtual EmisjaFilmuModel EmisjaFilmu { get; set;}
     }
 }
