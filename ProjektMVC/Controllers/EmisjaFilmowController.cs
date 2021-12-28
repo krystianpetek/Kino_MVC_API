@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace ProjektMVC.Controllers
 {
-    [Authorize]
     [Route("[controller]")]
     public class EmisjaFilmowController : Controller
     {
@@ -51,7 +50,7 @@ namespace ProjektMVC.Controllers
         
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("Id,FilmId,SalaId,Data,Film,Sala")] EmisjaModel model)
+        public async Task<ActionResult> Create([Bind("Data")] EmisjaModel model)
         {
             if(ModelState.IsValid)
             {
