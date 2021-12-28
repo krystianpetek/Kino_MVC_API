@@ -23,6 +23,7 @@ namespace ProjektAPI.Controllers
             _client = new HttpClient();
             _client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
+
         public IActionResult Index()
         {
             return View();
@@ -31,7 +32,7 @@ namespace ProjektAPI.Controllers
         {
             List<FilmModel> listaFilmow = null;
             HttpResponseMessage response = await _client.GetAsync(FilmyPath);
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 listaFilmow = await response.Content.ReadAsAsync<List<FilmModel>>();
 
@@ -51,13 +52,6 @@ namespace ProjektAPI.Controllers
             }
             return BadRequest();
 
-        }
-
-        [HttpGet]
-        public async Task<ActionResult> Rezerwacje()
-        {
-
-            return View();
         }
     }
 }

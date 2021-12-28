@@ -9,6 +9,6 @@ namespace ProjektAPI.Models
         public int Rzad { get; set; }
         public int Miejsce { get; set; }
         public int IdEmisjiFilmu { get; set; }
-        public virtual EmisjaFilmuModel EmisjaFilmu { get; set;}
+        public virtual EmisjaModel EmisjaFilmu { get; set;}
     }
 }

@@ -4,10 +4,11 @@ using System.Linq;
 using ProjektAPI.Models;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using ProjektAPI.Attributes;
 
 namespace ProjektAPI.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]"), ApiController, ApiKey]
     public class LoginController : Controller
     {
         private APIDatabaseContext _context;
