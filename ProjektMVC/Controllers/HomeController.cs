@@ -52,5 +52,12 @@ namespace ProjektAPI.Controllers
             return BadRequest();
 
         }
+
+        [HttpGet]
+        public async Task<ActionResult> Rezerwacje()
+        {
+
+            return View();
+        }
     }
 }
