@@ -12,9 +12,9 @@ namespace ProjektMVC.Controllers
 {
     [Authorize]
     [Route("[controller]")]
-    public class ListaSalKinowychController : Controller
+    public class ListaSalKinowychController : Controller, IZabronDostep
     {
-        
+
         private readonly HttpClient client;
         private readonly string SaleKinowePath;
         private readonly IConfiguration _configuration;
@@ -34,7 +34,7 @@ namespace ProjektMVC.Controllers
             ZabronDostepu();
             List<SalaModel> listaSal = null;
             HttpResponseMessage odpowiedz = await client.GetAsync(SaleKinowePath);
-            if(odpowiedz.IsSuccessStatusCode)
+            if (odpowiedz.IsSuccessStatusCode)
             {
                 listaSal = await odpowiedz.Content.ReadAsAsync<List<SalaModel>>();
             }
@@ -63,7 +63,7 @@ namespace ProjektMVC.Controllers
         {
             ZabronDostepu();
             HttpResponseMessage odpowiedz = await client.GetAsync(SaleKinowePath + id);
-            if(odpowiedz.IsSuccessStatusCode)
+            if (odpowiedz.IsSuccessStatusCode)
             {
                 SalaModel model = await odpowiedz.Content.ReadAsAsync<SalaModel>();
                 return View(model);
@@ -90,7 +90,7 @@ namespace ProjektMVC.Controllers
         {
             ZabronDostepu();
             HttpResponseMessage odpowiedz = await client.GetAsync(SaleKinowePath + id);
-            if(odpowiedz.IsSuccessStatusCode)
+            if (odpowiedz.IsSuccessStatusCode)
             {
                 SalaModel model = await odpowiedz.Content.ReadAsAsync<SalaModel>();
                 return View(model);

@@ -1,0 +1,51 @@
+﻿@model ProjektAPI.Models.EmisjaModel;
+
+@{
+    ViewData["Title"] = "Szczegóły o emisjach filmów";
+}
+
+<h1 style="font-weight:400" class="text-center">Szczegóły o emisji filmu</h1>
+<hr />
+<div class="row justify-content-center">
+    <br />
+    <div class="col">
+        <dl class="row">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => Model.Data)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Data)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Film)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Film.Id) | 
+                @Html.DisplayFor(model => model.Film.Nazwa) |
+                @Html.DisplayFor(model => model.Film.Opis) | 
+                @Html.DisplayFor(model => model.Film.Gatunek) | 
+                @Html.DisplayFor(model => model.Film.CzasTrwania) | 
+                @Html.DisplayFor(model => model.Film.OgraniczeniaWiek) |
+                @Html.DisplayFor(model => model.Film.Cena)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Sala)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Sala.Id) | 
+                @Html.DisplayFor(model => model.Sala.NazwaSali) |
+                @Html.DisplayFor(model => model.Sala.LiczbaMiejsc)
+            </dd>
+        </dl>
+    </div>
+</div>
+<br />
+<div>
+    <a class="btn btn-dark" asp-action="Edit" asp-route-id="@Model.Id">Edytuj emisję filmu</a>
+</div>

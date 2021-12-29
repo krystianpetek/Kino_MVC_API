@@ -12,7 +12,7 @@ namespace ProjektMVC.Controllers
 {
     [Authorize]
     [Route("[controller]")]
-    public class ListaKlientowController : Controller
+    public class ListaKlientowController : Controller, IZabronDostep
     {
         private readonly HttpClient client;
         private readonly string KlienciPath;
@@ -32,7 +32,7 @@ namespace ProjektMVC.Controllers
             ZabronDostepu();
             List<KlientModel> listaKlientow = null;
             HttpResponseMessage response = await client.GetAsync(KlienciPath);
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 listaKlientow = await response.Content.ReadAsAsync<List<KlientModel>>();
             }
@@ -51,7 +51,7 @@ namespace ProjektMVC.Controllers
         public async Task<ActionResult> Create([Bind("Id,Imie,Nazwisko,DataUrodzenia,NumerTelefonu,Email,Miasto,Ulica,KodPocztowy,Uzytkownik")] KlientModel model)
         {
             ZabronDostepu();
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 HttpResponseMessage response = await client.PostAsJsonAsync(KlienciPath, model);
                 response.EnsureSuccessStatusCode();
@@ -61,11 +61,11 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Edit/{id}")]
-        public async Task<ActionResult> Edit([FromRoute]int? id)
+        public async Task<ActionResult> Edit([FromRoute] int? id)
         {
             ZabronDostepu();
             HttpResponseMessage response = await client.GetAsync(KlienciPath + id);
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 KlientModel model = await response.Content.ReadAsAsync<KlientModel>();
                 return View(model);
@@ -111,7 +111,7 @@ namespace ProjektMVC.Controllers
         }
 
 
-    [HttpGet("Details/{id}")]
+        [HttpGet("Details/{id}")]
         public async Task<ActionResult> Details(int? id)
         {
             ZabronDostepu();
@@ -124,7 +124,7 @@ namespace ProjektMVC.Controllers
             return NotFound();
         }
 
-        private void ZabronDostepu()
+        public void ZabronDostepu()
         {
             if (User.IsInRole("Klient")) HttpContext.Response.Redirect("/");
         }

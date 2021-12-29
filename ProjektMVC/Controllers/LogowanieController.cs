@@ -33,7 +33,7 @@ namespace ProjektMVC.Controllers
         {
             return View();
         }
-        
+
         public IActionResult Login(string url = "/")
         {
             if (User.Identity.IsAuthenticated)

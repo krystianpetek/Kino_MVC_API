@@ -11,7 +11,7 @@ namespace ProjektMVC.Controllers
 {
     [Authorize]
     [Route("[controller]")]
-    public class ListaFilmowController : Controller
+    public class ListaFilmowController : Controller, IZabronDostep
     {
         private readonly HttpClient client;
         private readonly string FilmyPath;

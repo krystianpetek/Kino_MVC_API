@@ -25,14 +25,17 @@
             @Html.DisplayFor(model => model.Data)
         </dd>
         <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.Film)
+            @Html.DisplayNameFor(model => model.Film.Nazwa)
         </dt>
         <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.Sala)
+            @Html.DisplayFor(model => model.Film.Nazwa)
         </dd>
         <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.Sala)
-        </dt>
+            @Html.DisplayNameFor(model => model.Sala.NazwaSali)
+        </dt> 
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Sala.NazwaSali)
+        </dd>
     </dl>
     
     <form asp-action="DeleteConfirmed" asp-route-id="@Model.Id">
