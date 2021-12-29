@@ -32,7 +32,7 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" type="button" id="przykladowaListaPrimary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn @kolor() dropdown-toggle" type="button" id="przykladowaListaPrimary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 @User.Identity.Name
                             </button>
 
@@ -58,7 +58,7 @@
                     {
                         <div class="dropdown">
 
-                            <a class="text-light" asp-controller="Logowanie" asp-action="Login">Logowanie</a>
+                            <a class="btn btn-secondary" asp-controller="Logowanie" asp-action="Login">Logowanie</a>
                         </div>
                     }
                 </div>
@@ -80,5 +80,16 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    @{
+        string kolor()
+        {
+            if (User.IsInRole("Admin"))
+                return "btn-danger";
+            else if (User.IsInRole("Pracownik"))
+                return "btn-success";
+            else
+                return "btn-primary";
+        }
+    }
 </body>
 </html>

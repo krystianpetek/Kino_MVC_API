@@ -12,11 +12,13 @@ namespace ProjektMVC.Controllers
     [Route("[controller]")]
     public class EmisjaFilmowController : Controller
     {
-        private HttpClient _client;
+        private HttpClient client;
         private readonly string FilmyPath;
         private readonly string SalaPath;
         private readonly string EmisjaPath;
         private IConfiguration _configuration;
+        private List<FilmModel> _filmModels;
+        private List<SalaModel> _salaModels;
 
         public EmisjaFilmowController(IConfiguration configuration)
         {
@@ -24,15 +26,19 @@ namespace ProjektMVC.Controllers
             FilmyPath = _configuration["ProjektAPIConfig:Url"];
             SalaPath = _configuration["ProjektAPIConfig:Url3"];
             EmisjaPath = _configuration["ProjektAPIConfig:Url5"];
-            _client = new HttpClient();
-            _client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
+            client = new HttpClient();
+            client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
+
+
         }
 
         [HttpGet("Index")]
         public async Task<ActionResult> Index()
         {
+            ZabronDostepu();
+
             List<EmisjaModel> listaKlientow = null;
-            HttpResponseMessage response = await _client.GetAsync(EmisjaPath);
+            HttpResponseMessage response = await client.GetAsync(EmisjaPath);
             if (response.IsSuccessStatusCode)
             {
                 listaKlientow = await response.Content.ReadAsAsync<List<EmisjaModel>>();
@@ -43,35 +49,85 @@ namespace ProjektMVC.Controllers
         [HttpGet("Create")]
         public async Task<ActionResult> Create()
         {
-            List<FilmModel> listaFilmow = null;
-            List<SalaModel> listaSal = null;
-
-            HttpResponseMessage response = await _client.GetAsync(SalaPath);
-            if (response.IsSuccessStatusCode)
-            {
-                listaSal = await response.Content.ReadAsAsync<List<SalaModel>>();
-            }
-            response = await _client.GetAsync(FilmyPath);
-            if (response.IsSuccessStatusCode)
-            {
-                listaFilmow = await response.Content.ReadAsAsync<List<FilmModel>>();
-            }
-            var emisja = new EmisjaModel();
-            var krotka = new Tuple<List<FilmModel>, List<SalaModel>,EmisjaModel>(listaFilmow, listaSal,emisja);
+            ZabronDostepu();
+            await WykonajPrzypisanie();
+            var krotka = new Tuple<List<FilmModel>, List<SalaModel>, EmisjaModel>(_filmModels, _salaModels, null);
             return View(krotka);
         }
-        
+
+        private async Task WykonajPrzypisanie()
+        {
+            HttpResponseMessage response = await client.GetAsync(SalaPath);
+            if (response.IsSuccessStatusCode)
+            {
+                _salaModels = await response.Content.ReadAsAsync<List<SalaModel>>();
+            }
+            response = await client.GetAsync(FilmyPath);
+            if (response.IsSuccessStatusCode)
+            {
+                _filmModels = await response.Content.ReadAsAsync<List<FilmModel>>();
+            }
+        }
+
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Prefix ="Item3")]EmisjaModel model)
         {
+            ZabronDostepu();
             if (ModelState.IsValid)
             {
-                HttpResponseMessage response = await _client.PostAsJsonAsync(EmisjaPath, model);
+                HttpResponseMessage response = await client.PostAsJsonAsync(EmisjaPath, model);
                 response.EnsureSuccessStatusCode();
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
+        }
+
+        [HttpGet("Edit/{id}")]
+        public async Task<ActionResult> Edit(int? id)
+        {
+            ZabronDostepu();
+            await WykonajPrzypisanie();
+            HttpResponseMessage response = await client.GetAsync(EmisjaPath + id);
+            if (response.IsSuccessStatusCode)
+            {
+                EmisjaModel model = await response.Content.ReadAsAsync<EmisjaModel>();
+                var krotka = new Tuple<List<FilmModel>, List<SalaModel>, EmisjaModel>(_filmModels, _salaModels, model);
+                return View(krotka);
+            }
+            return NotFound();
+        }
+
+        [HttpPost("Edit/{id}")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(int id, [Bind(Prefix = "Item3")] EmisjaModel model)
+        {
+            ZabronDostepu();
+            if (ModelState.IsValid)
+            {
+                HttpResponseMessage response = await client.PutAsJsonAsync(EmisjaPath + id, model);
+                response.EnsureSuccessStatusCode();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+
+        [HttpGet("Delete")]
+        public async Task<ActionResult> Delete(int? id)
+        {
+            ZabronDostepu();
+            HttpResponseMessage response = await client.GetAsync(EmisjaPath + id);
+            if (response.IsSuccessStatusCode)
+            {
+                EmisjaModel model = await response.Content.ReadAsAsync<EmisjaModel>();
+                return View(model);
+            }
+            return NotFound();
+        }
+
+        public void ZabronDostepu()
+        {
+            if (User.IsInRole("Klient")) HttpContext.Response.Redirect("/");
         }
     }
 }

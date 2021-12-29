@@ -1,19 +1,34 @@
 ﻿@using ProjektAPI.Models;
-@model Tuple<List<FilmModel>,List<SalaModel>,EmisjaModel>;
+@model Tuple<List<FilmModel>,List<SalaModel>, EmisjaModel>;
 
 @{
-    ViewData["Title"] = "Edycja filmu";
+    ViewData["Title"] = "Edycja emisji filmów";
 }
 
-<h1 style="font-weight:400" class="text-center">Dodawanie emisji filmu</h1>
+<h1 style="font-weight:400" class="text-center">Edycja emisji filmów</h1>
 <hr />
 <div class="row justify-content-center">
     <div class="col-md-5">
 <br />
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Item3.Id" />
+
+            <div class="form-group row">
+                <label asp-for="Item3.Id" class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="Item3.Id" disabled class="form-control" />
+                    <span asp-validation-for="Item3.Id" class="text-danger"></span>
+                </div>
+                </div>
             
+            <div class="form-group row">
+                <label asp-for="Item3.Data" class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="Item3.Data" class="form-control" />
+                    <span asp-validation-for="Item3.Data" class="text-danger"></span>
+                </div>
+            </div>
             <div class="form-group row">
                 <label asp-for="Item3.Film.Nazwa" class="col-sm-4 col-form-label"></label>
                 <div class="col-sm-8">
@@ -28,8 +43,7 @@
                     <span asp-validation-for="Item3.Film.Nazwa" class="text-danger"></span>
                 </div>
             </div>
-
-            <div class="form-group row">
+             <div class="form-group row">
                 <label asp-for="Item3.Sala.NazwaSali" class="col-sm-4 col-form-label"></label>
                 <div class="col-sm-8">
 
@@ -43,18 +57,9 @@
                     <span asp-validation-for="Item3.Sala.NazwaSali" class="text-danger"></span>
                 </div>
             </div>
-            
-
-            <div class="form-group row">
-                <label asp-for="Item3.Data" class="col-sm-4 col-form-label"></label>
-                <div class="col-sm-8">
-                    <input asp-for="Item3.Data" class="form-control" />
-                    <span asp-validation-for="Item3.Data" class="text-danger"></span>
-                </div>
-            </div>
             <br />
             <div class="form-group row">
-                <input type="submit" value="Dodaj nową emisje" class="text-light btn btn-dark" />
+                <input type="submit" value="Zapisz zmiany" class="text-light btn btn-dark" />
             </div>
         </form>
     </div>
