@@ -130,7 +130,7 @@ namespace ProjektAPI.Migrations
                     b.ToTable("Klienci");
                 });
 
-            modelBuilder.Entity("ProjektAPI.Models.RezerwacjeModel", b =>
+            modelBuilder.Entity("ProjektAPI.Models.RezerwacjaModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -244,7 +244,7 @@ namespace ProjektAPI.Migrations
                     b.Navigation("Uzytkownik");
                 });
 
-            modelBuilder.Entity("ProjektAPI.Models.RezerwacjeModel", b =>
+            modelBuilder.Entity("ProjektAPI.Models.RezerwacjaModel", b =>
                 {
                     b.HasOne("ProjektAPI.Models.EmisjaModel", "Emisja")
                         .WithMany()

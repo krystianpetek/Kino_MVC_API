@@ -2,7 +2,7 @@
 
 namespace ProjektAPI.Models
 {
-    public class RezerwacjeModel
+    public class RezerwacjaModel
     {
         public int Id { get; set; }
         public bool Zajete { get; set; }

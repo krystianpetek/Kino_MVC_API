@@ -10,7 +10,7 @@ using ProjektAPI.Models;
 namespace ProjektAPI.Migrations
 {
     [DbContext(typeof(APIDatabaseContext))]
-    [Migration("20211229220038_x")]
+    [Migration("20211229230938_x")]
     partial class x
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -132,7 +132,7 @@ namespace ProjektAPI.Migrations
                     b.ToTable("Klienci");
                 });
 
-            modelBuilder.Entity("ProjektAPI.Models.RezerwacjeModel", b =>
+            modelBuilder.Entity("ProjektAPI.Models.RezerwacjaModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -246,7 +246,7 @@ namespace ProjektAPI.Migrations
                     b.Navigation("Uzytkownik");
                 });
 
-            modelBuilder.Entity("ProjektAPI.Models.RezerwacjeModel", b =>
+            modelBuilder.Entity("ProjektAPI.Models.RezerwacjaModel", b =>
                 {
                     b.HasOne("ProjektAPI.Models.EmisjaModel", "Emisja")
                         .WithMany()

@@ -16,7 +16,7 @@ namespace ProjektAPI.Models
         public DbSet<SalaModel> SaleKinowe { get; set; }
         public DbSet<UzytkownikModel> Login{ get; set; }
         public DbSet<EmisjaModel> Emisja { get; set; }
-        public DbSet<RezerwacjeModel> Rezerwacja { get; set; }
+        public DbSet<RezerwacjaModel> Rezerwacja { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -50,7 +50,8 @@ namespace ProjektMVC.Controllers
         {
             ZabronDostepu();
             await WykonajPrzypisanie();
-            var krotka = new Tuple<List<FilmModel>, List<SalaModel>, EmisjaModel>(_filmModels, _salaModels, null);
+            var emisja = new EmisjaModel();
+            var krotka = new Tuple<List<FilmModel>, List<SalaModel>, EmisjaModel>(_filmModels, _salaModels, emisja);
             return View(krotka);
         }
 
@@ -72,9 +73,8 @@ namespace ProjektMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Prefix = "Item3")] EmisjaModel model)
         {
-            ZabronDostepu();
             if (ModelState.IsValid)
-            {
+                {
                 HttpResponseMessage response = await client.PostAsJsonAsync(EmisjaPath, model);
                 response.EnsureSuccessStatusCode();
                 return RedirectToAction(nameof(Index));
