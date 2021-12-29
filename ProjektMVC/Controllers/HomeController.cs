@@ -14,12 +14,14 @@ namespace ProjektAPI.Controllers
     {
         private HttpClient _client;
         private readonly string FilmyPath;
+        private readonly string EmisjaPath;
         private IConfiguration _configuration;
 
         public HomeController(IConfiguration configuration)
         {
             _configuration = configuration;
             FilmyPath = _configuration["ProjektAPIConfig:Url"];
+            EmisjaPath = _configuration["ProjektAPIConfig:Url5"];
             _client = new HttpClient();
             _client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
@@ -46,6 +48,30 @@ namespace ProjektAPI.Controllers
                         Gatunek = item.Gatunek,
                         Wiek = item.OgraniczeniaWiek.ToString(),
                         Cena = item.Cena
+                    });
+                }
+                return View(aktualnaListaFilmow);
+            }
+            return BadRequest();
+
+        }
+        
+        public async Task<ActionResult> AktualnieEmitowaneFilmy()
+        {
+            List<EmisjaModel> listaFilmow = null;
+            HttpResponseMessage response = await _client.GetAsync(EmisjaPath);
+            if (response.IsSuccessStatusCode)
+            {
+                listaFilmow = await response.Content.ReadAsAsync<List<EmisjaModel>>();
+
+                var aktualnaListaFilmow = new List<AktualnieEmitowaneFilmy>();
+                foreach (var item in listaFilmow)
+                {
+                    aktualnaListaFilmow.Add(new AktualnieEmitowaneFilmy()
+                    {
+                        Id = item.Id,
+                        Data = item.Data,
+                        NazwaFilmu = item.Film.Nazwa
                     });
                 }
                 return View(aktualnaListaFilmow);

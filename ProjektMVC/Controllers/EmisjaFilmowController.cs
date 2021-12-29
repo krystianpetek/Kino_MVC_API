@@ -28,6 +28,18 @@ namespace ProjektMVC.Controllers
             _client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
 
+        [HttpGet("Index")]
+        public async Task<ActionResult> Index()
+        {
+            List<EmisjaModel> listaKlientow = null;
+            HttpResponseMessage response = await _client.GetAsync(EmisjaPath);
+            if (response.IsSuccessStatusCode)
+            {
+                listaKlientow = await response.Content.ReadAsAsync<List<EmisjaModel>>();
+            }
+            return View(listaKlientow);
+        }
+
         [HttpGet("Create")]
         public async Task<ActionResult> Create()
         {
@@ -44,26 +56,22 @@ namespace ProjektMVC.Controllers
             {
                 listaFilmow = await response.Content.ReadAsAsync<List<FilmModel>>();
             }
-            var krotka = new Tuple<List<FilmModel>, List<SalaModel>,EmisjaModel>(listaFilmow, listaSal,null);
+            var emisja = new EmisjaModel();
+            var krotka = new Tuple<List<FilmModel>, List<SalaModel>,EmisjaModel>(listaFilmow, listaSal,emisja);
             return View(krotka);
         }
         
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Prefix = "Item3")] EmisjaModel model)
+        public async Task<ActionResult> Create([Bind(Prefix ="Item3")]EmisjaModel model)
         {
-            var zapytanieFilm = await _client.GetAsync(FilmyPath+model.FilmId);
-            var film = await zapytanieFilm.Content.ReadAsAsync<FilmModel>();
-            model.Film = film;
-            
-            var zapytanieSala = await _client.GetAsync(SalaPath+model.SalaId);
-            var sala = await zapytanieSala.Content.ReadAsAsync<SalaModel>();
-            model.Sala = sala;
-
+            if (ModelState.IsValid)
+            {
                 HttpResponseMessage response = await _client.PostAsJsonAsync(EmisjaPath, model);
                 response.EnsureSuccessStatusCode();
-                return RedirectToAction("/");//nameof(Index));
-
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
         }
     }
 }

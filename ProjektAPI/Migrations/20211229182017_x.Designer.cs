@@ -10,8 +10,8 @@ using ProjektAPI.Models;
 namespace ProjektAPI.Migrations
 {
     [DbContext(typeof(APIDatabaseContext))]
-    [Migration("20211229091925_z")]
-    partial class z
+    [Migration("20211229182017_x")]
+    partial class x
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

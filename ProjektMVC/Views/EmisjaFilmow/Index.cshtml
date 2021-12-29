@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ProjektAPI.Models.EmisjaModel>
+
+@{
+    ViewData["Title"] = "Emisja filmów";
+}
+
+<h1 style="font-weight:400" class="text-center">Emisja filmów</h1>
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Film.Nazwa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sala.NazwaSali)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Data)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Film.Nazwa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sala.NazwaSali)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> 
+              <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a> 
+              <a asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<br />
+<div>
+<a class="text-light btn btn-dark" asp-action="Create">Dodaj nowego klienta</a>
+</div>

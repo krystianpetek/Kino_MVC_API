@@ -48,7 +48,7 @@ namespace ProjektMVC.Controllers
 
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("Nazwa, Opis, Gatunek, OgraniczeniaWiek, CzasTrwania, Cena")] FilmModel model)
+        public async Task<ActionResult> Create(FilmModel model)
         {
             ZabronDostepu();
             if(ModelState.IsValid)

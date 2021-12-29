@@ -2,9 +2,6 @@
 @model Tuple<List<FilmModel>,List<SalaModel>,EmisjaModel>;
 
 @{
-    List<FilmModel> film = Model.Item1;
-    List<SalaModel> sala = Model.Item2;
-    EmisjaModel emisja = Model.Item3;
     ViewData["Title"] = "Edycja filmu";
 }
 
@@ -23,7 +20,7 @@
 
                     <select asp-for="Item3.FilmId" class="form-control">
                         <option value="">Wybierz film!</option>
-                        @foreach(var item in film)
+                        @foreach(var item in Model.Item1)
                         {
                         <option value="@item.Id">@item.Nazwa</option>
                         }

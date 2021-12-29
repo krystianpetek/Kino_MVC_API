@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace ProjektAPI.Controllers
 {
-    [Route("api/[controller]"), ApiController, ApiKey]
+    [Route("[controller]"), ApiController, ApiKey]
     public class EmisjaController : ControllerBase
     {
         private readonly APIDatabaseContext _context;
@@ -41,13 +41,31 @@ namespace ProjektAPI.Controllers
 
             _context.Emisja.Add(model);
             _context.SaveChanges();
-            return Created($"api/emisja/{model.Id}", null);
+            return Created($"emisja/{model.Id}", null);
         }
 
         // PUT api/<EmisjaFilmuController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult EditAll(int id, [FromBody] EmisjaModel model)
         {
+            var zapytanie = _context.Emisja.FirstOrDefault(q => q.Id == id);
+
+            if (zapytanie is null)
+                return NotFound();
+
+            if (id != model.Id)
+                return BadRequest();
+
+            if (ModelState.IsValid)
+            {
+                zapytanie.Data = model.Data;
+                zapytanie.Sala = model.Sala;
+                zapytanie.SalaId = model.SalaId;
+                zapytanie.Film = model.Film;
+                zapytanie.FilmId = model.FilmId;
+            }
+            _context.SaveChanges();
+            return Ok();
         }
 
         // DELETE api/<EmisjaFilmuController>/5
