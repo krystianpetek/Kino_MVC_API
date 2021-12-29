@@ -118,18 +118,24 @@ namespace ProjektAPI.Migrations
                     Zajete = table.Column<bool>(type: "bit", nullable: false),
                     Rzad = table.Column<int>(type: "int", nullable: false),
                     Miejsce = table.Column<int>(type: "int", nullable: false),
-                    IdEmisjiFilmu = table.Column<int>(type: "int", nullable: false),
-                    EmisjaFilmuId = table.Column<int>(type: "int", nullable: true)
+                    EmisjaId = table.Column<int>(type: "int", nullable: false),
+                    KlientId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Rezerwacja", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Rezerwacja_Emisja_EmisjaFilmuId",
-                        column: x => x.EmisjaFilmuId,
+                        name: "FK_Rezerwacja_Emisja_EmisjaId",
+                        column: x => x.EmisjaId,
                         principalTable: "Emisja",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Rezerwacja_Klienci_KlientId",
+                        column: x => x.KlientId,
+                        principalTable: "Klienci",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -160,9 +166,14 @@ namespace ProjektAPI.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rezerwacja_EmisjaFilmuId",
+                name: "IX_Rezerwacja_EmisjaId",
                 table: "Rezerwacja",
-                column: "EmisjaFilmuId");
+                column: "EmisjaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rezerwacja_KlientId",
+                table: "Rezerwacja",
+                column: "KlientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SaleKinowe_NazwaSali",
@@ -174,22 +185,22 @@ namespace ProjektAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Klienci");
-
-            migrationBuilder.DropTable(
                 name: "Rezerwacja");
 
             migrationBuilder.DropTable(
-                name: "Login");
+                name: "Emisja");
 
             migrationBuilder.DropTable(
-                name: "Emisja");
+                name: "Klienci");
 
             migrationBuilder.DropTable(
                 name: "Filmy");
 
             migrationBuilder.DropTable(
                 name: "SaleKinowe");
+
+            migrationBuilder.DropTable(
+                name: "Login");
         }
     }
 }

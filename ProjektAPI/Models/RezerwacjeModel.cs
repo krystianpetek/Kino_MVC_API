@@ -8,7 +8,9 @@ namespace ProjektAPI.Models
         public bool Zajete { get; set; }
         public int Rzad { get; set; }
         public int Miejsce { get; set; }
-        public int IdEmisjiFilmu { get; set; }
-        public virtual EmisjaModel EmisjaFilmu { get; set;}
+        public int EmisjaId { get; set; }
+        public virtual EmisjaModel Emisja { get; set;}
+        public int KlientId { get; set; }
+        public virtual KlientModel Klient { get; set; }
     }
 }

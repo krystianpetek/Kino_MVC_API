@@ -10,7 +10,7 @@ using ProjektAPI.Models;
 namespace ProjektAPI.Migrations
 {
     [DbContext(typeof(APIDatabaseContext))]
-    [Migration("20211229182017_x")]
+    [Migration("20211229220038_x")]
     partial class x
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -139,10 +139,10 @@ namespace ProjektAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("EmisjaFilmuId")
+                    b.Property<int>("EmisjaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdEmisjiFilmu")
+                    b.Property<int>("KlientId")
                         .HasColumnType("int");
 
                     b.Property<int>("Miejsce")
@@ -156,7 +156,9 @@ namespace ProjektAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmisjaFilmuId");
+                    b.HasIndex("EmisjaId");
+
+                    b.HasIndex("KlientId");
 
                     b.ToTable("Rezerwacja");
                 });
@@ -246,11 +248,21 @@ namespace ProjektAPI.Migrations
 
             modelBuilder.Entity("ProjektAPI.Models.RezerwacjeModel", b =>
                 {
-                    b.HasOne("ProjektAPI.Models.EmisjaModel", "EmisjaFilmu")
+                    b.HasOne("ProjektAPI.Models.EmisjaModel", "Emisja")
                         .WithMany()
-                        .HasForeignKey("EmisjaFilmuId");
+                        .HasForeignKey("EmisjaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("EmisjaFilmu");
+                    b.HasOne("ProjektAPI.Models.KlientModel", "Klient")
+                        .WithMany()
+                        .HasForeignKey("KlientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Emisja");
+
+                    b.Navigation("Klient");
                 });
 #pragma warning restore 612, 618
         }
