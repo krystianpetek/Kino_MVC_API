@@ -2,6 +2,9 @@
 @model Tuple<List<FilmModel>,List<SalaModel>,EmisjaModel>;
 
 @{
+    List<FilmModel> film = Model.Item1;
+    List<SalaModel> sala = Model.Item2;
+    EmisjaModel emisja = Model.Item3;
     ViewData["Title"] = "Edycja filmu";
 }
 
@@ -11,18 +14,18 @@
     <div class="col-md-5">
 <br />
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="text-danger"></div>
             <input type="hidden" asp-for="Item3.Id" />
             
             <div class="form-group row">
                 <label asp-for="Item3.Film.Nazwa" class="col-sm-4 col-form-label"></label>
                 <div class="col-sm-8">
 
-                    <select asp-for="Item3.Film.Nazwa" class="form-control">
+                    <select asp-for="Item3.FilmId" class="form-control">
                         <option value="">Wybierz film!</option>
-                        @foreach(var item in Model.Item1)
+                        @foreach(var item in film)
                         {
-                        <option value="@item">@item.Nazwa</option>
+                        <option value="@item.Id">@item.Nazwa</option>
                         }
                     </select>
                     <span asp-validation-for="Item3.Film.Nazwa" class="text-danger"></span>
@@ -33,11 +36,11 @@
                 <label asp-for="Item3.Sala.NazwaSali" class="col-sm-4 col-form-label"></label>
                 <div class="col-sm-8">
 
-                    <select asp-for="Item3.Sala.NazwaSali" class="form-control">
+                    <select asp-for="Item3.SalaId" class="form-control">
                         <option value="">Wybierz Sale!</option>
                         @foreach(var item in Model.Item2)
                         {
-                        <option value="@item">@item.NazwaSali</option>
+                        <option value="@item.Id">@item.NazwaSali</option>
                         }
                     </select>
                     <span asp-validation-for="Item3.Sala.NazwaSali" class="text-danger"></span>
@@ -52,7 +55,6 @@
                     <span asp-validation-for="Item3.Data" class="text-danger"></span>
                 </div>
             </div>
-            
             <br />
             <div class="form-group row">
                 <input type="submit" value="Dodaj nową emisje" class="text-light btn btn-dark" />

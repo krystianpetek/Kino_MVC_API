@@ -9,7 +9,7 @@ namespace ProjektAPI.Models
         public int SalaId { get; set; }
         // jesli dataemisji juz mineła to bład
         public DateTime Data { get; set; }
-        public virtual FilmModel Film { get; set; }
-        public virtual SalaModel Sala { get; set; }
+        public virtual FilmModel? Film { get; set; }
+        public virtual SalaModel? Sala { get; set; }
     }
 }

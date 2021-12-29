@@ -41,7 +41,7 @@ namespace ProjektAPI.Migrations
 
                     b.HasIndex("SalaId");
 
-                    b.ToTable("EmisjaFilmu");
+                    b.ToTable("Emisja");
                 });
 
             modelBuilder.Entity("ProjektAPI.Models.FilmModel", b =>

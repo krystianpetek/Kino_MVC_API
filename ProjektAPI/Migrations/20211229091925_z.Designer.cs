@@ -10,8 +10,8 @@ using ProjektAPI.Models;
 namespace ProjektAPI.Migrations
 {
     [DbContext(typeof(APIDatabaseContext))]
-    [Migration("20211228231816_init")]
-    partial class init
+    [Migration("20211229091925_z")]
+    partial class z
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,7 +43,7 @@ namespace ProjektAPI.Migrations
 
                     b.HasIndex("SalaId");
 
-                    b.ToTable("EmisjaFilmu");
+                    b.ToTable("Emisja");
                 });
 
             modelBuilder.Entity("ProjektAPI.Models.FilmModel", b =>

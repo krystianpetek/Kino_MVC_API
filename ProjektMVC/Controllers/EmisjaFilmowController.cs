@@ -31,8 +31,8 @@ namespace ProjektMVC.Controllers
         [HttpGet("Create")]
         public async Task<ActionResult> Create()
         {
-            List<FilmModel> listaFilmow = default;
-            List<SalaModel> listaSal = default;
+            List<FilmModel> listaFilmow = null;
+            List<SalaModel> listaSal = null;
 
             HttpResponseMessage response = await _client.GetAsync(SalaPath);
             if (response.IsSuccessStatusCode)
@@ -50,15 +50,20 @@ namespace ProjektMVC.Controllers
         
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("Data")] EmisjaModel model)
+        public async Task<ActionResult> Create([Bind(Prefix = "Item3")] EmisjaModel model)
         {
-            if(ModelState.IsValid)
-            {
+            var zapytanieFilm = await _client.GetAsync(FilmyPath+model.FilmId);
+            var film = await zapytanieFilm.Content.ReadAsAsync<FilmModel>();
+            model.Film = film;
+            
+            var zapytanieSala = await _client.GetAsync(SalaPath+model.SalaId);
+            var sala = await zapytanieSala.Content.ReadAsAsync<SalaModel>();
+            model.Sala = sala;
+
                 HttpResponseMessage response = await _client.PostAsJsonAsync(EmisjaPath, model);
                 response.EnsureSuccessStatusCode();
                 return RedirectToAction("/");//nameof(Index));
-            }
-            return View(model);
+
         }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjektAPI.Migrations
 {
-    public partial class init : Migration
+    public partial class z : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -83,7 +83,7 @@ namespace ProjektAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmisjaFilmu",
+                name: "Emisja",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -94,15 +94,15 @@ namespace ProjektAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmisjaFilmu", x => x.Id);
+                    table.PrimaryKey("PK_Emisja", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EmisjaFilmu_Filmy_FilmId",
+                        name: "FK_Emisja_Filmy_FilmId",
                         column: x => x.FilmId,
                         principalTable: "Filmy",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmisjaFilmu_SaleKinowe_SalaId",
+                        name: "FK_Emisja_SaleKinowe_SalaId",
                         column: x => x.SalaId,
                         principalTable: "SaleKinowe",
                         principalColumn: "Id",
@@ -125,21 +125,21 @@ namespace ProjektAPI.Migrations
                 {
                     table.PrimaryKey("PK_Rezerwacja", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Rezerwacja_EmisjaFilmu_EmisjaFilmuId",
+                        name: "FK_Rezerwacja_Emisja_EmisjaFilmuId",
                         column: x => x.EmisjaFilmuId,
-                        principalTable: "EmisjaFilmu",
+                        principalTable: "Emisja",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmisjaFilmu_FilmId",
-                table: "EmisjaFilmu",
+                name: "IX_Emisja_FilmId",
+                table: "Emisja",
                 column: "FilmId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmisjaFilmu_SalaId",
-                table: "EmisjaFilmu",
+                name: "IX_Emisja_SalaId",
+                table: "Emisja",
                 column: "SalaId");
 
             migrationBuilder.CreateIndex(
@@ -183,7 +183,7 @@ namespace ProjektAPI.Migrations
                 name: "Login");
 
             migrationBuilder.DropTable(
-                name: "EmisjaFilmu");
+                name: "Emisja");
 
             migrationBuilder.DropTable(
                 name: "Filmy");

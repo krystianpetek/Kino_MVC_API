@@ -21,13 +21,13 @@ namespace ProjektAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<EmisjaModel>> Get()
         {
-            return _context.EmisjaFilmu.Include(q=>q.Sala).Include(q=>q.Film).ToList();
+            return _context.Emisja.Include(q=>q.Sala).Include(q=>q.Film).ToList();
         }
 
         [HttpGet("{id}")]
         public ActionResult<IEnumerable<EmisjaModel>> Get(int id)
         {
-            var zapytanie = _context.EmisjaFilmu.FirstOrDefault(q => q.Id == id);
+            var zapytanie = _context.Emisja.FirstOrDefault(q => q.Id == id);
             if (zapytanie is null) return NotFound();
             return Ok(zapytanie);
         }
@@ -39,7 +39,7 @@ namespace ProjektAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            _context.EmisjaFilmu.Add(model);
+            _context.Emisja.Add(model);
             _context.SaveChanges();
             return Created($"api/emisja/{model.Id}", null);
         }
@@ -54,11 +54,11 @@ namespace ProjektAPI.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            var zapytanie = _context.EmisjaFilmu.FirstOrDefault(q => q.Id == id);
+            var zapytanie = _context.Emisja.FirstOrDefault(q => q.Id == id);
             if (zapytanie is null)
                 return NotFound();
 
-            _context.EmisjaFilmu.Remove(zapytanie);
+            _context.Emisja.Remove(zapytanie);
             _context.SaveChanges();
             return NoContent();
         }
