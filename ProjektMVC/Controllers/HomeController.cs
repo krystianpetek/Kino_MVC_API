@@ -63,7 +63,7 @@ namespace ProjektAPI.Controllers
             if (response.IsSuccessStatusCode)
             {
                 listaFilmow = await response.Content.ReadAsAsync<List<EmisjaModel>>();
-
+                List<AktualnieEmitowaneFilmy> posortowanaLista = default; 
                 var aktualnaListaFilmow = new List<AktualnieEmitowaneFilmy>();
                 foreach (var item in listaFilmow)
                 {
@@ -73,8 +73,9 @@ namespace ProjektAPI.Controllers
                         Data = item.Data,
                         NazwaFilmu = item.Film.Nazwa
                     });
+                    posortowanaLista = aktualnaListaFilmow.OrderBy(x => x.Data).ToList();
                 }
-                return View(aktualnaListaFilmow);
+                return View(posortowanaLista);
             }
             return BadRequest();
 
