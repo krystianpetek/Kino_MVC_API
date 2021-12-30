@@ -5,13 +5,13 @@ namespace ProjektAPI.Models
 {
     public class KlientModel
     {
-        [Display(Name = "ID")]
+        [Required, Display(Name = "ID")]
         public int Id { get; set; }
         [Required, Display(Name = "Imię"), StringLength(30)]
         public string Imie { get; set; }
         [Required, Display(Name = "Nazwisko"), StringLength(50)]
         public string Nazwisko { get;set; }
-        [Required, Display(Name = "Data urodzenia"), DataType(DataType.Date)]
+        [Required, DataType(DataType.Date), Display(Name = "Data urodzenia")]
         public DateTime DataUrodzenia { get; set; } 
         [Phone, Display(Name = "Numer telefonu")]
         public string NumerTelefonu { get; set; }

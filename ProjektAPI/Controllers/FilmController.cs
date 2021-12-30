@@ -22,26 +22,53 @@ namespace ProjektAPI.Controllers
             if (!_context.Filmy.Any())
             {
                 _context.Filmy.AddRange(
-                    new FilmModel()
-                    {
-                        Nazwa = "Skazani na Shawshank",
-                        Opis = "Adaptacja opowiadania Stephena Kinga. Niesłusznie skazany na dożywocie bankier, stara się przetrwać w brutalnym, więziennym świecie.",
-                        Gatunek = "Dramat",
-                        CzasTrwania = "2 godz. 22 min.",
-                        OgraniczeniaWiek = Wiek.Od16lat,
-                        Cena = 35
-                    },
-                    new FilmModel()
-                    {
-                        Nazwa = "Nietykalni",
-                        Opis = "Sparaliżowany milioner zatrudnia do opieki młodego chłopaka z przedmieścia, który właśnie wyszedł z więzienia.",
-                        Gatunek = "Biograficzny, Dramat, Komedia",
-                        CzasTrwania = "1 godz. 52 min.",
-                        OgraniczeniaWiek = Wiek.Od12lat,
-                        Cena = 40
-                    });
+                new FilmModel()
+                {
+                    Nazwa = "Niewidzialny Człowiek",
+                    Opis = "Po zerwaniu toksycznej relacji mąż Cecilii, naukowiec-wynalazca popełnia samobójstwo. Od tej pory zaczynają ją prześladować dziwne zdarzenia.",
+                    Gatunek = "Horror",
+                    CzasTrwania = "124 min",
+                    OgraniczeniaWiek = Wiek.Od16lat,
+                    Cena = 30
+                },
+                new FilmModel()
+                {
+                    Nazwa = "Nikt",
+                    Opis = "Przechodzień jest świadkiem jak grupa mężczyzn atakuje kobietę, więc podejmuje interwencję. Tym samym staje się celem narkotykowego bossa.",
+                    Gatunek = "Thriller, Akcja",
+                    CzasTrwania = "92 min",
+                    OgraniczeniaWiek = Wiek.Od18lat,
+                    Cena = 40
+                },
+                new FilmModel()
+                {
+                    Nazwa = "Na rauszu",
+                    Opis = "Czwórka nauczycieli pracujących w gimnazjum testuje alkoholową metodę, która ma polepszyć jakość ich życia.",
+                    Gatunek = "Dramat, Komedia",
+                    CzasTrwania = "115 min",
+                    OgraniczeniaWiek = Wiek.Od16lat,
+                    Cena = 35
+                },
+                new FilmModel()
+                {
+                    Nazwa = "Wojna z dziadkiem",
+                    Opis = "Peter zmuszony jest dzielić swoją sypialnię z Dziadkiem, który wprowadza się do jego domu po śmierci żony. Chłopak postanawia zrobić wszystko by się go pozbyć.",
+                    Gatunek = "Familijny, Komedia",
+                    CzasTrwania = "98 min",
+                    OgraniczeniaWiek = Wiek.Od12lat,
+                    Cena = 30
+                },
+                new FilmModel()
+                {
+                    Nazwa = "Nasze magiczne Encanto",
+                    Opis = "Dziewczynka pochodzi z kolumbijskiej rodziny, która obdarzona jest magicznymi mocami. Niestety ona sama nie posiada tego daru.",
+                    Gatunek = "Animacja, Familijny, Przygodowy",
+                    CzasTrwania = "99 min",
+                    OgraniczeniaWiek = Wiek.BezOgraniczen,
+                    Cena = 26
+                });
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
         }
 
         [HttpGet]

@@ -76,6 +76,7 @@ namespace ProjektAPI.Controllers
                         {
                             Id = item.Id,
                             Data = item.Data,
+                            Godzina = item.Godzina,
                             NazwaFilmu = item.Film.Nazwa
                         });
                         posortowanaLista = aktualnaListaFilmow.OrderBy(x => x.Data).ToList();

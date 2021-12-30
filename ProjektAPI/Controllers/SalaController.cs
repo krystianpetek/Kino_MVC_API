@@ -22,21 +22,26 @@ namespace ProjektAPI.Controllers
             if (!_context.SaleKinowe.Any())
             {
                 _context.SaleKinowe.AddRange(
-                    new SalaModel()
-                    {
-                        NazwaSali = "Sala 1",
-                        IloscMiejsc = 10,
-                        IloscRzedow = 10
-
-                    },
-                    new SalaModel()
-                    {
-                        NazwaSali = "Sala 2",
-                        IloscMiejsc = 12,
-                        IloscRzedow = 8
-                    });
+                new SalaModel()
+                {
+                    NazwaSali = "Sala 1",
+                    IloscMiejsc = 15,
+                    IloscRzedow = 6
+                },
+                new SalaModel()
+                {
+                    NazwaSali = "Sala 2",
+                    IloscMiejsc = 12,
+                    IloscRzedow = 8
+                },
+                new SalaModel()
+                {
+                    NazwaSali = "PRYWATNA",
+                    IloscMiejsc = 10,
+                    IloscRzedow = 10
+                });
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
         }
 
         [HttpGet]

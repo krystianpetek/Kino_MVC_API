@@ -4,7 +4,7 @@ namespace ProjektAPI.Models
 {
     public class SalaModel
     {
-        [Display(Name = "ID")]
+        [Required, Display(Name = "ID")]
         public int Id { get; set; }
         [Required, Display(Name ="Nazwa sali")]
         public string NazwaSali { get; set; }

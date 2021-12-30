@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace ProjektAPI.Models
 {
     public class APIDatabaseContext : DbContext
     {
-        public APIDatabaseContext (DbContextOptions<APIDatabaseContext> options) : base(options)
+        public APIDatabaseContext(DbContextOptions<APIDatabaseContext> options) : base(options)
         { }
         private string _dbConnect = "Server=(localdb)\\mssqllocaldb;Database=KinoDB;Trusted_Connection=True";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -14,7 +15,7 @@ namespace ProjektAPI.Models
         public DbSet<FilmModel> Filmy { get; set; }
         public DbSet<KlientModel> Klienci { get; set; }
         public DbSet<SalaModel> SaleKinowe { get; set; }
-        public DbSet<UzytkownikModel> Login{ get; set; }
+        public DbSet<UzytkownikModel> Login { get; set; }
         public DbSet<EmisjaModel> Emisja { get; set; }
         public DbSet<RezerwacjaModel> Rezerwacja { get; set; }
 
@@ -24,5 +25,5 @@ namespace ProjektAPI.Models
             modelBuilder.Entity<KlientModel>().HasIndex(x => x.Email).IsUnique();
             modelBuilder.Entity<SalaModel>().HasIndex(x => x.NazwaSali).IsUnique();
         }
-    } 
+    }
 }

@@ -50,7 +50,7 @@ namespace ProjektMVC.Controllers
         {
             ZabronDostepu();
             await WykonajPrzypisanie();
-            var emisja = new EmisjaModel();
+            var emisja = new EmisjaModel() { Data = DateTime.Now.Date, Godzina = null };
             var krotka = new Tuple<List<FilmModel>, List<SalaModel>, EmisjaModel>(_filmModels, _salaModels, emisja);
             return View(krotka);
         }

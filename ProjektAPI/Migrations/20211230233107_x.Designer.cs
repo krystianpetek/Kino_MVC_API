@@ -10,8 +10,8 @@ using ProjektAPI.Models;
 namespace ProjektAPI.Migrations
 {
     [DbContext(typeof(APIDatabaseContext))]
-    [Migration("20211230181528_BazaKino")]
-    partial class BazaKino
+    [Migration("20211230233107_x")]
+    partial class x
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,7 +34,7 @@ namespace ProjektAPI.Migrations
                     b.Property<int>("FilmId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Godzina")
+                    b.Property<DateTime?>("Godzina")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("SalaId")
@@ -130,7 +130,8 @@ namespace ProjektAPI.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.HasIndex("UzytkownikId");
+                    b.HasIndex("UzytkownikId")
+                        .IsUnique();
 
                     b.ToTable("Klienci");
                 });
@@ -238,8 +239,8 @@ namespace ProjektAPI.Migrations
             modelBuilder.Entity("ProjektAPI.Models.KlientModel", b =>
                 {
                     b.HasOne("ProjektAPI.Models.UzytkownikModel", "Uzytkownik")
-                        .WithMany()
-                        .HasForeignKey("UzytkownikId")
+                        .WithOne("KlientModel")
+                        .HasForeignKey("ProjektAPI.Models.KlientModel", "UzytkownikId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -263,6 +264,11 @@ namespace ProjektAPI.Migrations
                     b.Navigation("Emisja");
 
                     b.Navigation("Klient");
+                });
+
+            modelBuilder.Entity("ProjektAPI.Models.UzytkownikModel", b =>
+                {
+                    b.Navigation("KlientModel");
                 });
 #pragma warning restore 612, 618
         }
