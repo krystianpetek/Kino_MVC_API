@@ -24,7 +24,7 @@ namespace ProjektAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RezerwacjaModel>>> GetRezerwacja()
         {
-            return await _context.Rezerwacja.ToListAsync();
+            return await _context.Rezerwacja.Include(q=>q.Emisja).Include(q=>q.Klient).ToListAsync();
         }
 
         // GET: api/Rezerwacja/5

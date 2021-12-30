@@ -4,35 +4,35 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-
-    <table class="row">
+<div class="col-md-8 align-content-center">
+    <table class="table table-striped">
         <tr>
-
-            <th><div class="col-md-10">Imie</div></th>
-            <td><div class="col-md-5">@Model.Imie</div></td>
+            <th><div class="col">Imie</div></th>
+            <td><div class="col">@Model.Imie</div></td>
         </tr>
         <tr>
-            <th><div class="col-md-5">Nazwisko</div></th>
-            <td><div class="col-md-5">@Model.Nazwisko</div></td>
+            <th><div class="col">Nazwisko</div></th>
+            <td><div class="col">@Model.Nazwisko</div></td>
         </tr>
         <tr>
-            <th><div class="col-md-5">Data urodzenia</div></th>
-            <td><div class="col-md-5">@Model.DataUrodzenia.Date</div></td>
+            <th><div class="col">Data urodzenia</div></th>
+            <td><div class="col">@Model.DataUrodzenia.Date.ToShortDateString()</div></td>
         </tr>
         <tr>
-            <th><div class="col-md-5">Numer telefonu</div></th>
-            <td><div class="col-md-5">@Model.NumerTelefonu</div></td>
+            <th><div class="col">Numer telefonu</div></th>
+            <td><div class="col">@Model.NumerTelefonu</div></td>
         </tr>
         <tr>
-            <th><div class="col-md-5">Adres email</div></th>
-            <td><div class="col-md-5">@Model.Email</div></td>
+            <th><div class="col">Adres email</div></th>
+            <td><div class="col">@Model.Email</div></td>
         </tr>
         <tr>
-            <th><div class="col-md-5">Login</div></th>
-            <td><div class="col-md-5">@Model.Uzytkownik.Login</div></td>
+            <th><div class="col">Login</div></th>
+            <td><div class="col">@Model.Uzytkownik.Login</div></td>
         </tr>
         <tr>
-            <th><div class="col-md-5">Rodzaj użytkownika</div></th>
-            <td><div class="col-md-5">@Model.Uzytkownik.RodzajUzytkownika</div></td>
+            <th><div class="col">Rodzaj użytkownika</div></th>
+            <td><div class="col">@Model.Uzytkownik.RodzajUzytkownika</div></td>
         </tr>
     </table>
+    </div>

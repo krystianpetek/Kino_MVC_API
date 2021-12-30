@@ -68,5 +68,11 @@ namespace ProjektMVC.Controllers
             var wynik = rezerwacja.FindAll(q => q.KlientId == idZalogowanego).OrderBy(q => q.Emisja.Data);
             return View(wynik);
         }
+
+        //[HttpGet("Create")]
+        //public async Task<IActionResult> Create()
+        //{
+
+        //}
     }
 }
