@@ -17,21 +17,31 @@ namespace ProjektMVC.Controllers
     {
         private List<UzytkownikModel> _uzytkownicy = null;
         private readonly HttpClient client;
+        private readonly string KlientPath;
         private readonly string UzytkownikPath;
         private readonly IConfiguration _configuration;
 
         public LogowanieController(IConfiguration configuration)
         {
             _configuration = configuration;
+            KlientPath = _configuration["ProjektAPIConfig:Url2"];
             UzytkownikPath = _configuration["ProjektAPIConfig:Url4"];
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
 
         [Authorize]
-        public IActionResult Informacje()
+        public async Task<ActionResult> Informacje()
         {
-            return View();
+            List<KlientModel> listaKlientow = default;
+            KlientModel klient = default;
+            HttpResponseMessage response = await client.GetAsync(KlientPath);
+            if(response.IsSuccessStatusCode)
+            {
+                listaKlientow = await response.Content.ReadAsAsync<List<KlientModel>>();
+                klient = listaKlientow.FirstOrDefault(q => q.Uzytkownik.Login == User.Identity.Name);
+            }
+            return View(klient);
         }
 
         public IActionResult Login(string url = "/")

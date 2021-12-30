@@ -10,8 +10,8 @@ using ProjektAPI.Models;
 namespace ProjektAPI.Migrations
 {
     [DbContext(typeof(APIDatabaseContext))]
-    [Migration("20211229230938_x")]
-    partial class x
+    [Migration("20211230123132_x2")]
+    partial class x2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -150,9 +150,6 @@ namespace ProjektAPI.Migrations
 
                     b.Property<int>("Rzad")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Zajete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

@@ -47,13 +47,13 @@
                     @Html.DisplayFor(modelItem => item.Emisja.Film.Nazwa)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Rzad)
+                    <div class="text-center">@Html.DisplayFor(modelItem => item.Rzad)</div>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Miejsce)
+                    <div class="text-center">@Html.DisplayFor(modelItem => item.Miejsce)</div>
                 </td>
                 <td>
-                    <div>
+                    <div class="text-center">
                         <input class="form-check-input" type="checkbox" id="checkboxNoLabel" value="" @check() disabled>
                         @{
                             string check()

@@ -149,9 +149,6 @@ namespace ProjektAPI.Migrations
                     b.Property<int>("Rzad")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Zajete")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EmisjaId");

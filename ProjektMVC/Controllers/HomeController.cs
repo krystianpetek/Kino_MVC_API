@@ -39,16 +39,19 @@ namespace ProjektAPI.Controllers
                 listaFilmow = await response.Content.ReadAsAsync<List<FilmModel>>();
 
                 var aktualnaListaFilmow = new List<AktualneFilmyModel>();
-                foreach (var item in listaFilmow)
+                if (listaFilmow.Count > 0)
                 {
-                    aktualnaListaFilmow.Add(new AktualneFilmyModel()
+                    foreach (var item in listaFilmow)
                     {
-                        Nazwa = item.Nazwa,
-                        Opis = item.Opis,
-                        Gatunek = item.Gatunek,
-                        Wiek = item.OgraniczeniaWiek.ToString(),
-                        Cena = item.Cena
-                    });
+                        aktualnaListaFilmow.Add(new AktualneFilmyModel()
+                        {
+                            Nazwa = item.Nazwa,
+                            Opis = item.Opis,
+                            Gatunek = item.Gatunek,
+                            Wiek = item.OgraniczeniaWiek.ToString(),
+                            Cena = item.Cena
+                        });
+                    }
                 }
                 return View(aktualnaListaFilmow);
             }
@@ -65,7 +68,7 @@ namespace ProjektAPI.Controllers
                 listaFilmow = await response.Content.ReadAsAsync<List<EmisjaModel>>();
                 List<AktualnieEmitowaneFilmy> posortowanaLista = default;
                 var aktualnaListaFilmow = new List<AktualnieEmitowaneFilmy>();
-                if (aktualnaListaFilmow.Count > 0)
+                if (listaFilmow.Count > 0)
                 {
                     foreach (var item in listaFilmow)
                     {
@@ -77,8 +80,8 @@ namespace ProjektAPI.Controllers
                         });
                         posortowanaLista = aktualnaListaFilmow.OrderBy(x => x.Data).ToList();
                     }
-                    return View(posortowanaLista);
                 }
+                return View(posortowanaLista);
             }
             return BadRequest();
 

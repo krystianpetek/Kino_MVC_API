@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjektAPI.Migrations
 {
-    public partial class x : Migration
+    public partial class x2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -115,7 +115,6 @@ namespace ProjektAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Zajete = table.Column<bool>(type: "bit", nullable: false),
                     Rzad = table.Column<int>(type: "int", nullable: false),
                     Miejsce = table.Column<int>(type: "int", nullable: false),
                     EmisjaId = table.Column<int>(type: "int", nullable: false),
