@@ -73,7 +73,7 @@ namespace ProjektMVC.Controllers
 
         [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([FromRoute] int id, [Bind("NazwaSali, IloscRzedow, IloscMiejsc")] SalaModel model)
+        public async Task<ActionResult> Edit([FromRoute] int id, [Bind("Id, NazwaSali, IloscRzedow, IloscMiejsc")] SalaModel model)
         {
             ZabronDostepu();
             if (ModelState.IsValid)
