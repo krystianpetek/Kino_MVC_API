@@ -10,8 +10,8 @@ using ProjektAPI.Models;
 namespace ProjektAPI.Migrations
 {
     [DbContext(typeof(APIDatabaseContext))]
-    [Migration("20211230123132_x2")]
-    partial class x2
+    [Migration("20211230181528_BazaKino")]
+    partial class BazaKino
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,6 +33,9 @@ namespace ProjektAPI.Migrations
 
                     b.Property<int>("FilmId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("Godzina")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("SalaId")
                         .HasColumnType("int");

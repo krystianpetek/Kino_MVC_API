@@ -32,6 +32,9 @@ namespace ProjektAPI.Migrations
                     b.Property<int>("FilmId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("Godzina")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("SalaId")
                         .HasColumnType("int");
 

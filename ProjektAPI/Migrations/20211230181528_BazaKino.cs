@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjektAPI.Migrations
 {
-    public partial class x2 : Migration
+    public partial class BazaKino : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -90,7 +90,8 @@ namespace ProjektAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FilmId = table.Column<int>(type: "int", nullable: false),
                     SalaId = table.Column<int>(type: "int", nullable: false),
-                    Data = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Data = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Godzina = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
