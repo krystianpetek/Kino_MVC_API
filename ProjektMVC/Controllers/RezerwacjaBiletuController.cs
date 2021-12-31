@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ProjektAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -69,10 +70,12 @@ namespace ProjektMVC.Controllers
             return View(wynik);
         }
 
-        //[HttpGet("Create")]
-        //public async Task<IActionResult> Create()
-        //{
-
-        //}
+        [HttpGet("Create")]
+        public ActionResult Create()
+        {
+            var rezerwacja = new RezerwacjaModel();
+            var model = new Tuple<RezerwacjaModel, List<EmisjaModel>, List<KlientModel>>(rezerwacja,_emisjaModels, _klientModels);
+            return View(model);
+        }
     }
 }

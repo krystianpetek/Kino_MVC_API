@@ -17,55 +17,6 @@ namespace ProjektAPI.Controllers
         public EmisjaController(APIDatabaseContext context)
         {
             _context = context;
-            Inicjalizacja();
-        }
-
-        private void Inicjalizacja()
-        {
-            if (!_context.Emisja.Any())
-            {
-                _context.Emisja.AddRange(
-                new EmisjaModel()
-                {
-                    Data = DateTime.Now.AddHours(10),
-                    Godzina = DateTime.Now.AddHours(10),
-                    FilmId = 2,
-                    SalaId = 1
-                }, new EmisjaModel()
-                {
-                    Data = DateTime.Now,
-                    Godzina = DateTime.Now,
-                    FilmId = 1,
-                    SalaId = 1
-                }, new EmisjaModel()
-                {
-                    Data = DateTime.Now.AddDays(2),
-                    Godzina = DateTime.Now.AddHours(10),
-                    FilmId = 4,
-                    SalaId = 2
-                }
-                , new EmisjaModel()
-                {
-                    Data = DateTime.Now.AddDays(-15),
-                    Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 11, 0, 0),
-                    FilmId = 2,
-                    SalaId = 1
-                }, new EmisjaModel()
-                {
-                    Data = DateTime.Now.AddHours(3),
-                    Godzina = DateTime.Now.AddHours(3),
-                    FilmId = 5,
-                    SalaId = 2
-                }, new EmisjaModel()
-                {
-                    Data = DateTime.Now.AddHours(3),
-                    Godzina = DateTime.Now.AddHours(3),
-                    FilmId = 1,
-                    SalaId = 1
-                }
-                );
-                _context.SaveChanges();
-            }
         }
 
         [HttpGet]

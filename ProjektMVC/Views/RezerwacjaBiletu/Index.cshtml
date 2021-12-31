@@ -17,6 +17,9 @@
                 @Html.DisplayNameFor(model => model.Emisja.Data)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Emisja.Godzina)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Emisja.Film.Nazwa)
             </th>
             <th>
@@ -42,6 +45,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Emisja.Data)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Emisja.Godzina)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Emisja.Film.Nazwa)

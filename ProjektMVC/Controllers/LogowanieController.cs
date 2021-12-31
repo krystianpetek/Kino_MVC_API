@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using ProjektAPI.Models;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http;
+using ProjektAPI.Controllers;
 
 namespace ProjektMVC.Controllers
 {

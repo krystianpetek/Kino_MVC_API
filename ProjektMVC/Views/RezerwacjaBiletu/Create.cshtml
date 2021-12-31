@@ -1,6 +1,7 @@
-﻿@model ProjektAPI.Models.RezerwacjaModel;
+﻿@using ProjektAPI.Models;
+@model Tuple<RezerwacjaModel, List<EmisjaModel>, List<KlientModel>>
 @{
-    ViewData["Title"] = "Dodawanie nowego filmu";
+    ViewData["Title"] = "Dodawanie nowej rezerwacji";
 }
 
 <h1 style="font-weight:400" class="text-center">Dodawanie nowego filmu</h1>
@@ -9,11 +10,12 @@
     <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="" />
+
             <div class="form-group row">
                 <label asp-for="Emisja.Data" class="col-sm-4 col-form-label"></label>
                 <div class="col-sm-8">
-                    <input placeholder="Podaj datę" type="datetime" asp-for="Emisja.Data" class="form-control" />
+                    <input placeholder="Podaj datę" type="date" asp-for="Emisja.Data" class="form-control" />
                     <span asp-validation-for="Emisja.Data" class="text-danger"></span>
                 </div>
             </div>
