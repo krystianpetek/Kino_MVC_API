@@ -71,8 +71,9 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Create")]
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            await WykonajPrzypisanie();
             var rezerwacja = new RezerwacjaModel();
             var model = new Tuple<RezerwacjaModel, List<EmisjaModel>, List<KlientModel>>(rezerwacja,_emisjaModels, _klientModels);
             return View(model);

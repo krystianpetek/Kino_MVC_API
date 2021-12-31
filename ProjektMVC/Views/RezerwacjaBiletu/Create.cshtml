@@ -10,13 +10,31 @@
     <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="" />
+            <input type="hidden" asp-for="Item1.Id" />
 
             <div class="form-group row">
-                <label asp-for="Emisja.Data" class="col-sm-4 col-form-label"></label>
+                <label asp-for="Item1.Emisja.Film.Nazwa" class="col-sm-4 col-form-label"></label>
                 <div class="col-sm-8">
-                    <input placeholder="Podaj datę" type="date" asp-for="Emisja.Data" class="form-control" />
-                    <span asp-validation-for="Emisja.Data" class="text-danger"></span>
+
+                    <select asp-for="Item1.Emisja.Film.Nazwa" class="form-control">
+                        <option value="">Wybierz date!</option>
+                        @{
+                            List<string> lista = new List<string>();
+                        }
+                        @foreach(var item in @Model.Item2)
+                        {
+                            if(!lista.Contains(item.Film.Nazwa))
+                            lista.Add(item.Film.Nazwa);
+                        }
+                        @{
+                            foreach (var item in lista)
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        }
+                    </select>                                                                                                                           `
+                    <span asp-validation-for="Item1.Emisja.Film.Nazwa" class="text-danger"></span>
+
                 </div>
             </div>
         </form>
