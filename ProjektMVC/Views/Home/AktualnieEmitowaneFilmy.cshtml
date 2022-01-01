@@ -23,44 +23,62 @@
             <th>
                 @Html.DisplayNameFor(model => model.First().NazwaFilmu)
             </th>
-            <th></th>
+            <th>Odbyło się</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Data)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Godzina)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NazwaFilmu)
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Data)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Godzina)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NazwaFilmu)
+                </td>
+                <td>
+                    @{
+                        if (item.Data > DateTime.Now.Date && item.Godzina.TimeOfDay > DateTime.Now.TimeOfDay)
+                        {
+                            <input type="checkbox" disabled >
+                        }
+                        else
+                        {
+                            <input type="checkbox" disabled checked/>
+                        }
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+<br />
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
-
-<a asp-action="AktualnieEmitowaneFilmy"
-   asp-route-sortOrder="@ViewData["CurrentSort"]"
-   asp-route-pageNumber="@(Model.PageIndex - 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-secondary @prevDisabled">
-    Previous
-</a>
-<a asp-action="AktualnieEmitowaneFilmy"
-   asp-route-sortOrder="@ViewData["CurrentSort"]"
-   asp-route-pageNumber="@(Model.PageIndex + 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-secondary @nextDisabled">
-    Next
-</a>
+<div>
+    <div class="justify-content-center" style="display: flex;">
+        <a style="width: 100px;" asp-action="AktualnieEmitowaneFilmy"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-secondary text-center @prevDisabled">
+            Previous
+        </a>
+        <div style="width: 10px;"></div>
+        <a style="width: 100px;" asp-action="AktualnieEmitowaneFilmy"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-secondary text-center @nextDisabled">
+            Next
+        </a>
+    </div>
+</div>
