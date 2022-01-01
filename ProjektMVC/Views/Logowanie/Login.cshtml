@@ -3,19 +3,14 @@
 @{
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    @ViewBag.Message
 }
 <h2 class="text-center">Logowanie do serwisu</h2>
 <hr />
 <div class="row justify-content-center">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Login">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @if(!string.IsNullOrEmpty(ViewBag.Message))
-            {
-                <span class="text-danger">
-                    @ViewBag.Message
-                </span>
-            }
             @Html.HiddenFor(x=>x.URL)
             <div class="form-group">
                 <label asp-for="Login" class="control-label"></label>
@@ -39,5 +34,14 @@
             </div>
 
         </form>
+
+        <div><span>Nie masz jeszcze konta?</span> <a class="text-primary" asp-action="Rejestracja">Zarejestruj się!</a></div>
+        
+                <br />
+        @if(!string.IsNullOrWhiteSpace(ViewBag.Register))
+            {
+            <div class="text-center text-danger">@ViewBag.Register</div>
+                
+            }
     </div>
 </div>

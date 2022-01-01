@@ -18,6 +18,8 @@ namespace ProjektMVC.Controllers
         private readonly IConfiguration _configuration;
         private List<KlientModel> _klientModels;
         private List<EmisjaModel> _emisjaModels;
+        private List<RezerwacjaModel> _rezerwacjaModels;
+
 
         public RezerwacjaBiletuController(IConfiguration configuration)
         {
@@ -47,6 +49,8 @@ namespace ProjektMVC.Controllers
         }
 
         [Authorize]
+
+        [HttpGet("[controller]/Index")]
         public async Task<ActionResult> Index()
         {
             await WykonajPrzypisanie();
@@ -73,7 +77,7 @@ namespace ProjektMVC.Controllers
             return View(wynik);
         }
 
-        [HttpGet("Create")]
+        [HttpGet("[controller]/Create")]
         public async Task<ActionResult> Create()
         {
             await WykonajPrzypisanie();
@@ -116,22 +120,39 @@ namespace ProjektMVC.Controllers
             return null;
         }
 
-        [HttpPost("Create")]
+        [HttpPost("[controller]/Create")]
         public async Task<ActionResult> Create([Bind(Prefix = "Item1")] RezerwacjaModel model)
         {
             await WykonajPrzypisanie();
             var y = _emisjaModels.Where(a => a.FilmId == model.Emisja.FilmId).Where(q => q.Data.ToShortDateString() == model.Emisja.Data.ToShortDateString());
             model.EmisjaId = y.FirstOrDefault(q => q.Data.ToShortDateString() == model.Emisja.Data.ToShortDateString()).Id;
             model.KlientId = _klientModels.FirstOrDefault(q => q.Uzytkownik.Login == User.Identity.Name).Id;
-            //model.Klient = _klientModels.FirstOrDefault(q=>q.Id == model.KlientId);
-            //model.Emisja = _emisjaModels.FirstOrDefault(q=>q.Id == model.EmisjaId);
 
+            var zwrotCreate = new Tuple<RezerwacjaModel, List<EmisjaModel>>(new RezerwacjaModel(), _emisjaModels);
+            HttpResponseMessage x = await client.GetAsync(RezerwacjaPath);
+            if (x.IsSuccessStatusCode)
+            {
+                _rezerwacjaModels = await x.Content.ReadAsAsync<List<RezerwacjaModel>>();
+                foreach (var item in _rezerwacjaModels)
+                {
+                    if (model.Miejsce == 0 || model.Rzad == 0)
+                    {
+                        ViewBag.Zajete = $"Niepoprawne miejsce";
+                        return View("Create", zwrotCreate);
+                    }
+                    if (model.Miejsce == item.Miejsce && model.Rzad == item.Rzad)
+                    {
+                        ViewBag.Zajete = $"To miejsce jest zajęte";
+                        return View("Create", zwrotCreate);
+                    }
+                }
+            }
             HttpResponseMessage response = await client.PostAsJsonAsync(RezerwacjaPath, model);
             response.EnsureSuccessStatusCode();
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet("Details/{id}")]
+        [HttpGet("[controller]/Details/{id}")]
         public async Task<ActionResult> Details(int? id)
         {
             RezerwacjaModel model = default;
@@ -165,6 +186,51 @@ namespace ProjektMVC.Controllers
                 return View(model2);
             }
             return NotFound();
+        }
+
+        [HttpGet("[controller]/CreateSiedzenie")]
+        public async Task<ActionResult> CreateNaPodstawieSiedzenia(string film, int miejsce, int rzad)
+        {
+            await WykonajPrzypisanie();
+            HttpResponseMessage response = await client.GetAsync(RezerwacjaPath);
+            List<RezerwacjaModel> listarezerw = new List<RezerwacjaModel>();
+            List<ZajeteMiejsca> listaMiejsc = new List<ZajeteMiejsca>();
+            var rezerwacja = new RezerwacjaModel();
+
+            if (response.IsSuccessStatusCode)
+            {
+                listarezerw = await response.Content.ReadAsAsync<List<RezerwacjaModel>>();
+            }
+            rezerwacja.Rzad = rzad;
+            rezerwacja.Miejsce = miejsce;
+            rezerwacja.Emisja = listarezerw.FirstOrDefault(q => q.Id == int.Parse(film)).Emisja;
+            rezerwacja.EmisjaId = rezerwacja.Emisja.Id;
+            response = await client.GetAsync(RezerwacjaPath + "ZajeteMiejsca");
+            if (response.IsSuccessStatusCode)
+            {
+                listaMiejsc = await response.Content.ReadAsAsync<List<ZajeteMiejsca>>();
+                var listaMiejsc2 = listaMiejsc.Where(x => x.EmisjaId == rezerwacja.EmisjaId).ToList();
+                int iloscMiejsc = rezerwacja.Emisja.Sala.IloscMiejsc;
+                int iloscRzedow = rezerwacja.Emisja.Sala.IloscRzedow;
+
+                bool[,] tablicaBooli = new bool[iloscRzedow, iloscMiejsc];
+                for (int i = 0; i < tablicaBooli.GetLength(0); i++)
+                {
+                    for (int j = 0; j < tablicaBooli.GetLength(1); j++)
+                    {
+                        foreach (var item in listaMiejsc2)
+                        {
+                            if (i == item.Rzad - 1 && j == item.Miejsce - 1)
+                                tablicaBooli[i, j] = true;
+                        }
+                    }
+                }
+                var model2 = new Tuple<RezerwacjaModel, bool[,]>(rezerwacja, tablicaBooli);
+                return View(model2);
+            }
+
+
+            return View(rezerwacja);
         }
     }
 }

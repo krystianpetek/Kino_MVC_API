@@ -73,10 +73,11 @@ namespace ProjektAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<RezerwacjaModel>> PostRezerwacjaModel(RezerwacjaModel rezerwacjaModel)
         {
+            rezerwacjaModel.Emisja = null;
             _context.Rezerwacja.Add(rezerwacjaModel);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRezerwacjaModel", new { id = rezerwacjaModel.Id }, rezerwacjaModel);
+            return Ok();
         }
 
         // DELETE: api/Rezerwacja/5

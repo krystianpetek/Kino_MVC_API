@@ -61,7 +61,7 @@
                                     {
                                         var miejsce = i+1;
                                         var rzad = j+1;
-                                        <a asp-action="Create" asp-route-miejsce="@miejsce" asp-route-rzad="@rzad" ><div style="margin:1px; padding: 0px;width: 15px; height: 15px; background-color: #A1A1A1;"></div></a>
+                                        <a asp-action="CreateNaPodstawieSiedzenia" asp-route-film="@Model.Item1.Id" asp-route-miejsce="@miejsce" asp-route-rzad="@rzad"><div style="margin:1px; padding: 0px;width: 15px; height: 15px; background-color: #A1A1A1;"></div></a>
 
                                     }
                                 </td>

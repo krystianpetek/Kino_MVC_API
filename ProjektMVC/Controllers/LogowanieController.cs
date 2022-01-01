@@ -100,5 +100,26 @@ namespace ProjektMVC.Controllers
             return LocalRedirect("/");
         }
 
+        [HttpGet]
+        public IActionResult Rejestracja()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        public async Task<ActionResult> Rejestracja([Bind] KlientModel model)
+        {
+            model.Uzytkownik.RodzajUzytkownika = Rola.Klient;
+            if(ModelState.IsValid)
+            {
+                HttpResponseMessage response = await client.PostAsJsonAsync(KlientPath, model);
+                response.EnsureSuccessStatusCode();
+                ViewBag.Register = $"{model.Imie}, rejestracja udana! Możesz się zalogować.";
+                return View("Login");
+            }
+            ViewBag.Register = "Błąd, spróbuj ponownie";
+            return BadRequest(model);
+        }
+
     }
 }
