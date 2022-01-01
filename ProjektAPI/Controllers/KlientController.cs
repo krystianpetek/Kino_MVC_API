@@ -37,10 +37,9 @@ namespace ProjektAPI.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
             _context.Klienci.Add(model);
             _context.SaveChanges();
-            return Created($"film/{model.Id}", null);
+            return Created($"{model.Id}", null);
         }
 
         [HttpDelete("{id}")]

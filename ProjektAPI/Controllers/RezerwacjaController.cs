@@ -74,6 +74,7 @@ namespace ProjektAPI.Controllers
         public async Task<ActionResult<RezerwacjaModel>> PostRezerwacjaModel(RezerwacjaModel rezerwacjaModel)
         {
             rezerwacjaModel.Emisja = null;
+            rezerwacjaModel.Id = 0;
             _context.Rezerwacja.Add(rezerwacjaModel);
             await _context.SaveChangesAsync();
 

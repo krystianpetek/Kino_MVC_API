@@ -1,32 +1,32 @@
-﻿@model IEnumerable<ProjektAPI.Models.RezerwacjaModel>
+﻿@model PaginatedList<ProjektAPI.Models.RezerwacjaModel>
 
 @{
     ViewData["Title"] = "Moje bilety";
 }
 
-<h1 style="font-weight:400" class="text-center">Moje bilety</h1>
+<h1 style="font-weight:400" class="text-center">@ViewData["Title"]</h1>
 <br />
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model.First().Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Emisja.Data)
+                @Html.DisplayNameFor(model => model.First().Emisja.Data)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Emisja.Godzina)
+                @Html.DisplayNameFor(model => model.First().Emisja.Godzina)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Emisja.Film.Nazwa)
+                @Html.DisplayNameFor(model => model.First().Emisja.Film.Nazwa)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Rzad)
+                @Html.DisplayNameFor(model => model.First().Rzad)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Miejsce)
+                @Html.DisplayNameFor(model => model.First().Miejsce)
             </th>
             <th>
                 Odbyło się
@@ -94,6 +94,30 @@
         }
     </tbody>
 </table>
+<br />
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<div>
+    <div class="justify-content-center" style="display: flex;">
+        <a style="width: 100px;" asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-secondary text-center @prevDisabled">
+            Previous
+        </a>
+        <div style="width: 10px;"></div>
+        <a style="width: 100px;" asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-secondary text-center @nextDisabled">
+            Next
+        </a>
+    </div>
+</div>
 <br />
 <div>
     <a class="text-light btn btn-dark" asp-action="Create">Dodaj nową rezerwacje</a>

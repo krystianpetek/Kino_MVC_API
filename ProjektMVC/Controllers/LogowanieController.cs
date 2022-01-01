@@ -88,7 +88,7 @@ namespace ProjektMVC.Controllers
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         principal, new AuthenticationProperties() { IsPersistent = model.PamietajMnie });
 
-                    return LocalRedirect(model.URL);
+                    return LocalRedirect("/");
                 }
             }
             return View(model);

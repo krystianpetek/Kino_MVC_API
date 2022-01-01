@@ -44,7 +44,7 @@
                 </td>
                 <td>
                     @{
-                        if (item.Data > DateTime.Now.Date && item.Godzina.TimeOfDay > DateTime.Now.TimeOfDay)
+                        if (item.Data > DateTime.Now.Date)
                         {
                             <input type="checkbox" disabled >
                         }

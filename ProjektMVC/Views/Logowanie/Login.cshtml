@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    @ViewBag.Message
 }
 <h2 class="text-center">Logowanie do serwisu</h2>
 <hr />
@@ -36,12 +35,12 @@
         </form>
 
         <div><span>Nie masz jeszcze konta?</span> <a class="text-primary" asp-action="Rejestracja">Zarejestruj się!</a></div>
-        
-                <br />
-        @if(!string.IsNullOrWhiteSpace(ViewBag.Register))
-            {
+
+        <br />
+        @if (!string.IsNullOrWhiteSpace(ViewBag.Register))
+        {
             <div class="text-center text-danger">@ViewBag.Register</div>
-                
-            }
+        }
+            <div class="text-center text-danger">@ViewBag.Message</div>
     </div>
 </div>

@@ -18,10 +18,10 @@
                 @Html.DisplayFor(model => model.Item1.Id)
             </dd>
             <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.Item1.Rzad)
+                @Html.DisplayNameFor(model => model.Item1.Emisja.Sala.NazwaSali)
             </dt>
             <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.Item1.Rzad)
+                @Html.DisplayFor(model => model.Item1.Emisja.Sala.NazwaSali)
             </dd>
             <dt class="col-sm-3">
                 @Html.DisplayNameFor(model => model.Item1.Miejsce)
@@ -30,7 +30,13 @@
                 @Html.DisplayFor(model => model.Item1.Miejsce)
             </dd>
             <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.Item1.Emisja.Film.Nazwa)
+                @Html.DisplayNameFor(model => model.Item1.Rzad)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Item1.Rzad)
+            </dd>
+            <dt class="col-sm-3">
+                Nazwa filmu
             </dt>
             <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.Item1.Emisja.Film.Nazwa)
@@ -42,7 +48,13 @@
                 @Html.DisplayFor(model => model.Item1.Emisja.Data)
             </dd>
             <dt class="col-sm-3">
-                MAPA ZAJĘTYCH MIEJSC
+                @Html.DisplayNameFor(model => model.Item1.Emisja.Godzina)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Item1.Emisja.Godzina)
+            </dd>
+            <dt class="col-sm-3">
+                Zajęte miejsca
             </dt>
             <dd class="col-sm-9">
                 <form asp-action="Create" >
@@ -52,16 +64,26 @@
                             <tr>
                             @for(int j = 0;j<Model.Item2.GetLength(1);j++)
                             {
+                                    
                                 <td>
                                     @if(Model.Item2[i,j] == true)
                                     {
-                                        <div style="margin:1px; padding: 0px; width: 15px; height: 15px; background-color: red;"><span></span></div>
-                                    }
-                                    else
-                                    {
-                                        var miejsce = i+1;
-                                        var rzad = j+1;
-                                        <a asp-action="CreateNaPodstawieSiedzenia" asp-route-film="@Model.Item1.Id" asp-route-miejsce="@miejsce" asp-route-rzad="@rzad"><div style="margin:1px; padding: 0px;width: 15px; height: 15px; background-color: #A1A1A1;"></div></a>
+                                            <div style="margin:1px; padding: 0px; width: 15px; height: 15px; background-color: red;"><span></span></div>
+                                        }
+                                        else
+                                        {
+                                            var miejsce = j+1;
+                                            var rzad = i+1;
+                                            if(@Model.Item1.Emisja.Data > DateTime.Now)
+                                            {
+                                            <a asp-action="CreateNaPodstawieSiedzenia" asp-route-film="@Model.Item1.Id" asp-route-miejsce="@miejsce" asp-route-rzad="@rzad"><div style="margin:1px; padding: 0px;width: 15px; height: 15px; background-color: #A1A1A1;"></div></a>
+
+                                            }
+                                            else
+                                            {
+                                            <div style="margin:1px; padding: 0px;width: 15px; height: 15px; background-color: #A1A1A1;"></div>
+                                                
+                                            }
 
                                     }
                                 </td>

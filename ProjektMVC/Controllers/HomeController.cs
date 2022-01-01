@@ -100,7 +100,7 @@ namespace ProjektAPI.Controllers
             }
 
             int pageSize = 10;
-            return View(PaginatedList<AktualnieEmitowaneFilmy>.CreateAsync(posortowanaLista, pageNumber ?? 1, pageSize));
+            return View(PaginatedList<AktualnieEmitowaneFilmy>.Create(posortowanaLista, pageNumber ?? 1, pageSize));
         }
     }
 }
