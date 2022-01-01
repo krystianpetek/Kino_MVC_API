@@ -134,17 +134,33 @@ namespace ProjektMVC.Controllers
         {
             RezerwacjaModel model = default;
             List<ZajeteMiejsca> listaMiejsc = default;
-            var response = await client.GetAsync(RezerwacjaPath+id);
-            if(response.IsSuccessStatusCode)
+            var response = await client.GetAsync(RezerwacjaPath + id);
+            if (response.IsSuccessStatusCode)
             {
                 model = await response.Content.ReadAsAsync<RezerwacjaModel>();
             }
-            response = await client.GetAsync(RezerwacjaPath + "ZajeteMiejsca/");
-            if(response.IsSuccessStatusCode)
+            response = await client.GetAsync(RezerwacjaPath + "ZajeteMiejsca");
+            if (response.IsSuccessStatusCode)
             {
                 listaMiejsc = await response.Content.ReadAsAsync<List<ZajeteMiejsca>>();
-                var model2 = new Tuple<RezerwacjaModel, List<ZajeteMiejsca>>(model, listaMiejsc);
-                return View(model);
+                var listaMiejsc2 = listaMiejsc.Where(x => x.EmisjaId == model.EmisjaId).ToList();
+                int iloscMiejsc = model.Emisja.Sala.IloscMiejsc;
+                int iloscRzedow = model.Emisja.Sala.IloscRzedow;
+
+                bool[,] tablicaBooli = new bool[iloscRzedow, iloscMiejsc];
+                for (int i = 0; i < tablicaBooli.GetLength(0); i++)
+                {
+                    for (int j = 0; j < tablicaBooli.GetLength(1); j++)
+                    {
+                        foreach (var item in listaMiejsc2)
+                        {
+                            if (i == item.Rzad - 1 && j == item.Miejsce- 1)
+                                tablicaBooli[i, j] = true;
+                        }
+                    }
+                }
+                var model2 = new Tuple<RezerwacjaModel, bool[,]>(model, tablicaBooli);
+                return View(model2);
             }
             return NotFound();
         }

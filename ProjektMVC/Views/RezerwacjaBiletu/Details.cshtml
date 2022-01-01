@@ -1,4 +1,5 @@
-﻿@model ProjektAPI.Models.RezerwacjaModel;
+﻿@using ProjektAPI.Models
+@model Tuple<RezerwacjaModel,bool[,]>;
 
 @{
     ViewData["Title"] = "Szczegóły o rezerwacji";
@@ -11,47 +12,68 @@
     <div class="col">
         <dl class="row">
             <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model.Item1.Id)
             </dt>
             <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.Id)
+                @Html.DisplayFor(model => model.Item1.Id)
             </dd>
             <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.Rzad)
+                @Html.DisplayNameFor(model => model.Item1.Rzad)
             </dt>
             <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.Rzad)
+                @Html.DisplayFor(model => model.Item1.Rzad)
             </dd>
             <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.Miejsce)
+                @Html.DisplayNameFor(model => model.Item1.Miejsce)
             </dt>
             <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.Miejsce)
+                @Html.DisplayFor(model => model.Item1.Miejsce)
             </dd>
             <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.Emisja.Film.Nazwa)
+                @Html.DisplayNameFor(model => model.Item1.Emisja.Film.Nazwa)
             </dt>
             <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.Emisja.Film.Nazwa)
+                @Html.DisplayFor(model => model.Item1.Emisja.Film.Nazwa)
             </dd>
             <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.Emisja.Data)
+                @Html.DisplayNameFor(model => model.Item1.Emisja.Data)
             </dt>
             <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.Emisja.Data)
+                @Html.DisplayFor(model => model.Item1.Emisja.Data)
             </dd>
             <dt class="col-sm-3">
                 MAPA ZAJĘTYCH MIEJSC
             </dt>
             <dd class="col-sm-9">
-                @{
-                    //for(int i = Model.)
-                }
+
+                <table>
+                        @for(int i = 0;i<Model.Item2.GetLength(0);i++)
+                        {
+                            <tr>
+                            @for(int j = 0;j<Model.Item2.GetLength(1);j++)
+                            {
+                                <td>
+                                    @if(Model.Item2[i,j] == true)
+                                    {
+                                        <div style="margin:0; padding: 0px;border: 1px solid black; width: 10px; height: 10px; background-color: red;"><span></span></div>
+                                    }
+                                    else
+                                    {
+                                        <div style="border: 1px solid black;width: 10px; height: 10px; color: white;"><span></span></div>
+
+                                    }
+                                </td>
+                            }
+                            </tr>
+
+                    }
+                
+                </table>
             </dd>
         </dl>
     </div>
 </div>
 <br />
 <div>
-    <a class="btn btn-dark" asp-action="Edit" asp-route-id="@Model.Id">Edytuj klienta</a>
+    <a class="btn btn-dark" asp-action="Edit" asp-route-id="@Model.Item1.Id">Edytuj klienta</a>
 </div>

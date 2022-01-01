@@ -20,7 +20,8 @@ namespace ProjektAPI.Controllers
             _context = context;
         }
 
-        public async Task<ActionResult<IEnumerable<RezerwacjaModel>>> GetRezerwacja()
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<RezerwacjaModel>>> Get()
         {
             return await _context.Rezerwacja.Include(q=>q.Emisja).Include(q=>q.Klient).Include(q=>q.Klient.Uzytkownik).Include(q=>q.Emisja.Sala).Include(q=>q.Emisja.Film).ToListAsync();
         }
@@ -99,20 +100,21 @@ namespace ProjektAPI.Controllers
             return _context.Rezerwacja.Any(e => e.Id == id);
         }
 
-        [HttpGet("[controller]/ZajeteMiejsca/")]
+        [HttpGet("ZajeteMiejsca")]
         public async Task<ActionResult> ZajeteMiejsca()
         {
-            var pobierz  = await _context.Rezerwacja.ToListAsync();
-            List<ZajeteMiejsca> model = default;
-            foreach(var item in pobierz)
+            var pobierz = await _context.Rezerwacja.ToListAsync();
+            List<ZajeteMiejsca> model = new List<ZajeteMiejsca>();
+            foreach (var item in pobierz)
             {
-                model.Add(new ZajeteMiejsca()
+                var modelik = new ZajeteMiejsca()
                 {
                     Id = item.Id,
                     EmisjaId = item.EmisjaId,
                     Miejsce = item.Miejsce,
                     Rzad = item.Rzad
-                });
+                };
+                model.Add(modelik);
             }
             return Ok(model);
         }
