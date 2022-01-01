@@ -51,7 +51,7 @@ namespace ProjektAPI.Controllers
                 return NotFound();
 
             var zapytanieUzytkownik = _context.Login.FirstOrDefault(q=>q.Id == zapytanieKlient.UzytkownikId);
-            if (zapytanieKlient is null)
+            if (zapytanieUzytkownik is null)
                 return NotFound();
 
             _context.Klienci.Remove(zapytanieKlient);

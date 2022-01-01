@@ -1,0 +1,57 @@
+﻿@model ProjektAPI.Models.RezerwacjaModel;
+
+@{
+    ViewData["Title"] = "Szczegóły o rezerwacji";
+}
+
+<h1 style="font-weight:400" class="text-center">@ViewData["Title"]</h1>
+<hr />
+<div class="row justify-content-center">
+    <br />
+    <div class="col">
+        <dl class="row">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Rzad)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Rzad)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Miejsce)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Miejsce)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Emisja.Film.Nazwa)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Emisja.Film.Nazwa)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Emisja.Data)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Emisja.Data)
+            </dd>
+            <dt class="col-sm-3">
+                MAPA ZAJĘTYCH MIEJSC
+            </dt>
+            <dd class="col-sm-9">
+                @{
+                    //for(int i = Model.)
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
+<br />
+<div>
+    <a class="btn btn-dark" asp-action="Edit" asp-route-id="@Model.Id">Edytuj klienta</a>
+</div>

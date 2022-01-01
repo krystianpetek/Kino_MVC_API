@@ -20,29 +20,24 @@ namespace ProjektAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Rezerwacja
-        [HttpGet]
         public async Task<ActionResult<IEnumerable<RezerwacjaModel>>> GetRezerwacja()
         {
-            return await _context.Rezerwacja.Include(q=>q.Emisja).Include(q=>q.Klient).ToListAsync();
+            return await _context.Rezerwacja.Include(q=>q.Emisja).Include(q=>q.Klient).Include(q=>q.Klient.Uzytkownik).Include(q=>q.Emisja.Sala).Include(q=>q.Emisja.Film).ToListAsync();
         }
 
-        // GET: api/Rezerwacja/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<RezerwacjaModel>> GetRezerwacjaModel(int id)
+        public ActionResult<RezerwacjaModel> Get(int id)
         {
-            var rezerwacjaModel = await _context.Rezerwacja.FindAsync(id);
+            var model = _context.Rezerwacja.Include(q => q.Emisja).Include(q => q.Emisja.Sala).Include(q => q.Emisja.Film).Include(q => q.Klient).Include(q => q.Klient.Uzytkownik).FirstOrDefault(q => q.Id == id);
 
-            if (rezerwacjaModel == null)
+            if (model == null)
             {
                 return NotFound();
             }
 
-            return rezerwacjaModel;
+            return model;
         }
 
-        // PUT: api/Rezerwacja/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRezerwacjaModel(int id, RezerwacjaModel rezerwacjaModel)
         {
@@ -103,5 +98,24 @@ namespace ProjektAPI.Controllers
         {
             return _context.Rezerwacja.Any(e => e.Id == id);
         }
+
+        [HttpGet("[controller]/ZajeteMiejsca/")]
+        public async Task<ActionResult> ZajeteMiejsca()
+        {
+            var pobierz  = await _context.Rezerwacja.ToListAsync();
+            List<ZajeteMiejsca> model = default;
+            foreach(var item in pobierz)
+            {
+                model.Add(new ZajeteMiejsca()
+                {
+                    Id = item.Id,
+                    EmisjaId = item.EmisjaId,
+                    Miejsce = item.Miejsce,
+                    Rzad = item.Rzad
+                });
+            }
+            return Ok(model);
+        }
     }
 }
+

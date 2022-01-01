@@ -13,7 +13,7 @@ namespace ProjektAPI.Models
         [DataType(DataType.Date)]
         public DateTime Data { get; set; }
         [DataType(DataType.Time)]
-        public DateTime? Godzina { get; set; }
+        public DateTime Godzina { get; set; }
         public virtual FilmModel Film { get; set; }
         public virtual SalaModel Sala { get; set; }
     }

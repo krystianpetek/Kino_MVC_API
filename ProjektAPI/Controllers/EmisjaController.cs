@@ -59,7 +59,7 @@ namespace ProjektAPI.Controllers
 
             if (ModelState.IsValid)
             {
-                zapytanie.Data = model.Data;
+                zapytanie.Data = model.Data.Date;
                 zapytanie.Godzina = model.Godzina;
                 zapytanie.Sala = model.Sala;
                 zapytanie.SalaId = model.SalaId;
