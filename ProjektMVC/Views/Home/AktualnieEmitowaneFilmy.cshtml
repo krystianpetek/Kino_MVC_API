@@ -1,26 +1,27 @@
-﻿@model IEnumerable<ProjektMVC.Models.AktualnieEmitowaneFilmy>
+﻿@model PaginatedList<AktualnieEmitowaneFilmy>
 
 @{
-    ViewData["Title"] = "Aktualnie emitowane filmy";
+    ViewData["Title"] = "Lista wszystkich emisji seansów";
 }
 <div class="text-center">
-    <h1 class="display-4">Aktualnie emitowane filmy</h1>
+    <h1 class="display-4">@ViewData["Title"]</h1>
     <br />
 </div>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model.First().Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Data)
+                @Html.DisplayNameFor(model => model.First().Data)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Godzina)
+                @Html.DisplayNameFor(model => model.First().Godzina)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NazwaFilmu)
+                @Html.DisplayNameFor(model => model.First().NazwaFilmu)
             </th>
             <th></th>
         </tr>
@@ -44,3 +45,22 @@
 }
     </tbody>
 </table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="AktualnieEmitowaneFilmy"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary @prevDisabled">
+    Previous
+</a>
+<a asp-action="AktualnieEmitowaneFilmy"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary @nextDisabled">
+    Next
+</a>

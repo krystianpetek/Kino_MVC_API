@@ -45,7 +45,7 @@
                 MAPA ZAJĘTYCH MIEJSC
             </dt>
             <dd class="col-sm-9">
-
+                <form asp-action="Create" >
                 <table>
                         @for(int i = 0;i<Model.Item2.GetLength(0);i++)
                         {
@@ -55,11 +55,13 @@
                                 <td>
                                     @if(Model.Item2[i,j] == true)
                                     {
-                                        <div style="margin:0; padding: 0px;border: 1px solid black; width: 10px; height: 10px; background-color: red;"><span></span></div>
+                                        <div style="margin:1px; padding: 0px; width: 15px; height: 15px; background-color: red;"><span></span></div>
                                     }
                                     else
                                     {
-                                        <div style="border: 1px solid black;width: 10px; height: 10px; color: white;"><span></span></div>
+                                        var miejsce = i+1;
+                                        var rzad = j+1;
+                                        <a asp-action="Create" asp-route-miejsce="@miejsce" asp-route-rzad="@rzad" ><div style="margin:1px; padding: 0px;width: 15px; height: 15px; background-color: #A1A1A1;"></div></a>
 
                                     }
                                 </td>
@@ -69,6 +71,10 @@
                     }
                 
                 </table>
+                <div>
+                     
+                </div>
+                </form>
             </dd>
         </dl>
     </div>

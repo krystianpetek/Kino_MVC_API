@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using ProjektAPI.Models;
@@ -45,6 +46,7 @@ namespace ProjektMVC.Controllers
             }
         }
 
+        [Authorize]
         public async Task<ActionResult> Index()
         {
             await WykonajPrzypisanie();
@@ -164,6 +166,5 @@ namespace ProjektMVC.Controllers
             }
             return NotFound();
         }
-
     }
 }
