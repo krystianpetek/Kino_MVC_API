@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - ProjektMVC</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/moj.css" />
 </head>
 <body>
     <header>
@@ -87,6 +88,7 @@
             &copy; 2021 - Krystian Petek
         </div>
     </footer>
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -94,7 +96,6 @@
     @{
         string kolor()
         {
-
             if (User.IsInRole("Admin"))
                 return "btn-danger";
             else if (User.IsInRole("Pracownik"))
