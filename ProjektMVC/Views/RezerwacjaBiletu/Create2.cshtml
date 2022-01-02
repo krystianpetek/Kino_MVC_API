@@ -1,0 +1,124 @@
+﻿@model PaginatedList<ProjektAPI.Models.RezerwacjaModel>
+
+@{
+    ViewData["Title"] = "Moje bilety";
+}
+
+<h1 style="font-weight:400" class="text-center">@ViewData["Title"]</h1>
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Emisja.Data)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Emisja.Godzina)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Emisja.Film.Nazwa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Rzad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Miejsce)
+            </th>
+            <th>
+                Odbyło się
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Emisja.Data)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Emisja.Godzina)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Emisja.Film.Nazwa)
+                </td>
+                <td>
+                    <div class="text-center">@Html.DisplayFor(modelItem => item.Rzad)</div>
+                </td>
+                <td>
+                    <div class="text-center">@Html.DisplayFor(modelItem => item.Miejsce)</div>
+                </td>
+                <td>
+                    <div class="text-center">
+                        <input class="form-check-input" type="checkbox" id="checkboxNoLabel" value="" @check() disabled>
+                        @{
+                            string check()
+                            {
+                                if (item.Emisja.Data.Date < DateTime.Now)
+                                {
+                                    return "checked";
+                                }
+                                return string.Empty;
+                            }
+                        }
+                    </div>
+
+                </td>
+                <td>
+                    @{
+                        if (item.Emisja.Data.Date > DateTime.Now)
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a>
+                            <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a>
+
+                        }
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<div>
+    <div class="justify-content-center" style="display: flex;">
+        <a style="width: 100px;" asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-secondary text-center @prevDisabled">
+            Previous
+        </a>
+        <div style="width: 10px;"></div>
+        <a style="width: 100px;" asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-secondary text-center @nextDisabled">
+            Next
+        </a>
+    </div>
+</div>
+<br />
+<div>
+    <a class="text-light btn btn-dark" asp-action="Create">Dodaj nową rezerwacje</a>
+</div>
