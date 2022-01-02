@@ -15,7 +15,6 @@ namespace ProjektAPI.Controllers
         public LoginController(APIDatabaseContext context)
         {
             _context = context;
-            new SeederController(context);
         }
 
         [HttpGet]

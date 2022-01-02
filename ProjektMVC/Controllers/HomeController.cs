@@ -15,6 +15,7 @@ namespace ProjektAPI.Controllers
     {
         private HttpClient _client;
         private readonly string FilmyPath;
+        private readonly string KlientPath;
         private readonly string EmisjaPath;
         private IConfiguration _configuration;
 
@@ -22,14 +23,37 @@ namespace ProjektAPI.Controllers
         {
             _configuration = configuration;
             FilmyPath = _configuration["ProjektAPIConfig:Url"];
+            KlientPath = _configuration["ProjektAPIConfig:Url2"];
             EmisjaPath = _configuration["ProjektAPIConfig:Url5"];
             _client = new HttpClient();
             _client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            bool odpowiedz = false;
+            List<UzytkownikModel> listaUzytkownikow=new List<UzytkownikModel>();
+            HttpResponseMessage response = await _client.GetAsync(KlientPath);
+            if(response.IsSuccessStatusCode)
+            {
+
+                List<KlientModel> listaKlientow = await response.Content.ReadAsAsync<List<KlientModel>>();
+                if(listaKlientow.Count > 0)
+                {
+                    foreach(var uzytkownik in listaKlientow)
+                    {
+                        listaUzytkownikow.Add(new UzytkownikModel()
+                        {
+                            Id = uzytkownik.Uzytkownik.Id,
+                            Login = uzytkownik.Uzytkownik.Login,
+                            Haslo = uzytkownik.Uzytkownik.Haslo,
+                            RodzajUzytkownika = uzytkownik.Uzytkownik.RodzajUzytkownika
+                        });
+                    }
+                    odpowiedz = true;
+                }
+            }
+            return View(new Tuple<bool,List<UzytkownikModel>>(odpowiedz,listaUzytkownikow));
         }
         public async Task<ActionResult> AktualneFilmy()
         {
