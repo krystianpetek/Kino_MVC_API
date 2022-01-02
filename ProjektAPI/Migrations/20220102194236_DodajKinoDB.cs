@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjektAPI.Migrations
 {
-    public partial class x : Migration
+    public partial class DodajKinoDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -91,7 +91,7 @@ namespace ProjektAPI.Migrations
                     FilmId = table.Column<int>(type: "int", nullable: false),
                     SalaId = table.Column<int>(type: "int", nullable: false),
                     Data = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Godzina = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Godzina = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -157,8 +157,7 @@ namespace ProjektAPI.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Klienci_UzytkownikId",
                 table: "Klienci",
-                column: "UzytkownikId",
-                unique: true);
+                column: "UzytkownikId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Login_Login",

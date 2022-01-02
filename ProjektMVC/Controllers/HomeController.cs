@@ -16,6 +16,7 @@ namespace ProjektAPI.Controllers
         private HttpClient _client;
         private readonly string FilmyPath;
         private readonly string KlientPath;
+        private readonly string SalaPath;
         private readonly string EmisjaPath;
         private IConfiguration _configuration;
 
@@ -24,6 +25,7 @@ namespace ProjektAPI.Controllers
             _configuration = configuration;
             FilmyPath = _configuration["ProjektAPIConfig:Url"];
             KlientPath = _configuration["ProjektAPIConfig:Url2"];
+            SalaPath = _configuration["ProjektAPIConfig:Url3"];
             EmisjaPath = _configuration["ProjektAPIConfig:Url5"];
             _client = new HttpClient();
             _client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
@@ -31,12 +33,13 @@ namespace ProjektAPI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            bool odpowiedz = false;
+            List<bool> list = new List<bool>() { false, false, false, false };
+            
+            list[0] = false; // uzytkownik
             List<UzytkownikModel> listaUzytkownikow=new List<UzytkownikModel>();
             HttpResponseMessage response = await _client.GetAsync(KlientPath);
             if(response.IsSuccessStatusCode)
             {
-
                 List<KlientModel> listaKlientow = await response.Content.ReadAsAsync<List<KlientModel>>();
                 if(listaKlientow.Count > 0)
                 {
@@ -50,10 +53,38 @@ namespace ProjektAPI.Controllers
                             RodzajUzytkownika = uzytkownik.Uzytkownik.RodzajUzytkownika
                         });
                     }
-                    odpowiedz = true;
+                    list[0] = true;
                 }
             }
-            return View(new Tuple<bool,List<UzytkownikModel>>(odpowiedz,listaUzytkownikow));
+            
+            list[1] = false; // sala kinowa
+            response = await _client.GetAsync(SalaPath);
+            if(response.IsSuccessStatusCode)
+            {
+                List<SalaModel> listaSal = await response.Content.ReadAsAsync<List<SalaModel>>();
+                if(listaSal.Count > 0)
+                list[1] = true;
+            }
+
+            list[2] = false; // film
+            response = await _client.GetAsync(FilmyPath);
+            if(response.IsSuccessStatusCode)
+            {
+                List<FilmModel> listaFilmow = await response.Content.ReadAsAsync<List<FilmModel>>();
+                if (listaFilmow.Count > 0)
+                    list[2] = true;
+            }
+            
+            list[3] = false; // seans
+            response = await _client.GetAsync(EmisjaPath);
+            if(response.IsSuccessStatusCode)
+            {
+                List<EmisjaModel> listaSeansow = await response.Content.ReadAsAsync<List<EmisjaModel>>();
+                if (listaSeansow.Count > 0)
+                    list[3] = true;
+            }
+
+            return View(new Tuple<List<bool>,List<UzytkownikModel>>(list,listaUzytkownikow));
         }
         public async Task<ActionResult> AktualneFilmy()
         {
