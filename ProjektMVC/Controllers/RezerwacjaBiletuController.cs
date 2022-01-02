@@ -115,6 +115,23 @@ namespace ProjektMVC.Controllers
             return View(PaginatedList<RezerwacjaModel>.Create(wynik, pageNumber ?? 1, pageSize));
         }
 
+        [HttpGet("[controller]/Details/{id}")]
+        public async Task<ActionResult> Details(int id)
+        {
+            await ZajeteMiejscaAsync();
+            RezerwacjaModel model = new RezerwacjaModel();
+            var response = await client.GetAsync(RezerwacjaPath + id);
+            if (response.IsSuccessStatusCode)
+            {
+                model = await response.Content.ReadAsAsync<RezerwacjaModel>();
+            }
+
+            bool[,] siedzenia = ZajeteSiedzenia(model);
+
+            var model2 = new Tuple<RezerwacjaModel, bool[,]>(model, siedzenia);
+            return View(model2);
+        }
+
         [HttpGet("[controller]/Create")]
         public async Task<ActionResult> Create()
         {
@@ -123,46 +140,70 @@ namespace ProjektMVC.Controllers
             return View(model);
         }
 
-        public async Task<ActionResult> WyborDaty(string Film)
+        [HttpGet("[controller]/Create2")]
+        public async Task<ActionResult> Create2(string film)
         {
             await EmisjaAsync();
-            if (!string.IsNullOrWhiteSpace(Film))
-            {
-                foreach (var item in _emisjaModels)
-                    item.Data = item.Data.Date;
-
-                var dataWybor = _emisjaModels.Where(q => q.Film.Id == int.Parse(Film)).Select(q => q.Data).Distinct().Select(a => new SelectListItem
-                {
-                    Value = a.ToShortDateString(),
-                    Text = a.ToShortDateString()
-                }).ToList();
-
-                return Json(dataWybor);
-            }
-            return null;
+            if (film is null)
+                return RedirectToAction("Create");
+            string nazwaFilmu = _emisjaModels.FirstOrDefault(q => q.FilmId == int.Parse(film)).Film.Nazwa;
+            string[] wartosci = new string[] { film, nazwaFilmu };
+            var model = new Tuple<RezerwacjaModel, List<EmisjaModel>, string[]>(new RezerwacjaModel(), _emisjaModels, wartosci);
+            return View(model);
         }
 
-        public async Task<ActionResult> WyborGodziny(string Data, string Film)
+        [HttpGet("[controller]/Create3")]
+        public async Task<ActionResult> Create3(string film, string data)
         {
             await EmisjaAsync();
-            if (!string.IsNullOrWhiteSpace(Data))
-            {
-                List<SelectListItem> godzinaWybor = _emisjaModels.Where(q => q.Film.Id == int.Parse(Film)).Where(q => q.Data.ToShortDateString() == Data).OrderBy(n => n.Data).Select(a => new SelectListItem
-                {
-                    Value = a.Godzina.ToShortTimeString(),
-                    Text = a.Godzina.ToShortTimeString()
-                }).ToList();
-                return Json(godzinaWybor);
-            }
-            return null;
+            if (data is null || film is null)
+                if (film is null)
+                    return RedirectToAction("Create");
+                else
+                    return RedirectToAction("Create2", film);
+
+            string nazwaFilmu = _emisjaModels.FirstOrDefault(q => q.FilmId == int.Parse(film)).Film.Nazwa;
+            string[] wartosci = new string[] { film, nazwaFilmu, data };
+            var model = new Tuple<RezerwacjaModel, List<EmisjaModel>, string[]>(new RezerwacjaModel(), _emisjaModels, wartosci);
+            return View(model);
         }
 
-        [HttpPost("[controller]/Create")]
-        public async Task<ActionResult> Create([Bind(Prefix = "Item1")] RezerwacjaModel model)
+
+        [HttpGet("[controller]/Create4")]
+        public async Task<ActionResult> Create4(string film, string data, string godzina, int miejsce=0, int rzad=0)
+        {
+            await EmisjaAsync();
+            if (godzina is null || data is null || film is null)
+
+                if (film is null)
+                    return RedirectToAction("Create");
+                else if (data is null)
+                    return RedirectToAction("Create2", film);
+                else
+                    return RedirectToAction("Create3", new string(film + "&data=" + data));
+            string nazwaFilmu = _emisjaModels.FirstOrDefault(q => q.FilmId == int.Parse(film)).Film.Nazwa;
+            string[] wartosci = new string[] { film, nazwaFilmu, data, godzina};
+
+            await RezerwacjaAsync();
+            await ZajeteMiejscaAsync();
+
+            RezerwacjaModel model = _rezerwacjaModels.Where(q => q.Emisja.FilmId == int.Parse(film)).Where(q=>q.Emisja.Data.ToShortDateString() == data).Where(q=>q.Emisja.Godzina.ToShortTimeString() == godzina).FirstOrDefault();
+            model.Rzad = rzad-1;
+            model.Miejsce = miejsce-1;
+            bool[,] siedzenia = ZajeteSiedzenia(model);
+
+            var modelK = new Tuple<RezerwacjaModel, List<EmisjaModel>, string[], bool[,]>(model, _emisjaModels, wartosci, siedzenia);
+
+            return View(modelK);
+        }
+
+        [HttpPost("[controller]/CreateFINAL")]
+        public async Task<ActionResult> CreateFINAL([Bind(Prefix = "Item1")] RezerwacjaModel model)
         {
             await EmisjaAsync();
             await RezerwacjaAsync();
             await KlienciAsync();
+
             model.Miejsce += 1;
             model.Rzad += 1;
             model.Emisja = _rezerwacjaModels.FirstOrDefault(q => q.Id == model.Id).Emisja;
@@ -170,6 +211,7 @@ namespace ProjektMVC.Controllers
             model.KlientId = _klientModels.FirstOrDefault(q => q.Uzytkownik.Login == User.Identity.Name).Id;
 
             var przefiltowana = _rezerwacjaModels.Where(q => q.EmisjaId == model.EmisjaId);
+            //var modelK = new Tuple<RezerwacjaModel, List<EmisjaModel>, string[], bool[,]>(model, _emisjaModels, wartosci, siedzenia);
             var ModelWyjsciowy = new Tuple<RezerwacjaModel, List<EmisjaModel>>(new RezerwacjaModel(), _emisjaModels);
             foreach (var item in przefiltowana)
             {
@@ -190,24 +232,6 @@ namespace ProjektMVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet("[controller]/Details/{id}")]
-        public async Task<ActionResult> Details(int id)
-        {
-            await ZajeteMiejscaAsync();
-            RezerwacjaModel model = new RezerwacjaModel();
-            var response = await client.GetAsync(RezerwacjaPath + id);
-            if (response.IsSuccessStatusCode)
-            {
-                model = await response.Content.ReadAsAsync<RezerwacjaModel>();
-            }
-
-            bool[,] siedzenia = ZajeteSiedzenia(model);
-
-            var model2 = new Tuple<RezerwacjaModel, bool[,]>(model, siedzenia);
-            return View(model2);
-        }
-
-
         [HttpGet("[controller]/CreateSiedzenie")]
         public async Task<ActionResult> CreateNaPodstawieSiedzenia(string film, int miejsce, int rzad)
         {
@@ -227,3 +251,40 @@ namespace ProjektMVC.Controllers
         }
     }
 }
+
+
+
+
+//public async Task<ActionResult> WyborDaty(string Film)
+//{
+//    await EmisjaAsync();
+//    if (!string.IsNullOrWhiteSpace(Film))
+//    {
+//        foreach (var item in _emisjaModels)
+//            item.Data = item.Data.Date;
+
+//        var dataWybor = _emisjaModels.Where(q => q.Film.Id == int.Parse(Film)).Select(q => q.Data).Distinct().Select(a => new SelectListItem
+//        {
+//            Value = a.ToShortDateString(),
+//            Text = a.ToShortDateString()
+//        }).ToList();
+
+//        return Json(dataWybor);
+//    }
+//    return null;
+//}
+
+//public async Task<ActionResult> WyborGodziny(string Data, string Film)
+//{
+//    await EmisjaAsync();
+//    if (!string.IsNullOrWhiteSpace(Data))
+//    {
+//        List<SelectListItem> godzinaWybor = _emisjaModels.Where(q => q.Film.Id == int.Parse(Film)).Where(q => q.Data.ToShortDateString() == Data).OrderBy(n => n.Data).Select(a => new SelectListItem
+//        {
+//            Value = a.Godzina.ToShortTimeString(),
+//            Text = a.Godzina.ToShortTimeString()
+//        }).ToList();
+//        return Json(godzinaWybor);
+//    }
+//    return null;
+//}

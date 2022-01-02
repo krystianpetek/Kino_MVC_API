@@ -1,0 +1,142 @@
+﻿@using ProjektAPI.Models;
+@using System.Linq;
+@model Tuple<RezerwacjaModel, List<EmisjaModel>,string[], bool[,]>
+@{
+    ViewData["Title"] = "Dodawanie nowej rezerwacji";
+}
+
+<h1 style="font-weight:400" class="text-center">@ViewData["Title"]</h1>
+<hr />
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="form-group row">
+            <label asp-for="Item1.Emisja.Film.Nazwa" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8">
+
+                <select onchange="wywolajFilm();" asp-for="Item1.Emisja.FilmId" id="wybieramyFilmId" class="form-control"
+                        asp-items="@Model.Item2.Select(w=>new {ID = w.Film.Id, Nazwa = w.Film.Nazwa}).Distinct().Select(c=> new SelectListItem{ Text = c.Nazwa, Value = c.ID.ToString()})">
+                    <option class="bg-secondary text-light" value="@Model.Item3[0]">@Model.Item3[1]</option>
+                </select>
+                <span asp-validation-for="Item1.Emisja.Film.Nazwa" class="text-danger"></span>
+
+                <script type="text/javascript">
+
+                    function wywolajFilm(){
+                    var pathNameLength = window.location.pathname.length;
+                    var pathName = window.location.pathname.substring(0,pathNameLength-1);
+                    var idFilmu = $("#wybieramyFilmId").val();
+                    var wyszukaj = "?film="+idFilmu;
+                    window.location.replace(pathName +2 + wyszukaj);
+                    }
+                </script>
+
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="Item1.Emisja.Data" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8">
+                <select onchange="wywolajData();" asp-for="Item1.Emisja.Data" id="wybieramyDateId" class="form-control"
+                        asp-items="@Model.Item2.Where(q=>q.FilmId == int.Parse(Model.Item3[0])).Select(w=>w.Data.ToShortDateString()).Distinct().Select(c=> new SelectListItem{ Text = c.ToString(), Value = c.ToString()})">
+                    <option class="bg-secondary text-light"  value="@Model.Item3[2]">@Model.Item3[2]</option>
+                </select>
+                <span asp-validation-for="Item1.Emisja.Data" class="text-danger"></span>
+
+                <script type="text/javascript">
+                    function wywolajData()
+                    {
+                        var pathNameLengthData = window.location.pathname.length;
+                        var pathNameData = window.location.pathname.substring(0,pathNameLengthData-1);
+                        var idFilmu = $("#wybieramyFilmId").val();
+                        var idDaty = $("#wybieramyDateId").val();
+                        var wyszukaj = "?film="+idFilmu+"&data="+idDaty;
+                        window.location.replace(pathNameData + 3 + wyszukaj);
+                    }
+                </script>
+
+            </div>
+        </div>
+        
+        
+        <div class="form-group row">
+            <label asp-for="Item1.Emisja.Godzina" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8">
+                <select onchange="wywolajGodzina();" asp-for="Item1.Emisja.Godzina" id="wybieramyGodzineId" class="form-control"
+                        asp-items="@Model.Item2.Where(q=>q.FilmId == int.Parse(Model.Item3[0])).Where(q=>q.Data.ToShortDateString() == @Model.Item3[2]).Select(w=>w.Godzina.ToShortTimeString()).Distinct().Select(c=> new SelectListItem{ Text = c.ToString(), Value = c.ToString()})">
+                    <option value="@Model.Item3[3]">@Model.Item3[3]</option>
+                </select>
+                <span asp-validation-for="Item1.Emisja.Godzina" class="text-danger"></span>
+
+                <script type="text/javascript">
+                    var pathName = window.location.pathname;
+                    function wywolajGodzina()
+                    {
+                        var idFilmu = $("#wybieramyFilmId").val();
+                        var idDaty = $("#wybieramyDateId").val();
+                        var idGodziny = $("#wybieramyGodzineId").val();
+                        var wyszukaj = "?film="+idFilmu+"&data="+idDaty+"&godzina="+idGodziny;
+                        window.location.replace(pathName + wyszukaj);
+                    }
+                </script>
+
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Zajęte miejsca</label>
+                <div class="col-sm-8">
+                    
+                    <table>
+                        @for (int i = 0; i < Model.Item4.GetLength(0); i++)
+                        {
+                            <tr>
+                                @for (int j = 0; j < Model.Item4.GetLength(1); j++)
+                                {
+
+                                    <td>
+                                        @if (Model.Item4[i, j] == true)
+                                        {
+                                            <div style="margin:1px; padding: 0px; width: 15px; height: 15px; background-color: red;"><span></span></div>
+                                        }
+                                        else
+                                        {
+
+                                            @if (j == @Model.Item1.Miejsce && i == @Model.Item1.Rzad)
+                                            {
+                                                <div style="margin:1px; padding: 0px;width: 15px; height: 15px; background-color: #0080FF;"></div>
+                                                continue;
+                                            }
+
+                                            var miejsce = j + 1;
+                                            var rzad = i + 1;
+                                            <a asp-action="Create4" asp-route-film="@Model.Item3[0]" asp-route-data="@Model.Item3[2]" asp-route-godzina="@Model.Item3[3]" asp-route-miejsce="@miejsce" asp-route-rzad="@rzad"><div style="margin:1px; padding: 0px;width: 15px; height: 15px; background-color: #A1A1A1;"></div></a>
+                                            
+                                        }
+                                        
+                                        
+                                    </td>
+                                }
+                            </tr>
+
+                        }
+                    </table>
+                    <div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" asp-for="Item1.Miejsce" />
+            <input type="hidden" asp-for="Item1.Rzad" />
+            <div class="form-group row">
+                <input type="submit" value="Dodaj rezerwacje" class="text-light btn btn-dark" />
+            </div>
+
+        <br />
+        @if (!string.IsNullOrWhiteSpace(ViewBag.Zajete))
+        {
+            <div class="text-center text-danger">@ViewBag.Zajete</div>
+
+        }
+    </div>
+</div>
+

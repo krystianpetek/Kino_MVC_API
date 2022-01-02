@@ -9,175 +9,36 @@
 <hr />
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Item1.Id" />
-            <div class="form-group row">
-                <label asp-for="Item1.Emisja.Film.Nazwa" class="col-sm-4 col-form-label"></label>
-                <div class="col-sm-8">
+        <div class="form-group row">
+            <label asp-for="Item1.Emisja.Film.Nazwa" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8">
 
+                <select onchange="wywolaj();" asp-for="Item1.Emisja.FilmId" id="wybieramyFilmId" class="form-control"
+                        asp-items="@Model.Item2.Select(w=>new {ID = w.Film.Id, Nazwa = w.Film.Nazwa}).Distinct().Select(c=> new SelectListItem{ Text = c.Nazwa, Value = c.ID.ToString()})">
+                    <option value="">Wybierz film!</option>
+                </select>
+                <span asp-validation-for="Item1.Emisja.Film.Nazwa" class="text-danger"></span>
 
-                    <form> 
-                    <select onchange="wywolaj();" asp-for="Item1.Emisja.FilmId" id="wybieramyFilmId" class="form-control"
-                            asp-items="@Model.Item2.Select(w=>new {ID = w.Film.Id, Nazwa = w.Film.Nazwa}).Distinct().Select(c=> new SelectListItem{ Text = c.Nazwa, Value = c.ID.ToString()})">
-                        <option value="">Wybierz film!</option>
-                    </select>
-                    <span asp-validation-for="Item1.Emisja.Film.Nazwa" class="text-danger"></span>
+                <script type="text/javascript">
+                    function wywolaj(){
+                    var path = window.location.href;
+                    var aa = $("#wybieramyFilmId").val();
+                    var bb = "?film=".concat(aa);
+                    window.location.replace(window.location.pathname+2+bb);
+                    }
+                </script>
 
-                    </form>
-
-                    <script type="text/javascript">
-                        var path = window.location.href;
-                        function wywolaj(){
-                        var aa = $("#wybieramyFilmId").val();
-                        var bb = "?film=".concat(aa);
-                        window.location.replace(window.location.pathname+2+bb);
-                        }
-                    </script>
-
-                </div>
             </div>
+        </div>
 
-
-            <div class="form-group row">
-                <label asp-for="Item1.Emisja.Data" class="col-sm-4 col-form-label"></label>
-                <div class="col-sm-8">
-
-                    <select asp-for="Item1.Emisja.Data" id="wybieramyDateId" class="form-control">
-                            @*asp-items="@Model.Item2.Select(w=>w.Data.ToShortDateString()).Select(c=> new SelectListItem{ Text = c.ToString(), Value = c.ToString()})">*@
-                        <option value="">Wybierz datę!</option>
-                    </select>
-
-                    <span asp-validation-for="Item1.Emisja.Data" class="text-danger"></span>
-                </div>
-            </div>
-            
-            <div class="form-group row">
-                <label asp-for="Item1.Emisja.Godzina" class="col-sm-4 col-form-label"></label>
-                <div class="col-sm-8">
-
-                    <select asp-for="Item1.Emisja.Godzina" id="wybieramyGodzineId" class="form-control">
-                            @*asp-items="@Model.Item2.Select(w=>w.Godzina.ToShortTimeString()).Select(c=> new SelectListItem{ Text = c.ToString(), Value = c.ToString()})">*@
-                        <option value="">Wybierz godzinę!</option>
-                    </select>
-
-                    <span asp-validation-for="Item1.Emisja.Godzina" class="text-danger"></span>
-                </div>
-            </div>
-            
-            <div class="form-group row">
-                <label asp-for="Item1.Miejsce" class="col-sm-4 col-form-label"></label>
-                <div class="col-sm-8">
-                    <input placeholder="Podaj miejsce" required asp-for="Item1.Miejsce" class="form-control" />
-                    <span asp-validation-for="Item1.Miejsce" class="text-danger"></span>
-                </div>
-            </div> 
-            
-            <div class="form-group row">
-                <label asp-for="Item1.Rzad" class="col-sm-4 col-form-label"></label>
-                <div class="col-sm-8">
-                    <input placeholder="Podaj rząd" required asp-for="Item1.Rzad" class="form-control" />
-                    <span asp-validation-for="Item1.Rzad" class="text-danger"></span>
-                </div>
-            </div>
-
-
-            
-            <br />
-            <div class="form-group row">
-                <input type="submit" value="Dodaj rezerwacje" class="text-light btn btn-dark" />
-            </div>
-        </form>
         <br />
-        @if(!string.IsNullOrWhiteSpace(ViewBag.Zajete))
-            {
+        @if (!string.IsNullOrWhiteSpace(ViewBag.Zajete))
+        {
             <div class="text-center text-danger">@ViewBag.Zajete</div>
-                
-            }
+
+        }
     </div>
 </div>
-
-
-
-@section Scripts{
-
-    @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
-<script type="text/javascript">
-
-    var FILM;
-
-    $(document).ready(function ()
-    {
-        $('#wybieramyFilmId').change(function()
-        {
-            var wybranyFilm = $('#wybieramyFilmId').val();
-            FILM = wybranyFilm;
-            var wyborDaty = $('#wybieramyDateId');
-            wyborDaty.empty();
-
-            if(wybranyFilm != null && wybranyFilm != '')
-            {
-                $.getJSON('@Url.Action("WyborDaty")', { Film : wybranyFilm }, function(DATY)
-                {
-                    if(DATY != null && !jQuery.isEmptyObject(DATY))
-                    {
-                        wyborDaty.append($('<option/>',{
-                            value: null,
-                            text: "Wybierz datę"
-                        }));
-
-                        $.each(DATY,function(index,city)
-                        {
-                            wyborDaty.append($('<option/>',{
-                                value: city.value,
-                                text: city.text
-                            }));
-                        });
-                    };
-                });
-            }
-        });
-    });
-    
-    $(document).ready(function ()
-    {
-        $('#wybieramyDateId').change(function()
-        {
-            var wybranyFilm = $('#wybieramyDateId').val();
-
-            var wyborDaty = $('#wybieramyGodzineId');
-            wyborDaty.empty();
-
-            if(wybranyFilm != null && wybranyFilm != '')
-            {
-                $.getJSON('@Url.Action("WyborGodziny")', { Data : wybranyFilm, FILM}, function(DATY)
-                {
-                    if(DATY != null && !jQuery.isEmptyObject(DATY))
-                    {
-                        wyborDaty.append($('<option/>',{
-                            value: null,
-                            text: "Wybierz datę"
-                        }));
-
-                        $.each(DATY,function(index,city)
-                        {
-                            wyborDaty.append($('<option/>',{
-                                value: city.value,
-                                text: city.text
-                            }));
-                        });
-                    };
-                });
-            }
-        });
-    });
-
-</script>
-
-}
-
 
 
 
@@ -196,170 +57,170 @@
 @*
 
 
-@using ProjektAPI.Models;
-@using System.Linq;
-@model Tuple<RezerwacjaModel, List<EmisjaModel>>
-@{
+    @using ProjektAPI.Models;
+    @using System.Linq;
+    @model Tuple<RezerwacjaModel, List<EmisjaModel>>
+    @{
     ViewData["Title"] = "Dodawanie nowej rezerwacji";
-}
+    }
 
-<h1 style="font-weight:400" class="text-center">@ViewData["Title"]</h1>
-<hr />
-<div class="row justify-content-center">
+    <h1 style="font-weight:400" class="text-center">@ViewData["Title"]</h1>
+    <hr />
+    <div class="row justify-content-center">
     <div class="col-md-6">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Item1.Id" />
+    <form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Item1.Id" />
 
-            <div class="form-group row">
-                <label asp-for="Item1.Emisja.Film.Nazwa" class="col-sm-4 col-form-label"></label>
-                <div class="col-sm-8">
+    <div class="form-group row">
+    <label asp-for="Item1.Emisja.Film.Nazwa" class="col-sm-4 col-form-label"></label>
+    <div class="col-sm-8">
 
-                    <select asp-for="Item1.Emisja.FilmId" id="wybieramyFilmId" class="form-control"
-                            asp-items="@Model.Item2.Select(w=>new {ID = w.Film.Id, Nazwa = w.Film.Nazwa}).Distinct().Select(c=> new SelectListItem{ Text = c.Nazwa, Value = c.ID.ToString()})">
-                        <option value="">Wybierz film!</option>
-                    </select>
+    <select asp-for="Item1.Emisja.FilmId" id="wybieramyFilmId" class="form-control"
+    asp-items="@Model.Item2.Select(w=>new {ID = w.Film.Id, Nazwa = w.Film.Nazwa}).Distinct().Select(c=> new SelectListItem{ Text = c.Nazwa, Value = c.ID.ToString()})">
+    <option value="">Wybierz film!</option>
+    </select>
 
-                    <span asp-validation-for="Item1.Emisja.Film.Nazwa" class="text-danger"></span>
-                </div>
-            </div>
-
-
-            <div class="form-group row">
-                <label asp-for="Item1.Emisja.Data" class="col-sm-4 col-form-label"></label>
-                <div class="col-sm-8">
-
-                    <select asp-for="Item1.Emisja.Data" id="wybieramyDateId" class="form-control">
-                            @*asp-items="@Model.Item2.Select(w=>w.Data.ToShortDateString()).Select(c=> new SelectListItem{ Text = c.ToString(), Value = c.ToString()})">
-                        <option value="">Wybierz datę!</option>
-                    </select>
-
-                    <span asp-validation-for="Item1.Emisja.Data" class="text-danger"></span>
-                </div>
-            </div>
-            
-            <div class="form-group row">
-                <label asp-for="Item1.Emisja.Godzina" class="col-sm-4 col-form-label"></label>
-                <div class="col-sm-8">
-
-                    <select asp-for="Item1.Emisja.Godzina" id="wybieramyGodzineId" class="form-control">
-                            @*asp-items="@Model.Item2.Select(w=>w.Godzina.ToShortTimeString()).Select(c=> new SelectListItem{ Text = c.ToString(), Value = c.ToString()})">
-                        <option value="">Wybierz godzinę!</option>
-                    </select>
-
-                    <span asp-validation-for="Item1.Emisja.Godzina" class="text-danger"></span>
-                </div>
-            </div>
-            
-            <div class="form-group row">
-                <label asp-for="Item1.Miejsce" class="col-sm-4 col-form-label"></label>
-                <div class="col-sm-8">
-                    <input placeholder="Podaj miejsce" required asp-for="Item1.Miejsce" class="form-control" />
-                    <span asp-validation-for="Item1.Miejsce" class="text-danger"></span>
-                </div>
-            </div> 
-            
-            <div class="form-group row">
-                <label asp-for="Item1.Rzad" class="col-sm-4 col-form-label"></label>
-                <div class="col-sm-8">
-                    <input placeholder="Podaj rząd" required asp-for="Item1.Rzad" class="form-control" />
-                    <span asp-validation-for="Item1.Rzad" class="text-danger"></span>
-                </div>
-            </div>
-
-
-            
-            <br />
-            <div class="form-group row">
-                <input type="submit" value="Dodaj rezerwacje" class="text-light btn btn-dark" />
-            </div>
-        </form>
-        <br />
-        @if(!string.IsNullOrWhiteSpace(ViewBag.Zajete))
-            {
-            <div class="text-center text-danger">@ViewBag.Zajete</div>
-                
-            }
+    <span asp-validation-for="Item1.Emisja.Film.Nazwa" class="text-danger"></span>
     </div>
-</div>
+    </div>
+
+
+    <div class="form-group row">
+    <label asp-for="Item1.Emisja.Data" class="col-sm-4 col-form-label"></label>
+    <div class="col-sm-8">
+
+    <select asp-for="Item1.Emisja.Data" id="wybieramyDateId" class="form-control">
+    @*asp-items="@Model.Item2.Select(w=>w.Data.ToShortDateString()).Select(c=> new SelectListItem{ Text = c.ToString(), Value = c.ToString()})">
+    <option value="">Wybierz datę!</option>
+    </select>
+
+    <span asp-validation-for="Item1.Emisja.Data" class="text-danger"></span>
+    </div>
+    </div>
+
+    <div class="form-group row">
+    <label asp-for="Item1.Emisja.Godzina" class="col-sm-4 col-form-label"></label>
+    <div class="col-sm-8">
+
+    <select asp-for="Item1.Emisja.Godzina" id="wybieramyGodzineId" class="form-control">
+    @*asp-items="@Model.Item2.Select(w=>w.Godzina.ToShortTimeString()).Select(c=> new SelectListItem{ Text = c.ToString(), Value = c.ToString()})">
+    <option value="">Wybierz godzinę!</option>
+    </select>
+
+    <span asp-validation-for="Item1.Emisja.Godzina" class="text-danger"></span>
+    </div>
+    </div>
+
+    <div class="form-group row">
+    <label asp-for="Item1.Miejsce" class="col-sm-4 col-form-label"></label>
+    <div class="col-sm-8">
+    <input placeholder="Podaj miejsce" required asp-for="Item1.Miejsce" class="form-control" />
+    <span asp-validation-for="Item1.Miejsce" class="text-danger"></span>
+    </div>
+    </div>
+
+    <div class="form-group row">
+    <label asp-for="Item1.Rzad" class="col-sm-4 col-form-label"></label>
+    <div class="col-sm-8">
+    <input placeholder="Podaj rząd" required asp-for="Item1.Rzad" class="form-control" />
+    <span asp-validation-for="Item1.Rzad" class="text-danger"></span>
+    </div>
+    </div>
 
 
 
-@section Scripts{
+    <br />
+    <div class="form-group row">
+    <input type="submit" value="Dodaj rezerwacje" class="text-light btn btn-dark" />
+    </div>
+    </form>
+    <br />
+    @if(!string.IsNullOrWhiteSpace(ViewBag.Zajete))
+    {
+    <div class="text-center text-danger">@ViewBag.Zajete</div>
+
+    }
+    </div>
+    </div>
+
+
+
+    @section Scripts{
 
     @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
-<script type="text/javascript">
+    }
+    <script type="text/javascript">
 
     var FILM;
 
     $(document).ready(function ()
     {
-        $('#wybieramyFilmId').change(function()
-        {
-            var wybranyFilm = $('#wybieramyFilmId').val();
-            FILM = wybranyFilm;
-            var wyborDaty = $('#wybieramyDateId');
-            wyborDaty.empty();
+    $('#wybieramyFilmId').change(function()
+    {
+    var wybranyFilm = $('#wybieramyFilmId').val();
+    FILM = wybranyFilm;
+    var wyborDaty = $('#wybieramyDateId');
+    wyborDaty.empty();
 
-            if(wybranyFilm != null && wybranyFilm != '')
-            {
-                $.getJSON('@Url.Action("WyborDaty")', { Film : wybranyFilm }, function(DATY)
-                {
-                    if(DATY != null && !jQuery.isEmptyObject(DATY))
-                    {
-                        wyborDaty.append($('<option/>',{
-                            value: null,
-                            text: "Wybierz datę"
-                        }));
+    if(wybranyFilm != null && wybranyFilm != '')
+    {
+    $.getJSON('@Url.Action("WyborDaty")', { Film : wybranyFilm }, function(DATY)
+    {
+    if(DATY != null && !jQuery.isEmptyObject(DATY))
+    {
+    wyborDaty.append($('<option/>',{
+    value: null,
+    text: "Wybierz datę"
+    }));
 
-                        $.each(DATY,function(index,city)
-                        {
-                            wyborDaty.append($('<option/>',{
-                                value: city.value,
-                                text: city.text
-                            }));
-                        });
-                    };
-                });
-            }
-        });
+    $.each(DATY,function(index,city)
+    {
+    wyborDaty.append($('<option/>',{
+    value: city.value,
+    text: city.text
+    }));
     });
-    
+    };
+    });
+    }
+    });
+    });
+
     $(document).ready(function ()
     {
-        $('#wybieramyDateId').change(function()
-        {
-            var wybranyFilm = $('#wybieramyDateId').val();
+    $('#wybieramyDateId').change(function()
+    {
+    var wybranyFilm = $('#wybieramyDateId').val();
 
-            var wyborDaty = $('#wybieramyGodzineId');
-            wyborDaty.empty();
+    var wyborDaty = $('#wybieramyGodzineId');
+    wyborDaty.empty();
 
-            if(wybranyFilm != null && wybranyFilm != '')
-            {
-                $.getJSON('@Url.Action("WyborGodziny")', { Data : wybranyFilm, FILM}, function(DATY)
-                {
-                    if(DATY != null && !jQuery.isEmptyObject(DATY))
-                    {
-                        wyborDaty.append($('<option/>',{
-                            value: null,
-                            text: "Wybierz datę"
-                        }));
+    if(wybranyFilm != null && wybranyFilm != '')
+    {
+    $.getJSON('@Url.Action("WyborGodziny")', { Data : wybranyFilm, FILM}, function(DATY)
+    {
+    if(DATY != null && !jQuery.isEmptyObject(DATY))
+    {
+    wyborDaty.append($('<option/>',{
+    value: null,
+    text: "Wybierz datę"
+    }));
 
-                        $.each(DATY,function(index,city)
-                        {
-                            wyborDaty.append($('<option/>',{
-                                value: city.value,
-                                text: city.text
-                            }));
-                        });
-                    };
-                });
-            }
-        });
+    $.each(DATY,function(index,city)
+    {
+    wyborDaty.append($('<option/>',{
+    value: city.value,
+    text: city.text
+    }));
+    });
+    };
+    });
+    }
+    });
     });
 
-</script>
+    </script>
 
-}*@
+    }*@

@@ -22,10 +22,11 @@
                 <script type="text/javascript">
 
                     function wywolajFilm(){
-                    var pathNameFilm = window.location.pathname;
+                    var pathNameLength = window.location.pathname.length;
+                    var pathName = window.location.pathname.substring(0,pathNameLength-1);
                     var idFilmu = $("#wybieramyFilmId").val();
                     var wyszukaj = "?film="+idFilmu;
-                    window.location.replace(pathNameFilm + wyszukaj);
+                    window.location.replace(pathName +2 + wyszukaj);
                     }
                 </script>
 
@@ -37,13 +38,11 @@
             <div class="col-sm-8">
                 <select onchange="wywolajData();" asp-for="Item1.Emisja.Data" id="wybieramyDateId" class="form-control"
                         asp-items="@Model.Item2.Where(q=>q.FilmId == int.Parse(Model.Item3[0])).Select(w=>w.Data.ToShortDateString()).Distinct().Select(c=> new SelectListItem{ Text = c.ToString(), Value = c.ToString()})">
-                    <option value="">Wybierz datę!</option>
+                    <option class="bg-secondary text-light"  value="@Model.Item3[2]">@Model.Item3[2]</option>
                 </select>
                 <span asp-validation-for="Item1.Emisja.Data" class="text-danger"></span>
 
                 <script type="text/javascript">
-
-
                     function wywolajData()
                     {
                         var pathNameLengthData = window.location.pathname.length;
@@ -52,6 +51,32 @@
                         var idDaty = $("#wybieramyDateId").val();
                         var wyszukaj = "?film="+idFilmu+"&data="+idDaty;
                         window.location.replace(pathNameData + 3 + wyszukaj);
+                    }
+                </script>
+
+            </div>
+        </div>
+        
+        
+        <div class="form-group row">
+            <label asp-for="Item1.Emisja.Godzina" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8">
+                <select onchange="wywolajGodzina();" asp-for="Item1.Emisja.Godzina" id="wybieramyGodzineId" class="form-control"
+                        asp-items="@Model.Item2.Where(q=>q.FilmId == int.Parse(Model.Item3[0])).Where(q=>q.Data.ToShortDateString() == @Model.Item3[2]).Select(w=>w.Godzina.ToShortTimeString()).Distinct().Select(c=> new SelectListItem{ Text = c.ToString(), Value = c.ToString()})">
+                    <option value="">Wybierz godzinę!</option>
+                </select>
+                <span asp-validation-for="Item1.Emisja.Godzina" class="text-danger"></span>
+
+                <script type="text/javascript">
+                    function wywolajGodzina()
+                    {
+                        var pathNameLengthGodzina = window.location.pathname.length;
+                        var pathNameGodzina = window.location.pathname.substring(0,pathNameLengthGodzina-1);
+                        var idFilmu = $("#wybieramyFilmId").val();
+                        var idDaty = $("#wybieramyDateId").val();
+                        var idGodziny = $("#wybieramyGodzineId").val();
+                        var wyszukaj = "?film="+idFilmu+"&data="+idDaty+"&godzina="+idGodziny;
+                        window.location.replace(pathNameGodzina + 4 + wyszukaj);
                     }
                 </script>
 
