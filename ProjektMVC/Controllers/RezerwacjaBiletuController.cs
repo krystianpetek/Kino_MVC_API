@@ -232,11 +232,11 @@ namespace ProjektMVC.Controllers
             wyjscie.Rzad = model.Rzad += 1;
             
             await EmisjaAsync();
-            var przefiltowana = _rezerwacjaModels.Where(q => q.EmisjaId == model.EmisjaId);
+            var przefiltowana = _rezerwacjaModels.Where(q => q.EmisjaId == wyjscie.EmisjaId);
             var ModelWyjsciowy = new Tuple<RezerwacjaModel, List<EmisjaModel>>(new RezerwacjaModel(), _emisjaModels);
             foreach (var item in przefiltowana)
             {
-                if (model.Miejsce <= 0 || model.Rzad <= 0 || model.Miejsce > model.Emisja.Sala.IloscMiejsc || model.Rzad > model.Emisja.Sala.IloscRzedow)
+                if (item.Miejsce <= 0 || item.Rzad <= 0 || item.Miejsce > item.Emisja.Sala.IloscMiejsc || item.Rzad > item.Emisja.Sala.IloscRzedow)
                 {
                     ViewBag.Zajete = $"Niepoprawne miejsce";
                     return View("Create", ModelWyjsciowy);
