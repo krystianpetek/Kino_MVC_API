@@ -76,7 +76,7 @@
                                             var rzad = i+1;
                                             if(@Model.Item1.Emisja.Data > DateTime.Now)
                                             {
-                                            <a asp-action="CreateNaPodstawieSiedzenia" asp-route-film="@Model.Item1.Id" asp-route-miejsce="@miejsce" asp-route-rzad="@rzad"><div style="margin:1px; padding: 0px;width: 15px; height: 15px; background-color: #A1A1A1;"></div></a>
+                                            <a asp-action="Create4" asp-route-film="@Model.Item1.Emisja.FilmId" asp-route-data="@Model.Item1.Emisja.Data.ToShortDateString()" asp-route-godzina="@Model.Item1.Emisja.Godzina.ToShortTimeString()" asp-route-miejsce="@miejsce" asp-route-rzad="@rzad"><div style="margin:1px; padding: 0px;width: 15px; height: 15px; background-color: #A1A1A1;"></div></a>
 
                                             }
                                             else

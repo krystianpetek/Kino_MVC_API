@@ -200,16 +200,13 @@ namespace ProjektMVC.Controllers
         [HttpPost("[controller]/CreateFINAL")]
         public async Task<ActionResult> CreateFINAL([Bind(Prefix = "Item1")] RezerwacjaModel model)
         {
-            await EmisjaAsync();
             await RezerwacjaAsync();
             await KlienciAsync();
-
-            model.Miejsce += 1;
-            model.Rzad += 1;
-            model.Emisja = _rezerwacjaModels.FirstOrDefault(q => q.Id == model.Id).Emisja;
-            model.EmisjaId = _rezerwacjaModels.FirstOrDefault(q => q.Id == model.Id).EmisjaId;
-            model.KlientId = _klientModels.FirstOrDefault(q => q.Uzytkownik.Login == User.Identity.Name).Id;
-
+            RezerwacjaModel wyjscie = _rezerwacjaModels.Where(q => q.Emisja.FilmId == model.Emisja.FilmId).Where(q => q.Emisja.Data.ToShortDateString() == model.Emisja.Data.ToShortDateString()).Where(q => q.Emisja.Godzina.ToShortTimeString() == model.Emisja.Godzina.ToShortTimeString()).Where(q=>q.Klient.Uzytkownik.Login == User.Identity.Name).FirstOrDefault();
+            wyjscie.Miejsce = model.Miejsce += 1;
+            wyjscie.Rzad = model.Rzad += 1;
+            
+            await EmisjaAsync();
             var przefiltowana = _rezerwacjaModels.Where(q => q.EmisjaId == model.EmisjaId);
             //var modelK = new Tuple<RezerwacjaModel, List<EmisjaModel>, string[], bool[,]>(model, _emisjaModels, wartosci, siedzenia);
             var ModelWyjsciowy = new Tuple<RezerwacjaModel, List<EmisjaModel>>(new RezerwacjaModel(), _emisjaModels);
@@ -227,27 +224,9 @@ namespace ProjektMVC.Controllers
                 }
             }
 
-            HttpResponseMessage response = await client.PostAsJsonAsync(RezerwacjaPath, model);
+            HttpResponseMessage response = await client.PostAsJsonAsync(RezerwacjaPath, wyjscie);
             response.EnsureSuccessStatusCode();
             return RedirectToAction(nameof(Index));
-        }
-
-        [HttpGet("[controller]/CreateSiedzenie")]
-        public async Task<ActionResult> CreateNaPodstawieSiedzenia(string film, int miejsce, int rzad)
-        {
-            await RezerwacjaAsync();
-            await ZajeteMiejscaAsync();
-            RezerwacjaModel model = new RezerwacjaModel();
-
-            model.Id = int.Parse(film);
-            model.Rzad = rzad - 1;
-            model.Miejsce = miejsce - 1;
-            model.Emisja = _rezerwacjaModels.FirstOrDefault(q => q.Id == int.Parse(film)).Emisja;
-            model.EmisjaId = model.Emisja.Id;
-
-            bool[,] siedzenia = ZajeteSiedzenia(model);
-            var model2 = new Tuple<RezerwacjaModel, bool[,]>(model, siedzenia);
-            return View(model2);
         }
     }
 }
