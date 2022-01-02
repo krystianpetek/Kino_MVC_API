@@ -66,6 +66,11 @@
                             {
                                     
                                 <td>
+                                    @if (j == @Model.Item1.Miejsce-1 && i == @Model.Item1.Rzad-1)
+                                            {
+                                                <div style="margin:1px; padding: 0px;width: 15px; height: 15px; background-color: #66FF66;"></div>
+                                                continue;
+                                            }
                                     @if(Model.Item2[i,j] == true)
                                     {
                                             <div style="margin:1px; padding: 0px; width: 15px; height: 15px; background-color: red;"><span></span></div>

@@ -78,7 +78,7 @@ namespace ProjektAPI.Controllers
                 EmisjaId = rezerwacjaModel.EmisjaId,
                 KlientId = rezerwacjaModel.KlientId,
                 Miejsce = rezerwacjaModel.Miejsce,
-                Rzad = rezerwacjaModel.Rzad
+                Rzad = rezerwacjaModel.Rzad,
             });
             await _context.SaveChangesAsync();
 

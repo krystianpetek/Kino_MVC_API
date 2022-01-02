@@ -78,7 +78,8 @@
                     @{
                         if (item.Emisja.Data.Date > DateTime.Now)
                         {
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a>
+                            //<a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a>
+                            <span asp-action="Edit" asp-route-id="@item.Id"><del>Edytuj</del></span>
                             <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a>
                             <a asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
                         }

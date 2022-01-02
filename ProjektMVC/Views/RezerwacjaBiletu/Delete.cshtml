@@ -1,5 +1,137 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using ProjektAPI.Models
+@model Tuple<RezerwacjaModel,bool[,]>;
+
 @{
+    ViewData["Title"] = "Usuwanie rezerwacji";
 }
+
+<h1 style="font-weight:400" class="text-center">@ViewData["Title"]</h1>
+<hr />
+
+<h3 style="font-weight:400" class="text-center">Czy napewno chcesz usunąć tego klienta?</h3>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <dl class="row">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Item1.Id)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Item1.Id)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Item1.Emisja.Sala.NazwaSali)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Item1.Emisja.Sala.NazwaSali)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Item1.Miejsce)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Item1.Miejsce)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Item1.Rzad)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Item1.Rzad)
+            </dd>
+            <dt class="col-sm-3">
+                Nazwa filmu
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Item1.Emisja.Film.Nazwa)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Item1.Emisja.Data)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Item1.Emisja.Data)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Item1.Emisja.Godzina)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Item1.Emisja.Godzina)
+            </dd>
+            <dt class="col-sm-3">
+                Zajęte miejsca
+            </dt>
+            <dd class="col-sm-9">
+                <form asp-action="Create">
+                    <table>
+                        @for (int i = 0; i < Model.Item2.GetLength(0); i++)
+                        {
+                            <tr>
+                                @for (int j = 0; j < Model.Item2.GetLength(1); j++)
+                                {
+
+                                    <td>
+                                        @if (j == @Model.Item1.Miejsce-1 && i == @Model.Item1.Rzad-1)
+                                            {
+                                                <div style="margin:1px; padding: 0px;width: 15px; height: 15px; background-color: #66FF66;"></div>
+                                                continue;
+                                            }
+                                        @if (Model.Item2[i, j] == true)
+                                        {
+                                            
+                                            <div style="margin:1px; padding: 0px; width: 15px; height: 15px; background-color: red;"><span></span></div>
+                                        }
+                                        else
+                                        { 
+                                            var miejsce = j + 1;
+                                            var rzad = i + 1;
+                                            
+                                            <div style="margin:1px; padding: 0px;width: 15px; height: 15px; background-color: #A1A1A1;"></div>
+                                        }
+                                        
+                                    </td>
+                                }
+                            </tr>
+
+                        }
+
+                    </table>
+                    <div>
+                    </div>
+                </form>
+            </dd>
+        </dl>
+        <form asp-action="DeleteConfirmed" asp-route-id="@Model.Item1.Id">
+            <input type="hidden" asp-for="Item1.Id" />
+            <br />
+            <input type="submit" value="Usuń rezerwacje" class="btn btn-dark" />
+        </form>
+
+
+    </div>
+    @*<div class="col-md-6">
+        <dl class="row">
+        <dt class = "col-sm-4">
+        @Html.DisplayNameFor(model => model.Uzytkownik.Id)
+        </dt>
+        <dd class = "col-sm-8">
+        @Html.DisplayFor(model => model.Uzytkownik.Id)
+        </dd>
+        <dt class = "col-sm-4">
+        @Html.DisplayNameFor(model => model.Uzytkownik.Login)
+        </dt>
+        <dd class = "col-sm-8">
+        @Html.DisplayFor(model => model.Uzytkownik.Login)
+        </dd>
+        <dt class = "col-sm-4">
+        @Html.DisplayNameFor(model => model.Uzytkownik.Haslo)
+        </dt>
+        <dd class = "col-sm-8">
+        @Html.DisplayFor(model => model.Uzytkownik.Haslo)
+        </dd>
+        <dt class = "col-sm-4">
+        @Html.DisplayNameFor(model => model.Uzytkownik.RodzajUzytkownika)
+        </dt>
+        <dd class = "col-sm-8">
+        @Html.DisplayFor(model => model.Uzytkownik.RodzajUzytkownika)
+        </dd>
+        </dl>
+        </div>*@
+</div>
