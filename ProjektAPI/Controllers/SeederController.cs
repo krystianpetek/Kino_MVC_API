@@ -48,7 +48,7 @@ namespace ProjektAPI.Controllers
         {
             if (!_context.SaleKinowe.Any())
             {
-                _context.SaleKinowe.Add(new SalaModel() { NazwaSali = "Sala 1", IloscMiejsc = 15, IloscRzedow = 6 });
+                _context.SaleKinowe.Add(new SalaModel(){NazwaSali = "Sala 1", IloscMiejsc = 15, IloscRzedow = 6 });
                 _context.SaleKinowe.Add(new SalaModel(){NazwaSali = "Sala 2",IloscMiejsc = 12,IloscRzedow = 8});
                 _context.SaleKinowe.Add(new SalaModel(){NazwaSali = "PRYWATNA",IloscMiejsc = 10,IloscRzedow = 10});
                 _context.SaveChanges();
