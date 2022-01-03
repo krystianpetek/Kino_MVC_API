@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace ProjektMVC.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     public class EmisjaFilmowController : Controller, IZabronDostep
     {

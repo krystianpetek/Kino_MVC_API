@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using ProjektAPI.Models;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Linq;
-using ProjektAPI.Models;
 
 namespace ProjektMVC.Controllers
 {

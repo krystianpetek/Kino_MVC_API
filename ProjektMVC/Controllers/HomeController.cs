@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ProjektAPI.Models;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Linq;
+using ProjektMVC;
 using ProjektMVC.Models;
 using System;
-using ProjektMVC;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ProjektAPI.Controllers
 {
@@ -35,17 +35,17 @@ namespace ProjektAPI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<bool> list = new List<bool>() { false, false, false, false ,false};
-            
+            List<bool> list = new List<bool>() { false, false, false, false, false };
+
             list[0] = false; // uzytkownik
-            List<UzytkownikModel> listaUzytkownikow=new List<UzytkownikModel>();
+            List<UzytkownikModel> listaUzytkownikow = new List<UzytkownikModel>();
             HttpResponseMessage response = await _client.GetAsync(KlientPath);
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 List<KlientModel> listaKlientow = await response.Content.ReadAsAsync<List<KlientModel>>();
-                if(listaKlientow.Count > 0)
+                if (listaKlientow.Count > 0)
                 {
-                    foreach(var uzytkownik in listaKlientow)
+                    foreach (var uzytkownik in listaKlientow)
                     {
                         listaUzytkownikow.Add(new UzytkownikModel()
                         {
@@ -58,44 +58,44 @@ namespace ProjektAPI.Controllers
                     list[0] = true;
                 }
             }
-            
+
             list[1] = false; // sala kinowa
             response = await _client.GetAsync(SalaPath);
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 List<SalaModel> listaSal = await response.Content.ReadAsAsync<List<SalaModel>>();
-                if(listaSal.Count > 0)
-                list[1] = true;
+                if (listaSal.Count > 0)
+                    list[1] = true;
             }
 
             list[2] = false; // film
             response = await _client.GetAsync(FilmyPath);
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 List<FilmModel> listaFilmow = await response.Content.ReadAsAsync<List<FilmModel>>();
                 if (listaFilmow.Count > 0)
                     list[2] = true;
             }
-            
+
             list[3] = false; // seans
             response = await _client.GetAsync(EmisjaPath);
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 List<EmisjaModel> listaSeansow = await response.Content.ReadAsAsync<List<EmisjaModel>>();
                 if (listaSeansow.Count > 0)
                     list[3] = true;
             }
-            
+
             list[4] = false; // bilety
             response = await _client.GetAsync(RezerwacjaPath);
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 List<RezerwacjaModel> listaRezerwacji = await response.Content.ReadAsAsync<List<RezerwacjaModel>>();
                 if (listaRezerwacji.Count > 0)
                     list[4] = true;
             }
 
-            return View(new Tuple<List<bool>,List<UzytkownikModel>>(list,listaUzytkownikow));
+            return View(new Tuple<List<bool>, List<UzytkownikModel>>(list, listaUzytkownikow));
         }
         public async Task<ActionResult> AktualneFilmy()
         {
@@ -125,12 +125,7 @@ namespace ProjektAPI.Controllers
             return BadRequest();
 
         }
-        public async Task<IActionResult> AktualnieEmitowaneFilmy(
-    string sortOrder,
-    string currentFilter,
-    string searchString,
-    int? pageNumber)
-
+        public async Task<IActionResult> AktualnieEmitowaneFilmy(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             ViewBag.CurrentSort = sortOrder;
             if (searchString != null)
@@ -160,7 +155,7 @@ namespace ProjektAPI.Controllers
                             Godzina = item.Godzina,
                             NazwaFilmu = item.Film.Nazwa
                         });
-                        posortowanaLista  = aktualnaListaFilmow.OrderByDescending(x => x.Data).ToList();
+                        posortowanaLista = aktualnaListaFilmow.OrderByDescending(x => x.Data).ToList();
                     }
                 }
             }

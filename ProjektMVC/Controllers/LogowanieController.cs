@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using ProjektAPI.Models;
+using ProjektMVC.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using ProjektMVC.Models;
-using Microsoft.AspNetCore.Authorization;
-using ProjektAPI.Models;
-using Microsoft.Extensions.Configuration;
-using System.Net.Http;
-using ProjektAPI.Controllers;
 
 namespace ProjektMVC.Controllers
 {
@@ -41,7 +40,9 @@ namespace ProjektMVC.Controllers
             {
                 listaKlientow = await response.Content.ReadAsAsync<List<KlientModel>>();
                 klient = listaKlientow.FirstOrDefault(q => q.Uzytkownik.Login == User.Identity.Name);
+                
             }
+
             return View(klient);
         }
 
@@ -107,6 +108,7 @@ namespace ProjektMVC.Controllers
         }
         
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Rejestracja([Bind] KlientModel model)
         {
             model.Uzytkownik.RodzajUzytkownika = Rola.Klient;
