@@ -55,10 +55,11 @@
                             <div class="dropdown-menu" aria-labelledby="przykladowaListaPrimary">
                                 @if (User.IsInRole("Admin") || User.IsInRole("Pracownik"))
                                 {
+                                    <a class="dropdown-item" asp-controller="ListaKlientow" asp-action="Index">Klienci</a>
                                     <a class="dropdown-item" asp-controller="ListaSalKinowych" asp-action="Index">Sale kinowe</a>
                                     <a class="dropdown-item" asp-controller="ListaFilmow" asp-action="Index">Filmy</a>
                                     <a class="dropdown-item" asp-controller="EmisjaFilmow" asp-action="Index">Emisje filmów</a>
-                                    <a class="dropdown-item" asp-controller="ListaKlientow" asp-action="Index">Klienci</a>
+                                    <a class="dropdown-item" href="#"><del>Rezerwacje biletów</del></a>
                                 }
 
 
