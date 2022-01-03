@@ -29,8 +29,8 @@ namespace ProjektAPI.Controllers
                 _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 1, EmisjaId = 4, Rzad = 6, Miejsce = 1 });
                 _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 1, EmisjaId = 6, Rzad = 10, Miejsce = 5 });
                 _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 3, EmisjaId = 5, Rzad = 10, Miejsce = 8 });
-            }
             _context.SaveChanges();
+            }
         }
 
         private void InicjalizacjaKlienci()
