@@ -132,11 +132,13 @@
                 <input type="submit" value="Dodaj rezerwacje" class="text-light btn btn-dark" />
             </div>
             </form>
+            <div class="text-center text-danger">@TempData["x"]</div>
 
         <br />
         @if (!string.IsNullOrWhiteSpace(ViewBag.Zajete))
         {
             <div class="text-center text-danger">@ViewBag.Zajete</div>
+
 
         }
     </div>

@@ -236,15 +236,16 @@ namespace ProjektMVC.Controllers
             var ModelWyjsciowy = new Tuple<RezerwacjaModel, List<EmisjaModel>>(new RezerwacjaModel(), _emisjaModels);
             foreach (var item in przefiltowana)
             {
-                if (item.Miejsce <= 0 || item.Rzad <= 0 || item.Miejsce > item.Emisja.Sala.IloscMiejsc || item.Rzad > item.Emisja.Sala.IloscRzedow)
+                if (model.Miejsce <= 0 || model.Rzad <= 0 || model.Miejsce > item.Emisja.Sala.IloscMiejsc || model.Rzad > item.Emisja.Sala.IloscRzedow)
                 {
-                    ViewBag.Zajete = $"Niepoprawne miejsce";
-                    return View("Create2", ModelWyjsciowy);
+                    TempData["x"] = $"Niepoprawne miejsce";
+                    return Redirect($"Create4?film={model.Emisja.FilmId}&data={model.Emisja.Data.ToShortDateString()}&godzina={model.Emisja.Godzina.ToShortTimeString()}");
                 }
                 if (model.Miejsce == item.Miejsce && model.Rzad == item.Rzad)
                 {
-                    ViewBag.Zajete = $"To miejsce jest zajęte";
-                    return View("Create2", ModelWyjsciowy);
+
+                    TempData["x"] = $"To miejsce jest zajęte";
+                    return Redirect($"Create4?film={model.Emisja.FilmId}&data={model.Emisja.Data.ToShortDateString()}&godzina={model.Emisja.Godzina.ToShortTimeString()}");
                 }
             }
 
