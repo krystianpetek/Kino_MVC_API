@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjektAPI.Models;
+using System;
 
 namespace ProjektMVC.Controllers.DodawanieRekordow
 {
@@ -174,6 +175,69 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
             return Redirect("/");
         }
 
+        [HttpGet("Dodawanie/Seanse")]
+        public ActionResult EmisjeFilmow()
+        {
+            
+            _context.Emisja.Add(new EmisjaModel()
+            {
+                Data = DateTime.Now.AddDays(-20),
+                Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 10, 30, 0),
+                FilmId = 5,
+                SalaId = 9
+            });
+            _context.Emisja.Add(new EmisjaModel()
+            {
+                Data = DateTime.Now,
+                Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 20, 0, 0),
+                FilmId = 1,
+                SalaId = 1
+            });
+            _context.Emisja.Add(new EmisjaModel()
+            {
+                Data = DateTime.Now.AddDays(3),
+                Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 0, 0),
+                FilmId = 7,
+                SalaId = 1
+            });
+            _context.Emisja.Add(new EmisjaModel()
+            {
+                Data = DateTime.Now,
+                Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 18, 0, 0),
+                FilmId = 1,
+                SalaId = 2
+            });
+            _context.Emisja.Add(new EmisjaModel()
+            {
+                Data = DateTime.Now,
+                Godzina = DateTime.Now,
+                FilmId = 9,
+                SalaId = 9
+            });
+            _context.Emisja.Add(new EmisjaModel()
+            {
+                Data = DateTime.Now.AddDays(-15),
+                Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 11, 0, 0),
+                FilmId = 3,
+                SalaId = 8
+            });
+            _context.Emisja.Add(new EmisjaModel()
+            {
+                Data = DateTime.Now.AddDays(7),
+                Godzina = DateTime.Now.AddHours(3),
+                FilmId = 5,
+                SalaId = 8
+            });
+            _context.Emisja.Add(new EmisjaModel()
+            {
+                Data = DateTime.Now,
+                Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 22, 0, 0),
+                FilmId = 1,
+                SalaId = 2
+            });
+            _context.SaveChanges();
+            return Redirect("/");
+        }
 
     }
 }

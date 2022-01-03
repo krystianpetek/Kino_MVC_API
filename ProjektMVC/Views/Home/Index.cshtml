@@ -59,17 +59,14 @@
                     </div>
                 </div>
             </div>
-
         }
     }
     <br />
-
 
     <div style="display: flex" class="col-md-5 justify-content-around">
         @{
             if (Model.Item1[1])
             {
-
                 <button type="button" data-toggle="tooltip" data-placement="top" title="Sale kinowe już zostały dodane" class="btn btn-warning">SALE KINOWE</button>
             }
             else
@@ -78,7 +75,6 @@
             }
             if (Model.Item1[2])
             {
-
                 <button type="button" data-toggle="tooltip" data-placement="top" title="Filmy już zostały dodane" class="btn btn-warning">FILMY</button>
             }
             else
@@ -110,6 +106,5 @@
         else if (x.RodzajUzytkownika == Rola.Pracownik)
             return $"text-success";
         else return "text-primary";
-
     }
 }
