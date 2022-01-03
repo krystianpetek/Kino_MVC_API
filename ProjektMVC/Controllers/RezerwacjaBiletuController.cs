@@ -127,11 +127,10 @@ namespace ProjektMVC.Controllers
             }
 
             bool[,] siedzenia = ZajeteSiedzenia(model);
-
             var model2 = new Tuple<RezerwacjaModel, bool[,]>(model, siedzenia);
             return View(model2);
         }
-
+        
         [HttpGet("[controller]/Create")]
         public async Task<ActionResult> Create()
         {
@@ -232,6 +231,7 @@ namespace ProjektMVC.Controllers
             wyjscie.Rzad = model.Rzad += 1;
             
             await EmisjaAsync();
+            await RezerwacjaAsync();
             var przefiltowana = _rezerwacjaModels.Where(q => q.EmisjaId == wyjscie.EmisjaId);
             var ModelWyjsciowy = new Tuple<RezerwacjaModel, List<EmisjaModel>>(new RezerwacjaModel(), _emisjaModels);
             foreach (var item in przefiltowana)
@@ -239,12 +239,12 @@ namespace ProjektMVC.Controllers
                 if (item.Miejsce <= 0 || item.Rzad <= 0 || item.Miejsce > item.Emisja.Sala.IloscMiejsc || item.Rzad > item.Emisja.Sala.IloscRzedow)
                 {
                     ViewBag.Zajete = $"Niepoprawne miejsce";
-                    return View("Create", ModelWyjsciowy);
+                    return View("Create2", ModelWyjsciowy);
                 }
                 if (model.Miejsce == item.Miejsce && model.Rzad == item.Rzad)
                 {
                     ViewBag.Zajete = $"To miejsce jest zajęte";
-                    return View("Create", ModelWyjsciowy);
+                    return View("Create2", ModelWyjsciowy);
                 }
             }
 
