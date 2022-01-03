@@ -188,7 +188,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
             });
             _context.Emisja.Add(new EmisjaModel()
             {
-                Data = DateTime.Now,
+                Data = DateTime.Now.AddDays(1),
                 Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 20, 0, 0),
                 FilmId = 1,
                 SalaId = 1
@@ -202,14 +202,14 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
             });
             _context.Emisja.Add(new EmisjaModel()
             {
-                Data = DateTime.Now,
+                Data = DateTime.Now.AddDays(10),
                 Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 18, 0, 0),
                 FilmId = 1,
                 SalaId = 2
             });
             _context.Emisja.Add(new EmisjaModel()
             {
-                Data = DateTime.Now,
+                Data = DateTime.Now.AddDays(31),
                 Godzina = DateTime.Now,
                 FilmId = 9,
                 SalaId = 9
@@ -246,7 +246,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
             return Redirect("/");
         }
 
-        [HttpGet("Dodawanie/RezerwacjaBiletu")]
+        [HttpGet("Dodawanie/RezerwacjaBiletow")]
         public ActionResult RezerwacjaBiletow()
         {
             _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 1, Miejsce = 1 });
@@ -260,16 +260,26 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
             _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 1, EmisjaId = 7, Rzad = 8, Miejsce = 11 });
             _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 1, EmisjaId = 7, Rzad = 8, Miejsce = 12 });
             _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 1, EmisjaId = 9, Rzad = 3, Miejsce = 2 });
-            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 3, EmisjaId = 1, Rzad = 6, Miejsce = 10 });
-            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 3, EmisjaId = 1, Rzad = 8, Miejsce = 9 });
-            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 3, EmisjaId = 2, Rzad = 10, Miejsce = 13 });
-            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 3, EmisjaId = 2, Rzad = 10, Miejsce = 15 });
-            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 3, EmisjaId = 4, Rzad = 6, Miejsce = 1 });
-            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 3, EmisjaId = 4, Rzad = 6, Miejsce = 10 });
-            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 3, EmisjaId = 6, Rzad = 5, Miejsce = 10 });
-            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 3, EmisjaId = 6, Rzad = 10, Miejsce = 5 });
-            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 3, EmisjaId = 5, Rzad = 10, Miejsce = 8 });
-            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 3, EmisjaId = 5, Rzad = 8, Miejsce = 3 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 6, Miejsce = 10 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 8, Miejsce = 9 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 1, EmisjaId = 2, Rzad = 10, Miejsce = 13 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 1, EmisjaId = 2, Rzad = 10, Miejsce = 15 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 1, EmisjaId = 4, Rzad = 6, Miejsce = 1 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 1, EmisjaId = 4, Rzad = 6, Miejsce = 10 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 1, EmisjaId = 6, Rzad = 5, Miejsce = 10 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 1, EmisjaId = 6, Rzad = 10, Miejsce = 5 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 1, EmisjaId = 5, Rzad = 10, Miejsce = 8 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 1, EmisjaId = 5, Rzad = 8, Miejsce = 3 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 3, EmisjaId = 1, Rzad = 8, Miejsce = 8 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 2, EmisjaId = 1, Rzad = 10, Miejsce = 7 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 3, EmisjaId = 2, Rzad = 12, Miejsce = 11 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 2, EmisjaId = 2, Rzad = 5, Miejsce = 10 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 2, EmisjaId = 4, Rzad = 4, Miejsce = 3 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 3, EmisjaId = 4, Rzad = 7, Miejsce = 5 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 3, EmisjaId = 6, Rzad = 4, Miejsce = 6 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 2, EmisjaId = 6, Rzad = 9, Miejsce = 5 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 3, EmisjaId = 5, Rzad = 9, Miejsce = 8 });
+            _context.Rezerwacja.Add(new RezerwacjaModel() { KlientId = 3, EmisjaId = 5, Rzad = 7, Miejsce = 3 });
             _context.SaveChanges();
             return Redirect("/");
 

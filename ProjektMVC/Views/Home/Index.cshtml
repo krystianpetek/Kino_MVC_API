@@ -62,8 +62,11 @@
         }
     }
     <br />
-
-    <div style="display: flex" class="col-md-4 justify-content-between">
+    
+    <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div style="display: flex" class="col-md-6 justify-content-between">
         @{
             if (Model.Item1[1])
             {
@@ -98,6 +101,9 @@
                 <a asp-controller="Dodawanie" asp-action="RezerwacjaBiletow" class="btn btn-warning">BILETY</a>
             }
         }
+    </div>
+    <div class="col-md-4">
+    </div>
     </div>
 </div>
 <script>

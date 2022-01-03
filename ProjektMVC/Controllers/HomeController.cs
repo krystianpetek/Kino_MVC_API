@@ -18,6 +18,7 @@ namespace ProjektAPI.Controllers
         private readonly string KlientPath;
         private readonly string SalaPath;
         private readonly string EmisjaPath;
+        private readonly string RezerwacjaPath;
         private IConfiguration _configuration;
 
         public HomeController(IConfiguration configuration)
@@ -27,13 +28,14 @@ namespace ProjektAPI.Controllers
             KlientPath = _configuration["ProjektAPIConfig:Url2"];
             SalaPath = _configuration["ProjektAPIConfig:Url3"];
             EmisjaPath = _configuration["ProjektAPIConfig:Url5"];
+            RezerwacjaPath = _configuration["ProjektAPIConfig:Url6"];
             _client = new HttpClient();
             _client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
 
         public async Task<IActionResult> Index()
         {
-            List<bool> list = new List<bool>() { false, false, false, false };
+            List<bool> list = new List<bool>() { false, false, false, false ,false};
             
             list[0] = false; // uzytkownik
             List<UzytkownikModel> listaUzytkownikow=new List<UzytkownikModel>();
@@ -82,6 +84,15 @@ namespace ProjektAPI.Controllers
                 List<EmisjaModel> listaSeansow = await response.Content.ReadAsAsync<List<EmisjaModel>>();
                 if (listaSeansow.Count > 0)
                     list[3] = true;
+            }
+            
+            list[4] = false; // bilety
+            response = await _client.GetAsync(RezerwacjaPath);
+            if(response.IsSuccessStatusCode)
+            {
+                List<RezerwacjaModel> listaRezerwacji = await response.Content.ReadAsAsync<List<RezerwacjaModel>>();
+                if (listaRezerwacji.Count > 0)
+                    list[4] = true;
             }
 
             return View(new Tuple<List<bool>,List<UzytkownikModel>>(list,listaUzytkownikow));
