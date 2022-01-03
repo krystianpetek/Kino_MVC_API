@@ -89,6 +89,14 @@
             {
                 <a asp-controller="Dodawanie" asp-action="Seanse" class="btn btn-warning">SEANSE</a>
             }
+            if (Model.Item1[4])
+            {
+                <button type="button" data-toggle="tooltip" data-placement="top" title="Rezerwacje biletów już zostały dodane" class="btn btn-warning">BILETY</button>
+            }
+            else
+            {
+                <a asp-controller="Dodawanie" asp-action="RezerwacjaBiletow" class="btn btn-warning">BILETY</a>
+            }
         }
     </div>
 </div>
