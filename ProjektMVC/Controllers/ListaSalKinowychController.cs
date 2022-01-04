@@ -8,18 +8,15 @@ using System.Threading.Tasks;
 
 namespace ProjektMVC.Controllers
 {
-    [Authorize]
-    [Route("[controller]")]
-    public class ListaSalKinowychController : Controller, IZabronDostep
+    [Authorize, Route("[controller]")]
+    public class ListaSalKinowychController : Controller
     {
-
         private readonly HttpClient client;
         private readonly string SaleKinowePath;
         private readonly IConfiguration _configuration;
 
         public ListaSalKinowychController(IConfiguration configuration)
         {
-
             _configuration = configuration;
             SaleKinowePath = _configuration["ProjektAPIConfig:Url3"];
             client = new HttpClient();
@@ -29,7 +26,6 @@ namespace ProjektMVC.Controllers
         [HttpGet("Index"), Authorize(Roles = "Admin,Pracownik")]
         public async Task<ActionResult> Index()
         {
-            ZabronDostepu();
             List<SalaModel> listaSal = null;
             HttpResponseMessage odpowiedz = await client.GetAsync(SaleKinowePath);
             if (odpowiedz.IsSuccessStatusCode)
@@ -39,27 +35,27 @@ namespace ProjektMVC.Controllers
             return View(listaSal);
         }
 
-        [HttpGet("Create")]
+        [HttpGet("Create"), Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
-            ZabronDostepu();
             return View();
         }
 
-        [HttpPost("Create")]
-        [ValidateAntiForgeryToken]
+        [HttpPost("Create"), Authorize(Roles = "Admin"), ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind("NazwaSali, IloscRzedow, IloscMiejsc")] SalaModel model)
         {
-            ZabronDostepu();
-            HttpResponseMessage odpowiedz = await client.PostAsJsonAsync(SaleKinowePath, model);
-            odpowiedz.EnsureSuccessStatusCode();
-            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid) // nowosc
+            {
+                HttpResponseMessage odpowiedz = await client.PostAsJsonAsync(SaleKinowePath, model);
+                odpowiedz.EnsureSuccessStatusCode();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
         }
 
-        [HttpGet("Edit/{id}")]
+        [HttpGet("Edit/{id}"), Authorize(Roles = "Admin,Pracownik")]
         public async Task<ActionResult> Edit([FromRoute] int? id)
         {
-            ZabronDostepu();
             HttpResponseMessage odpowiedz = await client.GetAsync(SaleKinowePath + id);
             if (odpowiedz.IsSuccessStatusCode)
             {
@@ -69,11 +65,9 @@ namespace ProjektMVC.Controllers
             return NotFound();
         }
 
-        [HttpPost("Edit/{id}")]
-        [ValidateAntiForgeryToken]
+        [HttpPost("Edit/{id}"), Authorize(Roles = "Admin,Pracownik"), ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([FromRoute] int id, [Bind("Id, NazwaSali, IloscRzedow, IloscMiejsc")] SalaModel model)
         {
-            ZabronDostepu();
             if (ModelState.IsValid)
             {
                 HttpResponseMessage odpowiedz = await client.PutAsJsonAsync(SaleKinowePath + id, model);
@@ -83,10 +77,9 @@ namespace ProjektMVC.Controllers
             return View(model);
         }
 
-        [HttpGet("Delete")]
+        [HttpGet("Delete"), Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int? id)
         {
-            ZabronDostepu();
             HttpResponseMessage odpowiedz = await client.GetAsync(SaleKinowePath + id);
             if (odpowiedz.IsSuccessStatusCode)
             {
@@ -96,20 +89,17 @@ namespace ProjektMVC.Controllers
             return NotFound();
         }
 
-        [HttpPost("Delete/{id}")]
-        [ValidateAntiForgeryToken]
+        [HttpPost("Delete/{id}"), Authorize(Roles = "Admin"), ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            ZabronDostepu();
             HttpResponseMessage odpowiedz = await client.DeleteAsync(SaleKinowePath + id);
             odpowiedz.EnsureSuccessStatusCode();
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet("Details/{id}")]
+        [HttpGet("Details/{id}"), Authorize(Roles = "Admin,Pracownik")]
         public async Task<ActionResult> Details(int? id)
         {
-            ZabronDostepu();
             HttpResponseMessage response = await client.GetAsync(SaleKinowePath + id);
             if (response.IsSuccessStatusCode)
             {
@@ -117,11 +107,6 @@ namespace ProjektMVC.Controllers
                 return View(model);
             }
             return NotFound();
-        }
-
-        public void ZabronDostepu()
-        {
-            if (User.IsInRole("Klient")) HttpContext.Response.Redirect("/");
         }
     }
 }

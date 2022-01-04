@@ -10,7 +10,7 @@ namespace ProjektMVC.Controllers
 {
     [Authorize]
     [Route("[controller]")]
-    public class ListaKlientowController : Controller, IZabronDostep
+    public class ListaKlientowController : Controller
     {
         private readonly HttpClient client;
         private readonly string KlienciPath;
@@ -24,10 +24,9 @@ namespace ProjektMVC.Controllers
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
 
-        [HttpGet("Index")]
+        [HttpGet("Index"), Authorize(Roles = "Admin,Pracownik")]
         public async Task<ActionResult> Index()
         {
-            ZabronDostepu();
             List<KlientModel> listaKlientow = null;
             HttpResponseMessage response = await client.GetAsync(KlienciPath);
             if (response.IsSuccessStatusCode)
@@ -37,18 +36,16 @@ namespace ProjektMVC.Controllers
             return View(listaKlientow);
         }
 
-        [HttpGet("Create")]
+        [HttpGet("Create"), Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
-            ZabronDostepu();
             return View();
         }
 
-        [HttpPost("Create")]
+        [HttpPost("Create"), Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind("Id,Imie,Nazwisko,DataUrodzenia,NumerTelefonu,Email,Miasto,Ulica,KodPocztowy,Uzytkownik")] KlientModel model)
         {
-            ZabronDostepu();
             if (ModelState.IsValid)
             {
                 HttpResponseMessage response = await client.PostAsJsonAsync(KlienciPath, model);
@@ -58,10 +55,9 @@ namespace ProjektMVC.Controllers
             return View(model);
         }
 
-        [HttpGet("Edit/{id}")]
+        [HttpGet("Edit/{id}"), Authorize(Roles = "Admin,Pracownik")]
         public async Task<ActionResult> Edit([FromRoute] int? id)
         {
-            ZabronDostepu();
             HttpResponseMessage response = await client.GetAsync(KlienciPath + id);
             if (response.IsSuccessStatusCode)
             {
@@ -71,11 +67,9 @@ namespace ProjektMVC.Controllers
             return NotFound();
         }
 
-        [HttpPost("Edit/{id}")]
-        [ValidateAntiForgeryToken]
+        [HttpPost("Edit/{id}"), Authorize(Roles = "Admin,Pracownik"), ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([FromRoute] int id, [Bind("Id,Imie,Nazwisko,DataUrodzenia,NumerTelefonu,Email,Miasto,Ulica,KodPocztowy,Uzytkownik")] KlientModel model)
         {
-            ZabronDostepu();
             if (ModelState.IsValid)
             {
                 HttpResponseMessage response = await client.PutAsJsonAsync(KlienciPath + id, model);
@@ -85,10 +79,9 @@ namespace ProjektMVC.Controllers
             return View(model);
         }
 
-        [HttpGet("Delete")]
+        [HttpGet("Delete"), Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int? id)
         {
-            ZabronDostepu();
             HttpResponseMessage response = await client.GetAsync(KlienciPath + id);
             if (response.IsSuccessStatusCode)
             {
@@ -98,21 +91,17 @@ namespace ProjektMVC.Controllers
             return NotFound();
         }
 
-        [HttpPost("Delete/{id}")]
-        [ValidateAntiForgeryToken]
+        [HttpPost("Delete/{id}"), Authorize(Roles = "Admin"), ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            ZabronDostepu();
             HttpResponseMessage response = await client.DeleteAsync(KlienciPath + id);
             response.EnsureSuccessStatusCode();
             return RedirectToAction(nameof(Index));
         }
 
-
-        [HttpGet("Details/{id}")]
+        [HttpGet("Details/{id}"), Authorize(Roles = "Admin,Pracownik")]
         public async Task<ActionResult> Details(int? id)
         {
-            ZabronDostepu();
             HttpResponseMessage response = await client.GetAsync(KlienciPath + id);
             if (response.IsSuccessStatusCode)
             {
@@ -120,11 +109,6 @@ namespace ProjektMVC.Controllers
                 return View(model);
             }
             return NotFound();
-        }
-
-        public void ZabronDostepu()
-        {
-            if (User.IsInRole("Klient")) HttpContext.Response.Redirect("/");
         }
     }
 }

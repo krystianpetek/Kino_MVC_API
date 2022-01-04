@@ -84,8 +84,7 @@ namespace ProjektMVC.Controllers
             }
             return siedzenia;
         }
-
-        [Authorize]
+        
         [HttpGet("[controller]/Index")]
         public async Task<IActionResult> Index(string sortOrder, string currentFilter,string searchString, int? pageNumber)
         {

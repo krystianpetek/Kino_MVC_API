@@ -18,4 +18,5 @@
     transition-duration: 1s;
     display: flex;
     justify-content: center;
+overflow:hidden;
 }

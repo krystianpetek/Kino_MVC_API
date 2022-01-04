@@ -36,7 +36,6 @@ namespace ProjektAPI.Controllers
         public async Task<IActionResult> Index()
         {
             List<bool> list = new List<bool>() { false, false, false, false, false };
-
             list[0] = false; // uzytkownik
             List<UzytkownikModel> listaUzytkownikow = new List<UzytkownikModel>();
             HttpResponseMessage response = await _client.GetAsync(KlientPath);
@@ -97,6 +96,7 @@ namespace ProjektAPI.Controllers
 
             return View(new Tuple<List<bool>, List<UzytkownikModel>>(list, listaUzytkownikow));
         }
+        
         public async Task<ActionResult> AktualneFilmy()
         {
             List<FilmModel> listaFilmow = null;
