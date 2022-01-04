@@ -5,6 +5,7 @@ using ProjektAPI.Models;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace ProjektMVC.Controllers
 {
@@ -15,13 +16,19 @@ namespace ProjektMVC.Controllers
         private readonly HttpClient client;
         private readonly string KlienciPath;
         private readonly IConfiguration _configuration;
-
+        private List<KlientModel> _listaKlientow;
         public ListaKlientowController(IConfiguration configuration)
         {
             _configuration = configuration;
             KlienciPath = _configuration["ProjektAPIConfig:Url2"];
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
+        }
+        private async Task PobierzKlientow()
+        {
+            HttpResponseMessage response = await client.GetAsync(KlienciPath);
+            if (response.IsSuccessStatusCode)
+                _listaKlientow = await response.Content.ReadAsAsync<List<KlientModel>>();
         }
 
         [HttpGet("Index"), Authorize(Roles = "Admin,Pracownik")]
@@ -42,17 +49,29 @@ namespace ProjektMVC.Controllers
             return View();
         }
 
-        [HttpPost("Create"), Authorize(Roles = "Admin")]
+        [HttpPost("Create"), Authorize(Roles = "Admin")] // modelstate
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind("Id,Imie,Nazwisko,DataUrodzenia,NumerTelefonu,Email,Miasto,Ulica,KodPocztowy,Uzytkownik")] KlientModel model)
         {
             if (ModelState.IsValid)
             {
+                await PobierzKlientow();
+                if (_listaKlientow.Select(x => x.Email).Contains(model.Email))
+                { 
+                    TempData["duplikat"] = "Login lub email są już zajęte";
+                    return Redirect($"Create");
+                }
+                
+                if(_listaKlientow.Select(x=>x.Uzytkownik.Login).Contains(model.Uzytkownik.Login))
+                {
+                    TempData["duplikat"] = "Login lub email są już zajęte";
+                    return Redirect($"Create");
+                }
                 HttpResponseMessage response = await client.PostAsJsonAsync(KlienciPath, model);
                 response.EnsureSuccessStatusCode();
                 return RedirectToAction(nameof(Index));
             }
-            return View(model);
+            return Redirect($"Create");
         }
 
         [HttpGet("Edit/{id}"), Authorize(Roles = "Admin,Pracownik")]

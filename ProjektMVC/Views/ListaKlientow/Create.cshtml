@@ -4,7 +4,7 @@
     ViewData["Title"] = "Dodawanie nowego klienta";
 }
 
-<h1 style="font-weight:400" class="text-center">Dodawanie nowego klienta</h1>
+<h1 style="font-weight:400" class="text-center">@ViewData["Title"]</h1>
 <hr />
 <div class="row justify-content-center">
     <div class="col-md-6">
@@ -96,6 +96,7 @@
                 <input type="submit" value="Dodaj klienta" class="text-light btn btn-dark" />
             </div>
         </form>
+        <div class="text-center text-danger">@TempData["duplikat"]</div>
     </div>
 </div>
 

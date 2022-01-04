@@ -5,6 +5,7 @@ using ProjektAPI.Models;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace ProjektMVC.Controllers
 {
@@ -14,6 +15,7 @@ namespace ProjektMVC.Controllers
         private readonly HttpClient client;
         private readonly string SaleKinowePath;
         private readonly IConfiguration _configuration;
+        private List<SalaModel> _listaSalKinowych;
 
         public ListaSalKinowychController(IConfiguration configuration)
         {
@@ -21,6 +23,12 @@ namespace ProjektMVC.Controllers
             SaleKinowePath = _configuration["ProjektAPIConfig:Url3"];
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
+        }
+        private async Task PobierzSaleKinowe()
+        {
+            HttpResponseMessage response = await client.GetAsync(SaleKinowePath);
+            if (response.IsSuccessStatusCode)
+                _listaSalKinowych = await response.Content.ReadAsAsync<List<SalaModel>>();
         }
 
         [HttpGet("Index"), Authorize(Roles = "Admin,Pracownik")]
@@ -41,16 +49,18 @@ namespace ProjektMVC.Controllers
             return View();
         }
 
-        [HttpPost("Create"), Authorize(Roles = "Admin"), ValidateAntiForgeryToken]
+        [HttpPost("Create"), Authorize(Roles = "Admin"), ValidateAntiForgeryToken] // modelstate
         public async Task<ActionResult> Create([Bind("NazwaSali, IloscRzedow, IloscMiejsc")] SalaModel model)
         {
-            if (ModelState.IsValid) // nowosc
+            await PobierzSaleKinowe();
+            if (!_listaSalKinowych.Select(x => x.NazwaSali).Contains(model.NazwaSali))
             {
                 HttpResponseMessage odpowiedz = await client.PostAsJsonAsync(SaleKinowePath, model);
                 odpowiedz.EnsureSuccessStatusCode();
                 return RedirectToAction(nameof(Index));
             }
-            return View(model);
+            TempData["duplikat"] = "Istnieje już sala o takiej nazwie";
+            return RedirectToAction("Create");
         }
 
         [HttpGet("Edit/{id}"), Authorize(Roles = "Admin,Pracownik")]
@@ -65,16 +75,18 @@ namespace ProjektMVC.Controllers
             return NotFound();
         }
 
-        [HttpPost("Edit/{id}"), Authorize(Roles = "Admin,Pracownik"), ValidateAntiForgeryToken]
+        [HttpPost("Edit/{id}"), Authorize(Roles = "Admin,Pracownik"), ValidateAntiForgeryToken]  // modelstate
         public async Task<ActionResult> Edit([FromRoute] int id, [Bind("Id, NazwaSali, IloscRzedow, IloscMiejsc")] SalaModel model)
         {
-            if (ModelState.IsValid)
+            await PobierzSaleKinowe();
+            if (!_listaSalKinowych.Select(x => x.NazwaSali).Contains(model.NazwaSali))
             {
                 HttpResponseMessage odpowiedz = await client.PutAsJsonAsync(SaleKinowePath + id, model);
                 odpowiedz.EnsureSuccessStatusCode();
                 return RedirectToAction(nameof(Index));
             }
-            return View(model);
+            TempData["duplikat"] = "Istnieje już sala o takiej nazwie";
+            return Redirect($"{model.Id}");
         }
 
         [HttpGet("Delete"), Authorize(Roles = "Admin")]
