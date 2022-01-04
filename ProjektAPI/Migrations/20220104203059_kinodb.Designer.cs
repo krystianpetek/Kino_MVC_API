@@ -10,8 +10,8 @@ using ProjektAPI.Models;
 namespace ProjektAPI.Migrations
 {
     [DbContext(typeof(APIDatabaseContext))]
-    [Migration("20220102194236_DodajKinoDB")]
-    partial class DodajKinoDB
+    [Migration("20220104203059_kinodb")]
+    partial class kinodb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -59,9 +59,8 @@ namespace ProjektAPI.Migrations
                     b.Property<float>("Cena")
                         .HasColumnType("real");
 
-                    b.Property<string>("CzasTrwania")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CzasTrwania")
+                        .HasColumnType("int");
 
                     b.Property<string>("Gatunek")
                         .IsRequired()

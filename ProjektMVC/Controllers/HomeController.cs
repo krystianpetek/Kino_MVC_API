@@ -54,8 +54,9 @@ namespace ProjektAPI.Controllers
                             RodzajUzytkownika = uzytkownik.Uzytkownik.RodzajUzytkownika
                         });
                     }
-                    list[0] = true;
                 }
+                if(listaKlientow.Count >= 3)
+                    list[0] = true;
             }
 
             list[1] = false; // sala kinowa
@@ -125,18 +126,8 @@ namespace ProjektAPI.Controllers
             return BadRequest();
 
         }
-        public async Task<IActionResult> AktualnieEmitowaneFilmy(string sortOrder, string currentFilter, string searchString, int? pageNumber)
-        {
-            ViewBag.CurrentSort = sortOrder;
-            if (searchString != null)
-            {
-                pageNumber = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
-
+        public async Task<IActionResult> AktualnieEmitowaneFilmy(int? pageNumber)
+        { 
             List<AktualnieEmitowaneFilmy> posortowanaLista = new List<AktualnieEmitowaneFilmy>();
             List<EmisjaModel> listaFilmow = null;
             HttpResponseMessage response = await _client.GetAsync(EmisjaPath);

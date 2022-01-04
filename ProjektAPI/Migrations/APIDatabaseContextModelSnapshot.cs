@@ -57,9 +57,8 @@ namespace ProjektAPI.Migrations
                     b.Property<float>("Cena")
                         .HasColumnType("real");
 
-                    b.Property<string>("CzasTrwania")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CzasTrwania")
+                        .HasColumnType("int");
 
                     b.Property<string>("Gatunek")
                         .IsRequired()

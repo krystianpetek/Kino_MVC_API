@@ -88,7 +88,7 @@ namespace ProjektMVC.Controllers
         [HttpPost("Edit/{id}"), Authorize(Roles = "Admin,Pracownik"), ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([FromRoute] int id, [Bind("Id,Imie,Nazwisko,DataUrodzenia,NumerTelefonu,Email,Miasto,Ulica,KodPocztowy,Uzytkownik")] KlientModel model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) // todo - duplikaty
             {
                 HttpResponseMessage response = await client.PutAsJsonAsync(KlienciPath + id, model);
                 response.EnsureSuccessStatusCode();

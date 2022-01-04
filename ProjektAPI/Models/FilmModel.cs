@@ -15,12 +15,21 @@ namespace ProjektAPI.Models
         [Required, Display(Name = "Wiek")]
         public Wiek OgraniczeniaWiek { get; set; }
         [Required, Display(Name = "Czas trwania")]
-        public string CzasTrwania { get; set; }
+        public int CzasTrwania { get; set; }
         [Required, Display(Name = "Kwota")]
         public float Cena { get; set; }
     }
     public enum Wiek
     {
-        BezOgraniczen, Od7lat, Od12lat, Od16lat, Od18lat
+        [Display(Name = "Bez ograniczeń")]
+        BezOgraniczen,
+        [Display(Name = "Od 7 lat")]
+        Od7lat,
+        [Display(Name = "Od 12 lat")]
+        Od12lat,
+        [Display(Name = "Od 16 lat")]
+        Od16lat,
+        [Display(Name = "Od 18 lat")]
+        Od18lat
     }
 }

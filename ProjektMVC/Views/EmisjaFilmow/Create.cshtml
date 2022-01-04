@@ -34,7 +34,7 @@
                 <div class="col-sm-8">
 
                     <select asp-for="Item3.SalaId" class="form-control">
-                        <option value="">Wybierz Sale!</option>
+                        <option value="">Wybierz sale!</option>
                         @foreach(var item in Model.Item2)
                         {
                         <option value="@item.Id">@item.NazwaSali</option>

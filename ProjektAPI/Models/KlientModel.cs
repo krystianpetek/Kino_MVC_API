@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjektAPI.Attributes;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ProjektAPI.Models
@@ -11,7 +12,7 @@ namespace ProjektAPI.Models
         public string Imie { get; set; }
         [Required, Display(Name = "Nazwisko"), StringLength(50)]
         public string Nazwisko { get;set; }
-        [Required, DataType(DataType.Date), Display(Name = "Data urodzenia")]
+        [Required, DataType(DataType.Date), Display(Name = "Data urodzenia"), WalidacjaWieku]
         public DateTime DataUrodzenia { get; set; } 
         [Phone, Display(Name = "Numer telefonu")]
         public string NumerTelefonu { get; set; }

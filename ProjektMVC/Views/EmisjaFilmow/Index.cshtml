@@ -26,6 +26,7 @@
                 @Html.DisplayNameFor(model => model.Sala.NazwaSali)
             </th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -46,6 +47,18 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Sala.NazwaSali)
             </td>
+            <td>
+                    @{
+                        if (item.Data.Date >= DateTime.Now.Date)
+                        {
+                            <input type="checkbox" disabled>
+                        }
+                        else
+                        {
+                            <input type="checkbox" disabled checked />
+                        }
+                    }
+                </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> 
               <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a> 

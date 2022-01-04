@@ -5,6 +5,13 @@
     padding: 20px;
     padding-left: 10px;
 }
+.buttonyPaddingMniejsze {
+    padding: 10px;
+    padding-left: 10px;
+}
+.buttonyPaddingMniejsze a, .buttonyPaddingMniejsze button{
+    width: 130px;
+}
 .user {
     padding: 2px;
     margin: 0px;
@@ -18,5 +25,5 @@
     transition-duration: 1s;
     display: flex;
     justify-content: center;
-overflow:hidden;
+    overflow:hidden;
 }

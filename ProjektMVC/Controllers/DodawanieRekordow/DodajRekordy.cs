@@ -95,7 +95,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
                 Nazwa = "Nikt",
                 Opis = "Przechodzień jest świadkiem jak grupa mężczyzn atakuje kobietę, więc podejmuje interwencję. Tym samym staje się celem narkotykowego bossa.",
                 Gatunek = "Thriller, Akcja",
-                CzasTrwania = "92 min",
+                CzasTrwania = 92,
                 OgraniczeniaWiek = Wiek.Od18lat,
                 Cena = 40
             });
@@ -104,7 +104,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
                 Nazwa = "Niewidzialny Człowiek",
                 Opis = "Po zerwaniu toksycznej relacji mąż Cecilii, naukowiec-wynalazca popełnia samobójstwo. Od tej pory zaczynają ją prześladować dziwne zdarzenia.",
                 Gatunek = "Horror",
-                CzasTrwania = "124 min",
+                CzasTrwania = 124,
                 OgraniczeniaWiek = Wiek.Od16lat,
                 Cena = 30
             });
@@ -113,7 +113,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
                 Nazwa = "Na rauszu",
                 Opis = "Czwórka nauczycieli pracujących w gimnazjum testuje alkoholową metodę, która ma polepszyć jakość ich życia.",
                 Gatunek = "Dramat, Komedia",
-                CzasTrwania = "115 min",
+                CzasTrwania = 115,
                 OgraniczeniaWiek = Wiek.Od16lat,
                 Cena = 35
             });
@@ -122,7 +122,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
                 Nazwa = "Nie patrz w górę",
                 Opis = "Dwójka astronomów wyrusza w tournée po mediach, aby ostrzec ludzkość przed zmierzającą w stronę Ziemi zabójczą kometą.",
                 Gatunek = "Komedia",
-                CzasTrwania = "145 min",
+                CzasTrwania = 145,
                 OgraniczeniaWiek = Wiek.Od12lat,
                 Cena = 35
             });
@@ -131,7 +131,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
                 Nazwa = "Wojna z dziadkiem",
                 Opis = "Peter zmuszony jest dzielić swoją sypialnię z Dziadkiem, który wprowadza się do jego domu po śmierci żony. Chłopak postanawia zrobić wszystko by się go pozbyć.",
                 Gatunek = "Familijny, Komedia",
-                CzasTrwania = "98 min",
+                CzasTrwania = 98,
                 OgraniczeniaWiek = Wiek.Od12lat,
                 Cena = 30
             });
@@ -140,7 +140,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
                 Nazwa = "Nasze magiczne Encanto",
                 Opis = "Dziewczynka pochodzi z kolumbijskiej rodziny, która obdarzona jest magicznymi mocami. Niestety ona sama nie posiada tego daru.",
                 Gatunek = "Animacja, Familijny, Przygodowy",
-                CzasTrwania = "99 min",
+                CzasTrwania = 99,
                 OgraniczeniaWiek = Wiek.BezOgraniczen,
                 Cena = 26
             });
@@ -149,7 +149,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
                 Nazwa = "Uncharted",
                 Opis = "Nathan Drake wraz ze swoim przyjacielem Victorem Sullivanem i dziennikarką Eleną Fisher wyrusza na poszukiwania El Dorado.",
                 Gatunek = "Przygodowy",
-                CzasTrwania = "102 min",
+                CzasTrwania = 102,
                 OgraniczeniaWiek = Wiek.Od7lat,
                 Cena = 30
             });
@@ -158,7 +158,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
                 Nazwa = "Matrix Zmartwychwstania",
                 Opis = "Podążaj za Neo, który prowadzi zwyczajne życie w San Francisco, gdzie jego terapeuta przepisuje mu niebieskie pigułki. Jednak Morfeusz oferuje mu czerwoną pigułkę i ponownie otwiera jego umysł na świat Matrix.",
                 Gatunek = "Akcja, Sci-Fi",
-                CzasTrwania = "148 min",
+                CzasTrwania = 148,
                 OgraniczeniaWiek = Wiek.Od16lat,
                 Cena = 40
             });
@@ -167,7 +167,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
                 Nazwa = "Krzyk",
                 Opis = "Młoda kobieta wraca do swojego rodzinnego miasta, żeby poznać przerażające przypadki morderstw związanych z zamaskowanym seryjnym mordercą.",
                 Gatunek = "Horror",
-                CzasTrwania = "106 min",
+                CzasTrwania = 106,
                 OgraniczeniaWiek = Wiek.Od18lat,
                 Cena = 40
             });

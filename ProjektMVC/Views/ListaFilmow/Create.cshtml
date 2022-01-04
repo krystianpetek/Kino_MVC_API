@@ -41,7 +41,13 @@
             <div class="form-group row">
                 <label asp-for="OgraniczeniaWiek" class="col-sm-4 col-form-label"></label>
                 <div class="col-sm-8">
-                    <input placeholder="Podaj ograniczenia wiekowe" required asp-for="OgraniczeniaWiek" class="form-control" />
+                    <select asp-for="OgraniczeniaWiek" class="form-control">
+                        <option selected>@Wiek.Od18lat</option>
+                        <option>@Wiek.Od16lat</option>
+                        <option>@Wiek.Od12lat</option>
+                        <option>@Wiek.Od7lat</option>
+                        <option>@Wiek.BezOgraniczen</option>
+                    </select>
                     <span asp-validation-for="OgraniczeniaWiek" class="text-danger"></span>
                 </div>
             </div>

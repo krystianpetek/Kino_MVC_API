@@ -25,10 +25,9 @@ namespace ProjektMVC.Controllers
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
 
-        [HttpGet("Index")]
+        [HttpGet("Index"), Authorize(Roles = "Admin, Pracownik")]
         public async Task<ActionResult> Index()
         {
-            ZabronDostepu();
             List<FilmModel> listaFilmow = null;
             HttpResponseMessage response = await client.GetAsync(FilmyPath);
             if(response.IsSuccessStatusCode)
@@ -38,32 +37,27 @@ namespace ProjektMVC.Controllers
             return View(listaFilmow);
         }
 
-        [HttpGet("Create")]
+        [HttpGet("Create"), Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
-            ZabronDostepu();
             return View();
         }
 
-        [HttpPost("Create")]
-        [ValidateAntiForgeryToken]
+        [HttpPost("Create"), Authorize(Roles = "Admin"), ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind("Nazwa, Opis, Gatunek, OgraniczeniaWiek, CzasTrwania, Cena")] FilmModel model)
         {
-            ZabronDostepu();
             if(ModelState.IsValid)
             {
                 HttpResponseMessage response = await client.PostAsJsonAsync(FilmyPath, model);
                 response.EnsureSuccessStatusCode();
                 return RedirectToAction(nameof(Index));
-
             }
             return View(model);
         }
 
-        [HttpGet("Edit/{id}")]
+        [HttpGet("Edit/{id}"), Authorize(Roles = "Admin, Pracownik")]
         public async Task<ActionResult> Edit(int? id)
         {
-            ZabronDostepu();
             HttpResponseMessage response = await client.GetAsync(FilmyPath + id);
             if(response.IsSuccessStatusCode)
             {
@@ -73,11 +67,9 @@ namespace ProjektMVC.Controllers
             return NotFound();
         }
 
-        [HttpPost("Edit/{id}")]
-        [ValidateAntiForgeryToken]
+        [HttpPost("Edit/{id}"), Authorize(Roles = "Admin, Pracownik"), ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int id, [Bind("Id,Nazwa, Opis, Gatunek, OgraniczeniaWiek, CzasTrwania, Cena")] FilmModel model)
         {
-            ZabronDostepu();
             if (ModelState.IsValid)
             {
                 HttpResponseMessage response = await client.PutAsJsonAsync(FilmyPath + id, model);
@@ -87,10 +79,9 @@ namespace ProjektMVC.Controllers
             return View(model);
         }
 
-        [HttpGet("Delete")]
+        [HttpGet("Delete"), Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int? id)
         {
-            ZabronDostepu();
             HttpResponseMessage response = await client.GetAsync(FilmyPath + id);
             if(response.IsSuccessStatusCode)
             {
@@ -100,20 +91,18 @@ namespace ProjektMVC.Controllers
             return NotFound();
         }
 
-        [HttpPost("Delete/{id}")]
+        [HttpPost("Delete/{id}"), Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            ZabronDostepu();
             HttpResponseMessage response = await client.DeleteAsync(FilmyPath + id);
             response.EnsureSuccessStatusCode();
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet("Details/{id}")]
+        [HttpGet("Details/{id}"), Authorize(Roles = "Admin, Pracownik")]
         public async Task<ActionResult> Details(int? id)
         {
-            ZabronDostepu();
             HttpResponseMessage response = await client.GetAsync(FilmyPath + id);
             if(response.IsSuccessStatusCode)
             {
@@ -121,11 +110,6 @@ namespace ProjektMVC.Controllers
                 return View(model);
             }
             return NotFound();
-        }
-
-        public void ZabronDostepu()
-        {
-            if (User.IsInRole("Klient")) HttpContext.Response.Redirect("/");
         }
     }
 }

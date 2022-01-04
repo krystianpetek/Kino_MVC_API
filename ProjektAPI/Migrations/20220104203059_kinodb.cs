@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjektAPI.Migrations
 {
-    public partial class DodajKinoDB : Migration
+    public partial class kinodb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,7 +17,7 @@ namespace ProjektAPI.Migrations
                     Opis = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Gatunek = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OgraniczeniaWiek = table.Column<int>(type: "int", nullable: false),
-                    CzasTrwania = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CzasTrwania = table.Column<int>(type: "int", nullable: false),
                     Cena = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>

@@ -8,6 +8,7 @@
 <hr />
 <div class="row justify-content-center">
     <div class="col-md-6">
+        <div style="padding: 10px; padding-bottom: 20px;" class="text-center text-danger">@TempData["duplikat"]</div>
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group row">
@@ -96,7 +97,7 @@
                 <input type="submit" value="Dodaj klienta" class="text-light btn btn-dark" />
             </div>
         </form>
-        <div class="text-center text-danger">@TempData["duplikat"]</div>
+        
     </div>
 </div>
 

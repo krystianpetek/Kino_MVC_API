@@ -31,12 +31,26 @@ namespace ProjektMVC.Controllers
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
+        private async Task SalaAsync()
+        {
+            HttpResponseMessage response = await client.GetAsync(SalaPath);
+            if (response.IsSuccessStatusCode)
+            {
+                _salaModels = await response.Content.ReadAsAsync<List<SalaModel>>();
+            }
+        }
+        private async Task FilmyAsync()
+        {
+            HttpResponseMessage response = await client.GetAsync(FilmyPath);
+            if (response.IsSuccessStatusCode)
+            {
+                _filmModels = await response.Content.ReadAsAsync<List<FilmModel>>();
+            }
+        }
 
-        [HttpGet("Index")]
+        [HttpGet("Index"), Authorize(Roles = "Admin, Pracownik")]
         public async Task<ActionResult> Index()
         {
-            ZabronDostepu();
-
             List<EmisjaModel> listaKlientow = null;
             HttpResponseMessage response = await client.GetAsync(EmisjaPath);
             if (response.IsSuccessStatusCode)
@@ -46,31 +60,17 @@ namespace ProjektMVC.Controllers
             return View(listaKlientow);
         }
 
-        [HttpGet("Create")]
+        [HttpGet("Create"), Authorize(Roles = "Admin"), ValidateAntiForgeryToken]
         public async Task<ActionResult> Create()
         {
-            ZabronDostepu();
-            await WykonajPrzypisanie();
+            await FilmyAsync();
+            await SalaAsync();
             var emisja = new EmisjaModel() { Data = DateTime.Now.Date, Godzina = DateTime.Now };
             var krotka = new Tuple<List<FilmModel>, List<SalaModel>, EmisjaModel>(_filmModels, _salaModels, emisja);
             return View(krotka);
         }
 
-        private async Task WykonajPrzypisanie()
-        {
-            HttpResponseMessage response = await client.GetAsync(SalaPath);
-            if (response.IsSuccessStatusCode)
-            {
-                _salaModels = await response.Content.ReadAsAsync<List<SalaModel>>();
-            }
-            response = await client.GetAsync(FilmyPath);
-            if (response.IsSuccessStatusCode)
-            {
-                _filmModels = await response.Content.ReadAsAsync<List<FilmModel>>();
-            }
-        }
-
-        [HttpPost("Create")]
+        [HttpPost("Create"), Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Prefix = "Item3")] EmisjaModel model)
         {
@@ -83,11 +83,11 @@ namespace ProjektMVC.Controllers
             return View(model);
         }
 
-        [HttpGet("Edit/{id}")]
+        [HttpGet("Edit/{id}"), Authorize(Roles = "Admin, Pracownik")]
         public async Task<ActionResult> Edit(int? id)
         {
-            ZabronDostepu();
-            await WykonajPrzypisanie();
+            await SalaAsync();
+            await FilmyAsync();
             HttpResponseMessage response = await client.GetAsync(EmisjaPath + id);
             if (response.IsSuccessStatusCode)
             {
@@ -98,11 +98,10 @@ namespace ProjektMVC.Controllers
             return NotFound();
         }
 
-        [HttpPost("Edit/{id}")]
+        [HttpPost("Edit/{id}"), Authorize(Roles = "Admin, Pracownik")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int id, [Bind(Prefix = "Item3")] EmisjaModel model)
         {
-            ZabronDostepu();
             if (ModelState.IsValid)
             {
                 HttpResponseMessage response = await client.PutAsJsonAsync(EmisjaPath + id, model);
@@ -112,15 +111,15 @@ namespace ProjektMVC.Controllers
             return View(model);
         }
 
-        [HttpGet("Delete")]
+        [HttpGet("Delete"), Authorize(Roles = "Admin, Pracownik")]
         public async Task<ActionResult> Delete(int? id)
         {
-            ZabronDostepu();
             HttpResponseMessage response = await client.GetAsync(EmisjaPath + id);
             if (response.IsSuccessStatusCode)
             {
                 EmisjaModel model = await response.Content.ReadAsAsync<EmisjaModel>();
-                await WykonajPrzypisanie();
+                await FilmyAsync();
+                await SalaAsync();
                 model.Film = _filmModels.FirstOrDefault(q => q.Id == model.FilmId);
                 model.Sala = _salaModels.FirstOrDefault(q => q.Id == model.SalaId);
                 return View(model);
@@ -128,34 +127,29 @@ namespace ProjektMVC.Controllers
             return NotFound();
         }
 
-        [HttpPost("Delete/{id}")]
+        [HttpPost("Delete/{id}"), Authorize(Roles = "Admin, Pracownik")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            ZabronDostepu();
             HttpResponseMessage response = await client.DeleteAsync(EmisjaPath + id);
             response.EnsureSuccessStatusCode();
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet("Details/{id}")]
+        [HttpGet("Details/{id}"), Authorize(Roles = "Admin, Pracownik")]
         public async Task<ActionResult> Details(int? id)
         {
-            ZabronDostepu();
             HttpResponseMessage response = await client.GetAsync(EmisjaPath + id);
             if (response.IsSuccessStatusCode)
             {
                 EmisjaModel model = await response.Content.ReadAsAsync<EmisjaModel>();
-                await WykonajPrzypisanie();
+                await FilmyAsync();
+                await SalaAsync();
                 model.Film = _filmModels.FirstOrDefault(q => q.Id == model.FilmId);
                 model.Sala = _salaModels.FirstOrDefault(q => q.Id == model.SalaId);
                 return View(model);
             }
             return NotFound();
-        }
-        public void ZabronDostepu()
-        {
-            if (User.IsInRole("Klient")) HttpContext.Response.Redirect("/");
         }
     }
 }

@@ -6,16 +6,18 @@
 
 <div class="text-center">
     <br />
-    <h2>Witam w abstrakcyjnym kinie, stworzonym w celu zaliczenia przedmiotu</h2>
-    <h3>Programowanie w środowisku ASP.NET</h3>
+    <h3>Witam w abstrakcyjnym kinie, jest to projekt końcowy w celu zaliczenia przedmiotu</h3>
+    <h4>Programowanie w środowisku ASP.NET</h4>
     <h5 class="krystian bd-content-title">Autor: Krystian Petek</h5>
 </div>
 <div>
-    <br /><br />
+    <br />
+    <hr />
     @{
+        <h5 style="padding-bottom: 15px;"><a asp-controller="Logowanie" asp-action="Rejestracja">Zarejestruj się</a>, aby korzystać z serwisu lub dodaj użytkowników przez specjalnie przygotowaną funkcjonalność poniżej.</h5>
         if (Model.Item1[0])
         {
-            <h5>Kliknij w <button type="button" data-toggle="tooltip" data-placement="top" title="Użytkownicy już zostali dodani" class="btn btn-warning">KLIENCI</button> , aby dodać 3 użytkowników o róznych rolach:</h5>
+            <h5>Kliknij w <button type="button"  data-toggle="tooltip" data-placement="top" title="Użytkownicy już zostali dodani" class="btn btn-outline-secondary">KLIENCI</button> , aby dodać 3 użytkowników o róznych rolach:</h5>
         }
         else
         {
@@ -62,49 +64,53 @@
         }
     }
     <br />
-    
-    <div class="row">
-    <div class="col-md-3">
-    </div>
-    <div style="display: flex" class="col-md-6 justify-content-between">
-        @{
-            if (Model.Item1[1])
+
+    <div>
+        <hr />
+        <h5>Kolejnym krokiem jest zalogowanie się i dodanie kolejno sal kinowych, filmów, seansów. Możesz to także zrobić przyciskami poniżej.</h5>
+            <div class="buttonyPaddingMniejsze">
+            @{if (Model.Item1[1])
             {
-                <button type="button" data-toggle="tooltip" data-placement="top" title="Sale kinowe już zostały dodane" class="btn btn-warning">SALE KINOWE</button>
+                <button type="button" data-toggle="tooltip" data-placement="left" title="Sale kinowe już zostały dodane" class="btn btn-outline-secondary">SALE KINOWE</button>
             }
             else
             {
                 <a asp-controller="Dodawanie" asp-action="SaleKinowe" class="btn btn-warning">SALE KINOWE</a>
-            }
-            if (Model.Item1[2])
+            }}<span> , aby dodać sale kinowe.</span>
+            </div>
+            <div class="buttonyPaddingMniejsze">
+            @{if (Model.Item1[2])
             {
-                <button type="button" data-toggle="tooltip" data-placement="top" title="Filmy już zostały dodane" class="btn btn-warning">FILMY</button>
+                <button type="button" data-toggle="tooltip" data-placement="left" title="Filmy już zostały dodane" class="btn btn-outline-secondary">FILMY</button>
             }
             else
             {
                 <a asp-controller="Dodawanie" asp-action="Filmy" class="btn btn-warning">FILMY</a>
-            }
-            if (Model.Item1[3])
+            }}<span> , aby dodać repertuar.</span>
+            </div>
+            
+            <div class="buttonyPaddingMniejsze">
+            @{if (Model.Item1[3])
             {
-                <button type="button" data-toggle="tooltip" data-placement="top" title="Seanse już zostały dodane" class="btn btn-warning">SEANSE</button>
+                <button type="button" data-toggle="tooltip" data-placement="left" title="Seanse już zostały dodane" class="btn btn-outline-secondary">SEANSE</button>
             }
             else
             {
                 <a asp-controller="Dodawanie" asp-action="Seanse" class="btn btn-warning">SEANSE</a>
-            }
-            if (Model.Item1[4])
+            }}<span> , aby dodać seanse aktualnie wyświetlane w kinie.</span>
+            </div>
+            <div class="buttonyPaddingMniejsze">
+            @{if (Model.Item1[4])
             {
-                <button type="button" data-toggle="tooltip" data-placement="top" title="Rezerwacje biletów już zostały dodane" class="btn btn-warning">BILETY</button>
+                <button type="button" data-toggle="tooltip" data-placement="left" title="Rezerwacje biletów już zostały dodane" class="btn btn-outline-secondary ">BILETY</button>
             }
             else
             {
                 <a asp-controller="Dodawanie" asp-action="RezerwacjaBiletow" class="btn btn-warning">BILETY</a>
-            }
-        }
-    </div>
-    <div class="col-md-4">
-    </div>
-    </div>
+            }} <span> , aby dodać bilety, które zakupili klienci.</span>
+            </div>
+        
+        </div>
 </div>
 <script>
     $(function () {
