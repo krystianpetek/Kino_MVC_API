@@ -61,7 +61,6 @@ namespace ProjektMVC.Controllers
                     TempData["duplikat"] = "Login lub email są już zajęte";
                     return Redirect($"Create");
                 }
-                
                 if(_listaKlientow.Select(x=>x.Uzytkownik.Login).Contains(model.Uzytkownik.Login))
                 {
                     TempData["duplikat"] = "Login lub email są już zajęte";
