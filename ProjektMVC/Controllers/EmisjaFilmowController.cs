@@ -75,7 +75,7 @@ namespace ProjektMVC.Controllers
         public async Task<ActionResult> Create([Bind(Prefix = "Item3")] EmisjaModel model)
         {
             if (ModelState.IsValid)
-                {
+            {
                 HttpResponseMessage response = await client.PostAsJsonAsync(EmisjaPath, model);
                 response.EnsureSuccessStatusCode();
                 return RedirectToAction(nameof(Index));

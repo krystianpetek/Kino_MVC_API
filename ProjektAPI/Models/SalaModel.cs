@@ -6,7 +6,7 @@ namespace ProjektAPI.Models
     {
         [Required, Display(Name = "ID")]
         public int Id { get; set; }
-        [Required, Display(Name ="Nazwa sali")]
+        [Required, Display(Name = "Nazwa sali")]
         public string NazwaSali { get; set; }
         [Required, Range(5, 15), Display(Name = "Ilość rzędów")]
         public int IloscRzedow { get; set; }

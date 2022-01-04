@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ProjektAPI.Models
 {
@@ -13,8 +12,8 @@ namespace ProjektAPI.Models
         public int Miejsce { get; set; }
         [Required, Display(Name = "EmisjaID")]
         public int EmisjaId { get; set; }
-        public virtual EmisjaModel Emisja { get; set;}
-        [Required, Display(Name = "KlientID")] 
+        public virtual EmisjaModel Emisja { get; set; }
+        [Required, Display(Name = "KlientID")]
         public int KlientId { get; set; }
         public virtual KlientModel Klient { get; set; }
     }

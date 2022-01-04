@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjektAPI.Attributes;
 using ProjektAPI.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

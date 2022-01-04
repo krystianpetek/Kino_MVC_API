@@ -27,3 +27,15 @@
     justify-content: center;
     overflow:hidden;
 }
+
+@media (max-width: 1200px) {
+    .wyswietlWLinii {
+        line-height: 30px;
+    }
+}
+@media (max-width: 768px)
+{
+    div a.navbar-brand:first-child {
+        display: none;
+    }
+}

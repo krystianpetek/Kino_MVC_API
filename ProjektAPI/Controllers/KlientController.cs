@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProjektAPI.Attributes;
 using ProjektAPI.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,8 +26,8 @@ namespace ProjektAPI.Controllers
         [HttpGet("{id}")]
         public ActionResult<IEnumerable<KlientModel>> Get(int id)
         {
-            var zapytanie = _context.Klienci.Include(q=>q.Uzytkownik).FirstOrDefault(q => q.Id == id);
-            if(zapytanie is null) return NotFound();
+            var zapytanie = _context.Klienci.Include(q => q.Uzytkownik).FirstOrDefault(q => q.Id == id);
+            if (zapytanie is null) return NotFound();
             return Ok(zapytanie);
         }
 
@@ -49,7 +48,7 @@ namespace ProjektAPI.Controllers
             if (zapytanieKlient is null)
                 return NotFound();
 
-            var zapytanieUzytkownik = _context.Login.FirstOrDefault(q=>q.Id == zapytanieKlient.UzytkownikId);
+            var zapytanieUzytkownik = _context.Login.FirstOrDefault(q => q.Id == zapytanieKlient.UzytkownikId);
             if (zapytanieUzytkownik is null)
                 return NotFound();
 

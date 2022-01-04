@@ -36,11 +36,11 @@ namespace ProjektMVC.Controllers
             List<KlientModel> listaKlientow = default;
             KlientModel klient = default;
             HttpResponseMessage response = await client.GetAsync(KlientPath);
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 listaKlientow = await response.Content.ReadAsAsync<List<KlientModel>>();
                 klient = listaKlientow.FirstOrDefault(q => q.Uzytkownik.Login == User.Identity.Name);
-                
+
             }
 
             return View(klient);
@@ -106,13 +106,13 @@ namespace ProjektMVC.Controllers
         {
             return View();
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Rejestracja([Bind] KlientModel model)
         {
             model.Uzytkownik.RodzajUzytkownika = Rola.Klient;
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 HttpResponseMessage response = await client.PostAsJsonAsync(KlientPath, model);
                 response.EnsureSuccessStatusCode();

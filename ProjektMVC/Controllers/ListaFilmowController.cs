@@ -30,7 +30,7 @@ namespace ProjektMVC.Controllers
         {
             List<FilmModel> listaFilmow = null;
             HttpResponseMessage response = await client.GetAsync(FilmyPath);
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 listaFilmow = await response.Content.ReadAsAsync<List<FilmModel>>();
             }
@@ -46,7 +46,7 @@ namespace ProjektMVC.Controllers
         [HttpPost("Create"), Authorize(Roles = "Admin"), ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind("Nazwa, Opis, Gatunek, OgraniczeniaWiek, CzasTrwania, Cena")] FilmModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 HttpResponseMessage response = await client.PostAsJsonAsync(FilmyPath, model);
                 response.EnsureSuccessStatusCode();
@@ -59,7 +59,7 @@ namespace ProjektMVC.Controllers
         public async Task<ActionResult> Edit(int? id)
         {
             HttpResponseMessage response = await client.GetAsync(FilmyPath + id);
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 FilmModel model = await response.Content.ReadAsAsync<FilmModel>();
                 return View(model);
@@ -83,7 +83,7 @@ namespace ProjektMVC.Controllers
         public async Task<ActionResult> Delete(int? id)
         {
             HttpResponseMessage response = await client.GetAsync(FilmyPath + id);
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 FilmModel model = await response.Content.ReadAsAsync<FilmModel>();
                 return View(model);
@@ -104,7 +104,7 @@ namespace ProjektMVC.Controllers
         public async Task<ActionResult> Details(int? id)
         {
             HttpResponseMessage response = await client.GetAsync(FilmyPath + id);
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 FilmModel model = await response.Content.ReadAsAsync<FilmModel>();
                 return View(model);

@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProjektAPI.Attributes;
 using ProjektAPI.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,7 +21,7 @@ namespace ProjektAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<EmisjaModel>> Get()
         {
-            return _context.Emisja.Include(q=>q.Sala).Include(q=>q.Film).ToList();
+            return _context.Emisja.Include(q => q.Sala).Include(q => q.Film).ToList();
         }
 
         [HttpGet("{id}")]

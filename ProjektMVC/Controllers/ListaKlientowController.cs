@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ProjektAPI.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace ProjektMVC.Controllers
 {
@@ -57,11 +57,11 @@ namespace ProjektMVC.Controllers
             {
                 await PobierzKlientow();
                 if (_listaKlientow.Select(x => x.Email).Contains(model.Email))
-                { 
+                {
                     TempData["duplikat"] = "Login lub email są już zajęte";
                     return Redirect($"Create");
                 }
-                if(_listaKlientow.Select(x=>x.Uzytkownik.Login).Contains(model.Uzytkownik.Login))
+                if (_listaKlientow.Select(x => x.Uzytkownik.Login).Contains(model.Uzytkownik.Login))
                 {
                     TempData["duplikat"] = "Login lub email są już zajęte";
                     return Redirect($"Create");

@@ -17,7 +17,7 @@
         <h5 style="padding-bottom: 15px;"><a asp-controller="Logowanie" asp-action="Rejestracja">Zarejestruj się</a>, aby korzystać z serwisu lub dodaj użytkowników przez specjalnie przygotowaną funkcjonalność poniżej.</h5>
         if (Model.Item1[0])
         {
-            <h5>Kliknij w <button type="button"  data-toggle="tooltip" data-placement="top" title="Użytkownicy już zostali dodani" class="btn btn-outline-secondary">KLIENCI</button> , aby dodać 3 użytkowników o róznych rolach:</h5>
+            <h5>Kliknij w <button type="button" data-toggle="tooltip" data-placement="top" title="Użytkownicy już zostali dodani" class="btn btn-outline-secondary">KLIENCI</button> , aby dodać 3 użytkowników o róznych rolach:</h5>
         }
         else
         {
@@ -40,6 +40,7 @@
     @{
         if (Model.Item1[0])
         {
+            <br />
             <div>
                 <h5>Dodani użytkownicy: </h5>
                 <div class="row">
@@ -68,49 +69,58 @@
     <div>
         <hr />
         <h5>Kolejnym krokiem jest zalogowanie się i dodanie kolejno sal kinowych, filmów, seansów. Możesz to także zrobić przyciskami poniżej.</h5>
-            <div class="buttonyPaddingMniejsze">
-            @{if (Model.Item1[1])
-            {
-                <button type="button" data-toggle="tooltip" data-placement="left" title="Sale kinowe już zostały dodane" class="btn btn-outline-secondary">SALE KINOWE</button>
-            }
-            else
-            {
-                <a asp-controller="Dodawanie" asp-action="SaleKinowe" class="btn btn-warning">SALE KINOWE</a>
-            }}<span> , aby dodać sale kinowe.</span>
-            </div>
-            <div class="buttonyPaddingMniejsze">
-            @{if (Model.Item1[2])
-            {
-                <button type="button" data-toggle="tooltip" data-placement="left" title="Filmy już zostały dodane" class="btn btn-outline-secondary">FILMY</button>
-            }
-            else
-            {
-                <a asp-controller="Dodawanie" asp-action="Filmy" class="btn btn-warning">FILMY</a>
-            }}<span> , aby dodać repertuar.</span>
-            </div>
-            
-            <div class="buttonyPaddingMniejsze">
-            @{if (Model.Item1[3])
-            {
-                <button type="button" data-toggle="tooltip" data-placement="left" title="Seanse już zostały dodane" class="btn btn-outline-secondary">SEANSE</button>
-            }
-            else
-            {
-                <a asp-controller="Dodawanie" asp-action="Seanse" class="btn btn-warning">SEANSE</a>
-            }}<span> , aby dodać seanse aktualnie wyświetlane w kinie.</span>
-            </div>
-            <div class="buttonyPaddingMniejsze">
-            @{if (Model.Item1[4])
-            {
-                <button type="button" data-toggle="tooltip" data-placement="left" title="Rezerwacje biletów już zostały dodane" class="btn btn-outline-secondary ">BILETY</button>
-            }
-            else
-            {
-                <a asp-controller="Dodawanie" asp-action="RezerwacjaBiletow" class="btn btn-warning">BILETY</a>
-            }} <span> , aby dodać bilety, które zakupili klienci.</span>
-            </div>
-        
+        <div class="buttonyPaddingMniejsze">
+            @{
+                if (Model.Item1[1])
+                {
+                    <button type="button" data-toggle="tooltip" data-placement="left" title="Sale kinowe już zostały dodane" class="btn btn-outline-secondary">SALE KINOWE</button>
+                }
+                else
+                {
+                    <a asp-controller="Dodawanie" asp-action="SaleKinowe" class="btn btn-warning">SALE KINOWE</a>
+                }
+            }<span> , aby dodać sale kinowe.</span>
         </div>
+        <div class="buttonyPaddingMniejsze">
+            @{
+                if (Model.Item1[2])
+                {
+                    <button type="button" data-toggle="tooltip" data-placement="left" title="Filmy już zostały dodane" class="btn btn-outline-secondary">FILMY</button>
+                }
+                else
+                {
+                    <a asp-controller="Dodawanie" asp-action="Filmy" class="btn btn-warning">FILMY</a>
+                }
+            }<span> , aby dodać repertuar.</span>
+        </div>
+
+        <div class="buttonyPaddingMniejsze">
+            @{
+                if (Model.Item1[3])
+                {
+                    <button type="button" data-toggle="tooltip" data-placement="left" title="Seanse już zostały dodane" class="btn btn-outline-secondary">SEANSE</button>
+                }
+                else
+                {
+                    <a asp-controller="Dodawanie" asp-action="Seanse" class="btn btn-warning">SEANSE</a>
+                }
+            }<span> , aby dodać seanse aktualnie wyświetlane w kinie.</span>
+        </div>
+        <div class="buttonyPaddingMniejsze">
+            @{
+                if (Model.Item1[4])
+                {
+                    <button type="button" data-toggle="tooltip" data-placement="left" title="Rezerwacje biletów już zostały dodane" class="btn btn-outline-secondary ">BILETY</button>
+                }
+                else
+                {
+                    <a asp-controller="Dodawanie" asp-action="RezerwacjaBiletow" class="btn btn-warning">BILETY</a>
+                }
+            } <span> , aby dodać bilety, które zakupili klienci.</span>
+        </div>
+        <br />
+
+    </div>
 </div>
 <script>
     $(function () {

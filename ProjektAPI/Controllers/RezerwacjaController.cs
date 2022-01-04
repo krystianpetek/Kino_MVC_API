@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ProjektAPI.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ProjektAPI.Models;
 
 namespace ProjektAPI.Controllers
 {
@@ -23,7 +21,7 @@ namespace ProjektAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RezerwacjaModel>>> Get()
         {
-            return await _context.Rezerwacja.Include(q=>q.Emisja).Include(q=>q.Klient).Include(q=>q.Klient.Uzytkownik).Include(q=>q.Emisja.Sala).Include(q=>q.Emisja.Film).ToListAsync();
+            return await _context.Rezerwacja.Include(q => q.Emisja).Include(q => q.Klient).Include(q => q.Klient.Uzytkownik).Include(q => q.Emisja.Sala).Include(q => q.Emisja.Film).ToListAsync();
         }
 
         [HttpGet("{id}")]

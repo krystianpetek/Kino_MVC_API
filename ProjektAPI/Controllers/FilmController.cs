@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjektAPI.Attributes;
 using ProjektAPI.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,7 +14,7 @@ namespace ProjektAPI.Controllers
         {
             _context = context;
         }
-        
+
         [HttpGet]
         public ActionResult<IEnumerable<FilmModel>> Get()
         {
@@ -33,12 +32,12 @@ namespace ProjektAPI.Controllers
         [HttpPost]
         public ActionResult Create([FromBody] FilmModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             _context.Filmy.Add(model);
             _context.SaveChanges();
-            return Created($"api/film/{model.Id}",null);
+            return Created($"api/film/{model.Id}", null);
         }
 
         [HttpDelete("{id}")]
@@ -57,11 +56,11 @@ namespace ProjektAPI.Controllers
         public ActionResult EditAll(int id, [FromBody] FilmModel model)
         {
             var zapytanie = _context.Filmy.FirstOrDefault(q => q.Id == id);
-            
+
             if (zapytanie is null)
                 return NotFound();
 
-            if(id != model.Id)
+            if (id != model.Id)
                 return BadRequest();
 
             if (ModelState.IsValid)

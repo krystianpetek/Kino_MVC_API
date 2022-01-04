@@ -84,9 +84,9 @@ namespace ProjektMVC.Controllers
             }
             return siedzenia;
         }
-        
+
         [HttpGet("[controller]/Index")]
-        public async Task<IActionResult> Index(string sortOrder, string currentFilter,string searchString, int? pageNumber)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             ViewBag.CurrentSort = sortOrder;
             if (searchString != null)
@@ -128,7 +128,7 @@ namespace ProjektMVC.Controllers
             var model2 = new Tuple<RezerwacjaModel, bool[,]>(model, siedzenia);
             return View(model2);
         }
-        
+
         [HttpGet("[controller]/Create")]
         public async Task<ActionResult> Create()
         {
@@ -185,7 +185,7 @@ namespace ProjektMVC.Controllers
             await ZajeteMiejscaAsync();
 
             RezerwacjaModel model = _rezerwacjaModels.Where(q => q.Emisja.FilmId == int.Parse(film)).Where(q => q.Emisja.Data.ToShortDateString() == data).Where(q => q.Emisja.Godzina.ToShortTimeString() == godzina).FirstOrDefault();
-            if(model is null)
+            if (model is null)
             {
                 model = new RezerwacjaModel()
                 {
@@ -198,8 +198,8 @@ namespace ProjektMVC.Controllers
                 };
                 model.Emisja = _emisjaModels.Where(q => q.FilmId == int.Parse(film)).Where(q => q.Data.ToShortDateString() == data).Where(q => q.Godzina.ToShortTimeString() == godzina).FirstOrDefault();
             }
-            model.Rzad = rzad-1;
-            model.Miejsce = miejsce-1;
+            model.Rzad = rzad - 1;
+            model.Miejsce = miejsce - 1;
             bool[,] siedzenia = ZajeteSiedzenia(model);
 
             var modelK = new Tuple<RezerwacjaModel, List<EmisjaModel>, string[], bool[,]>(model, _emisjaModels, wartosci, siedzenia);
@@ -227,7 +227,7 @@ namespace ProjektMVC.Controllers
             }
             wyjscie.Miejsce = model.Miejsce += 1;
             wyjscie.Rzad = model.Rzad += 1;
-            
+
             await EmisjaAsync();
             await RezerwacjaAsync();
             var przefiltowana = _rezerwacjaModels.Where(q => q.EmisjaId == wyjscie.EmisjaId);

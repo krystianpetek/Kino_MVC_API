@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
+using ProjektAPI.Attributes;
 using ProjektAPI.Models;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
-using ProjektAPI.Attributes;
+using System.Linq;
 
 namespace ProjektAPI.Controllers
 {
@@ -21,7 +19,7 @@ namespace ProjektAPI.Controllers
         public IActionResult Index()
         {
             List<UzytkownikModel> model = _context.Login.ToList();
-            if(model is null)
+            if (model is null)
             {
                 return NotFound();
             }

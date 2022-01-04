@@ -178,7 +178,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
         [HttpGet("Dodawanie/Seanse")]
         public ActionResult EmisjeFilmow()
         {
-            
+
             _context.Emisja.Add(new EmisjaModel()
             {
                 Data = DateTime.Now.AddDays(-20),

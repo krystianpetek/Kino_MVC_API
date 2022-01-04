@@ -55,7 +55,7 @@ namespace ProjektAPI.Controllers
                         });
                     }
                 }
-                if(listaKlientow.Count >= 3)
+                if (listaKlientow.Count >= 3)
                     list[0] = true;
             }
 
@@ -97,7 +97,7 @@ namespace ProjektAPI.Controllers
 
             return View(new Tuple<List<bool>, List<UzytkownikModel>>(list, listaUzytkownikow));
         }
-        
+
         public async Task<ActionResult> AktualneFilmy()
         {
             List<FilmModel> listaFilmow = null;
@@ -127,7 +127,7 @@ namespace ProjektAPI.Controllers
 
         }
         public async Task<IActionResult> AktualnieEmitowaneFilmy(int? pageNumber)
-        { 
+        {
             List<AktualnieEmitowaneFilmy> posortowanaLista = new List<AktualnieEmitowaneFilmy>();
             List<EmisjaModel> listaFilmow = null;
             HttpResponseMessage response = await _client.GetAsync(EmisjaPath);
