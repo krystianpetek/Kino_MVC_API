@@ -57,7 +57,7 @@ namespace ProjektMVC.Controllers
             {
                 listaKlientow = await response.Content.ReadAsAsync<List<EmisjaModel>>();
             }
-            return View(listaKlientow);
+            return View(listaKlientow.OrderByDescending(d=>d.Data));
         }
 
         [HttpGet("Create"), Authorize(Roles = "Admin"), ValidateAntiForgeryToken]

@@ -73,7 +73,7 @@ namespace ProjektMVC.Controllers
             return Redirect($"Create");
         }
 
-        [HttpGet("Edit/{id}"), Authorize(Roles = "Admin,Pracownik")]
+        [HttpGet("Edit/{id}"), Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit([FromRoute] int? id)
         {
             HttpResponseMessage response = await client.GetAsync(KlienciPath + id);
@@ -85,7 +85,7 @@ namespace ProjektMVC.Controllers
             return NotFound();
         }
 
-        [HttpPost("Edit/{id}"), Authorize(Roles = "Admin,Pracownik"), ValidateAntiForgeryToken]
+        [HttpPost("Edit/{id}"), Authorize(Roles = "Admin"), ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([FromRoute] int id, [Bind("Id,Imie,Nazwisko,DataUrodzenia,NumerTelefonu,Email,Miasto,Ulica,KodPocztowy,Uzytkownik")] KlientModel model)
         {
             if (ModelState.IsValid) // todo - duplikaty

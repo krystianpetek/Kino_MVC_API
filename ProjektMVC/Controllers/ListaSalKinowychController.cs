@@ -79,7 +79,7 @@ namespace ProjektMVC.Controllers
         public async Task<ActionResult> Edit([FromRoute] int id, [Bind("Id, NazwaSali, IloscRzedow, IloscMiejsc")] SalaModel model)
         {
             await PobierzSaleKinowe();
-            if (!_listaSalKinowych.Select(x => x.NazwaSali).Contains(model.NazwaSali))
+            if (_listaSalKinowych.Where(x=>x.NazwaSali == model.NazwaSali).Count() < 2)
             {
                 HttpResponseMessage odpowiedz = await client.PutAsJsonAsync(SaleKinowePath + id, model);
                 odpowiedz.EnsureSuccessStatusCode();

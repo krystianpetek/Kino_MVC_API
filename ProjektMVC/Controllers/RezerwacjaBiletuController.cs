@@ -112,6 +112,31 @@ namespace ProjektMVC.Controllers
             int pageSize = 10;
             return View(PaginatedList<RezerwacjaModel>.Create(wynik, pageNumber ?? 1, pageSize));
         }
+        
+        [HttpGet("[controller]/Index2")]
+        public async Task<IActionResult> Index2(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+        {
+            ViewBag.CurrentSort = sortOrder;
+            if (searchString != null)
+                pageNumber = 1;
+            else
+                searchString = currentFilter;
+
+            await KlienciAsync();
+            await RezerwacjaAsync();
+            await EmisjaAsync();
+
+            foreach (var item in _rezerwacjaModels)
+            {
+                item.Emisja = _emisjaModels.FirstOrDefault(q => q.Id == item.EmisjaId);
+                item.Klient = _klientModels.FirstOrDefault(q => q.Id == item.KlientId);
+            }
+
+            var wynik = _rezerwacjaModels.OrderByDescending(q => q.Emisja.Data).ToList();
+
+            int pageSize = 10;
+            return View(PaginatedList<RezerwacjaModel>.Create(wynik, pageNumber ?? 1, pageSize));
+        }
 
         [HttpGet("[controller]/Details/{id}")]
         public async Task<ActionResult> Details(int id)
@@ -261,12 +286,15 @@ namespace ProjektMVC.Controllers
             if (response.IsSuccessStatusCode)
             {
                 model = await response.Content.ReadAsAsync<RezerwacjaModel>();
+                if(User.IsInRole("Pracownik"))
+                if(model.Klient.Uzytkownik.Login != User.Identity.Name)
+                    return Redirect("/");
 
                 bool[,] siedzenia = ZajeteSiedzenia(model);
                 return View(new Tuple<RezerwacjaModel, bool[,]>(model, siedzenia));
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index2");
         }
 
         [HttpPost("Delete/{id}")]
