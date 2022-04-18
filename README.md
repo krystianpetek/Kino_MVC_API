@@ -1,1 +1,2 @@
-# ProjektZaliczeniowyASP.NET
+# Aplikacja do zarządzania kinem
+
