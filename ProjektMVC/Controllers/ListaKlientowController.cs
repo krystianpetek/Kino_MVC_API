@@ -17,13 +17,15 @@ namespace ProjektMVC.Controllers
         private readonly string KlienciPath;
         private readonly IConfiguration _configuration;
         private List<KlientModel> _listaKlientow;
+
         public ListaKlientowController(IConfiguration configuration)
         {
             _configuration = configuration;
-            KlienciPath = _configuration["ProjektAPIConfig:Url2"];
+            KlienciPath = _configuration["ProjektAPIConfig:Klient"];
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
+
         private async Task PobierzKlientow()
         {
             HttpResponseMessage response = await client.GetAsync(KlienciPath);

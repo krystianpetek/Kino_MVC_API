@@ -24,11 +24,11 @@ namespace ProjektAPI.Controllers
         public HomeController(IConfiguration configuration)
         {
             _configuration = configuration;
-            FilmyPath = _configuration["ProjektAPIConfig:Url"];
-            KlientPath = _configuration["ProjektAPIConfig:Url2"];
-            SalaPath = _configuration["ProjektAPIConfig:Url3"];
-            EmisjaPath = _configuration["ProjektAPIConfig:Url5"];
-            RezerwacjaPath = _configuration["ProjektAPIConfig:Url6"];
+            KlientPath = _configuration["ProjektAPIConfig:Klient"];
+            SalaPath = _configuration["ProjektAPIConfig:Sala"];
+            FilmyPath = _configuration["ProjektAPIConfig:Film"];
+            EmisjaPath = _configuration["ProjektAPIConfig:Emisja"];
+            RezerwacjaPath = _configuration["ProjektAPIConfig:Rezerwacja"];
             _client = new HttpClient();
             _client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
@@ -124,8 +124,8 @@ namespace ProjektAPI.Controllers
                 return View(aktualnaListaFilmow);
             }
             return BadRequest();
-
         }
+
         public async Task<IActionResult> AktualnieEmitowaneFilmy(int? pageNumber)
         {
             List<AktualnieEmitowaneFilmy> posortowanaLista = new List<AktualnieEmitowaneFilmy>();

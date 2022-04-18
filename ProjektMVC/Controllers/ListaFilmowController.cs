@@ -19,7 +19,7 @@ namespace ProjektMVC.Controllers
         public ListaFilmowController(IConfiguration configuration)
         {
             _configuration = configuration;
-            FilmyPath = _configuration["ProjektAPIConfig:Url"];
+            FilmyPath = _configuration["ProjektAPIConfig:Film"];
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }

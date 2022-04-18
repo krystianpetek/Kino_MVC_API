@@ -25,6 +25,7 @@ namespace ProjektMVC
             {
                 x.LoginPath = "/Logowanie/Login";
                 x.AccessDeniedPath = "/";
+                x.LogoutPath= "/";
             });
         }
 
@@ -43,8 +44,8 @@ namespace ProjektMVC
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseRouting();
 
+            app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
 

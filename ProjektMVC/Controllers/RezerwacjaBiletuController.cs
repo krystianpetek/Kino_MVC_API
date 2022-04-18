@@ -26,44 +26,50 @@ namespace ProjektMVC.Controllers
         {
             //_context = context;
             _configuration = configuration;
-            FilmPath = _configuration["ProjektAPIConfig:Url"];
-            KlientPath = _configuration["ProjektAPIConfig:Url2"];
-            SalaPath = _configuration["ProjektAPIConfig:Url3"];
-            EmisjaPath = _configuration["ProjektAPIConfig:Url5"];
-            RezerwacjaPath = _configuration["ProjektAPIConfig:Url6"];
+            KlientPath = _configuration["ProjektAPIConfig:Klient"];
+            SalaPath = _configuration["ProjektAPIConfig:Sala"];
+            FilmPath = _configuration["ProjektAPIConfig:Film"];
+            EmisjaPath = _configuration["ProjektAPIConfig:Emisja"];
+            RezerwacjaPath = _configuration["ProjektAPIConfig:Rezerwacja"];
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
+
         private async Task FilmAsync()
         {
             HttpResponseMessage response = await client.GetAsync(FilmPath);
             if (response.IsSuccessStatusCode)
                 _filmModels = await response.Content.ReadAsAsync<List<FilmModel>>();
         }
+
         private async Task KlienciAsync()
         {
             HttpResponseMessage response = await client.GetAsync(KlientPath);
             if (response.IsSuccessStatusCode)
                 _klientModels = await response.Content.ReadAsAsync<List<KlientModel>>();
         }
+
         private async Task EmisjaAsync()
         {
             HttpResponseMessage response = await client.GetAsync(EmisjaPath);
             if (response.IsSuccessStatusCode)
                 _emisjaModels = await response.Content.ReadAsAsync<List<EmisjaModel>>();
         }
+
         private async Task RezerwacjaAsync()
         {
             HttpResponseMessage response = await client.GetAsync(RezerwacjaPath);
             if (response.IsSuccessStatusCode)
                 _rezerwacjaModels = await response.Content.ReadAsAsync<List<RezerwacjaModel>>();
         }
+
         private async Task ZajeteMiejscaAsync()
         {
             HttpResponseMessage response = await client.GetAsync(RezerwacjaPath + "ZajeteMiejsca");
             if (response.IsSuccessStatusCode)
                 _zajeteMiejsca = await response.Content.ReadAsAsync<List<ZajeteMiejsca>>();
         }
+
         private bool[,] ZajeteSiedzenia(RezerwacjaModel model)
         {
             var listaMiejsc = _zajeteMiejsca.Where(x => x.EmisjaId == model.EmisjaId).ToList();
@@ -112,7 +118,7 @@ namespace ProjektMVC.Controllers
             int pageSize = 10;
             return View(PaginatedList<RezerwacjaModel>.Create(wynik, pageNumber ?? 1, pageSize));
         }
-        
+
         [HttpGet("[controller]/Index2")]
         public async Task<IActionResult> Index2(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
@@ -190,7 +196,6 @@ namespace ProjektMVC.Controllers
             return View(model);
         }
 
-
         [HttpGet("[controller]/Create4")]
         public async Task<ActionResult> Create4(string film, string data, string godzina, int miejsce = 0, int rzad = 0)
         {
@@ -266,7 +271,6 @@ namespace ProjektMVC.Controllers
                 }
                 if (model.Miejsce == item.Miejsce && model.Rzad == item.Rzad)
                 {
-
                     TempData["x"] = $"To miejsce jest zajęte";
                     return Redirect($"Create4?film={model.Emisja.FilmId}&data={model.Emisja.Data.ToShortDateString()}&godzina={model.Emisja.Godzina.ToShortTimeString()}");
                 }
@@ -286,9 +290,9 @@ namespace ProjektMVC.Controllers
             if (response.IsSuccessStatusCode)
             {
                 model = await response.Content.ReadAsAsync<RezerwacjaModel>();
-                if(User.IsInRole("Pracownik"))
-                if(model.Klient.Uzytkownik.Login != User.Identity.Name)
-                    return Redirect("/");
+                if (User.IsInRole("Pracownik"))
+                    if (model.Klient.Uzytkownik.Login != User.Identity.Name)
+                        return Redirect("/");
 
                 bool[,] siedzenia = ZajeteSiedzenia(model);
                 return View(new Tuple<RezerwacjaModel, bool[,]>(model, siedzenia));
@@ -307,8 +311,6 @@ namespace ProjektMVC.Controllers
         }
     }
 }
-
-
 
 //public async Task<ActionResult> WyborDaty(string Film)
 //{

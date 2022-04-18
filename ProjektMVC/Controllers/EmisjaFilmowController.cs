@@ -25,12 +25,13 @@ namespace ProjektMVC.Controllers
         public EmisjaFilmowController(IConfiguration configuration)
         {
             _configuration = configuration;
-            FilmyPath = _configuration["ProjektAPIConfig:Url"];
-            SalaPath = _configuration["ProjektAPIConfig:Url3"];
-            EmisjaPath = _configuration["ProjektAPIConfig:Url5"];
+            FilmyPath = _configuration["ProjektAPIConfig:Film"];
+            SalaPath = _configuration["ProjektAPIConfig:Sala"];
+            EmisjaPath = _configuration["ProjektAPIConfig:Emisja"];
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
+
         private async Task SalaAsync()
         {
             HttpResponseMessage response = await client.GetAsync(SalaPath);
@@ -39,6 +40,7 @@ namespace ProjektMVC.Controllers
                 _salaModels = await response.Content.ReadAsAsync<List<SalaModel>>();
             }
         }
+
         private async Task FilmyAsync()
         {
             HttpResponseMessage response = await client.GetAsync(FilmyPath);
@@ -57,7 +59,7 @@ namespace ProjektMVC.Controllers
             {
                 listaKlientow = await response.Content.ReadAsAsync<List<EmisjaModel>>();
             }
-            return View(listaKlientow.OrderByDescending(d=>d.Data));
+            return View(listaKlientow.OrderByDescending(d => d.Data));
         }
 
         [HttpGet("Create"), Authorize(Roles = "Admin"), ValidateAntiForgeryToken]

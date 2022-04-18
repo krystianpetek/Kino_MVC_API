@@ -16,6 +16,6 @@ namespace ProjektMVC.Models
         [Display(Name = " Zapamiętaj mnie")]
         public bool PamietajMnie { get; set; }
 
-        public string URL { get; set; }
+        //public string URL { get; set; }
     }
 }

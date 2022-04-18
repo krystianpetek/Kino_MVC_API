@@ -11,7 +11,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
     public class DodajRekordyController : Controller
     {
         private HttpClient _client;
-        private readonly string FilmyPath;
+        private readonly string FilmPath;
         private readonly string KlientPath;
         private readonly string SalaPath;
         private readonly string EmisjaPath;
@@ -21,11 +21,11 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
         public DodajRekordyController(IConfiguration configuration)
         {
             _configuration = configuration;
-            KlientPath = _configuration["ProjektAPIConfig:Url2"];
-            SalaPath = _configuration["ProjektAPIConfig:Url3"];
-            FilmyPath = _configuration["ProjektAPIConfig:Url"];
-            EmisjaPath = _configuration["ProjektAPIConfig:Url5"];
-            RezerwacjaPath = _configuration["ProjektAPIConfig:Url6"];
+            KlientPath = _configuration["ProjektAPIConfig:Klient"];
+            SalaPath = _configuration["ProjektAPIConfig:Sala"];
+            FilmPath = _configuration["ProjektAPIConfig:Film"];
+            EmisjaPath = _configuration["ProjektAPIConfig:Emisja"];
+            RezerwacjaPath = _configuration["ProjektAPIConfig:Rezerwacja"];
             _client = new HttpClient();
             _client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
@@ -300,11 +300,10 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
             return Redirect("/");
         }
 
-
         [HttpGet("Dodawanie/RezerwacjaBiletow")]
         public async Task<ActionResult> RezerwacjaBiletow()
         {
-            List<RezerwacjaModel> list = new List<RezerwacjaModel>() 
+            List<RezerwacjaModel> list = new List<RezerwacjaModel>()
             {
                 new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 1, Miejsce = 1 },
                 new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 1, Miejsce = 2 },
@@ -338,7 +337,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
                 new RezerwacjaModel() { KlientId = 3, EmisjaId = 5, Rzad = 9, Miejsce = 8 },
                 new RezerwacjaModel() { KlientId = 3, EmisjaId = 5, Rzad = 7, Miejsce = 3 }
             };
-        
+
             foreach (var x in list)
             {
                 try
@@ -350,11 +349,6 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
                 { }
             }
             return Redirect("/");
-
         }
-
     }
 }
-
-
-

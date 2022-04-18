@@ -20,10 +20,11 @@ namespace ProjektMVC.Controllers
         public ListaSalKinowychController(IConfiguration configuration)
         {
             _configuration = configuration;
-            SaleKinowePath = _configuration["ProjektAPIConfig:Url3"];
+            SaleKinowePath = _configuration["ProjektAPIConfig:Sala"];
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
+
         private async Task PobierzSaleKinowe()
         {
             HttpResponseMessage response = await client.GetAsync(SaleKinowePath);
@@ -79,7 +80,7 @@ namespace ProjektMVC.Controllers
         public async Task<ActionResult> Edit([FromRoute] int id, [Bind("Id, NazwaSali, IloscRzedow, IloscMiejsc")] SalaModel model)
         {
             await PobierzSaleKinowe();
-            if (_listaSalKinowych.Where(x=>x.NazwaSali == model.NazwaSali).Count() < 2)
+            if (_listaSalKinowych.Where(x => x.NazwaSali == model.NazwaSali).Count() < 2)
             {
                 HttpResponseMessage odpowiedz = await client.PutAsJsonAsync(SaleKinowePath + id, model);
                 odpowiedz.EnsureSuccessStatusCode();

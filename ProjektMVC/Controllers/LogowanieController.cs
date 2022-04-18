@@ -24,8 +24,8 @@ namespace ProjektMVC.Controllers
         public LogowanieController(IConfiguration configuration)
         {
             _configuration = configuration;
-            KlientPath = _configuration["ProjektAPIConfig:Url2"];
-            UzytkownikPath = _configuration["ProjektAPIConfig:Url4"];
+            KlientPath = _configuration["ProjektAPIConfig:Klient"];
+            UzytkownikPath = _configuration["ProjektAPIConfig:Login"];
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
@@ -40,7 +40,6 @@ namespace ProjektMVC.Controllers
             {
                 listaKlientow = await response.Content.ReadAsAsync<List<KlientModel>>();
                 klient = listaKlientow.FirstOrDefault(q => q.Uzytkownik.Login == User.Identity.Name);
-
             }
 
             return View(klient);
@@ -81,7 +80,6 @@ namespace ProjektMVC.Controllers
                         new Claim(ClaimTypes.NameIdentifier, uzytkownik.Id.ToString()),
                         new Claim(ClaimTypes.Name, uzytkownik.Login),
                         new Claim(ClaimTypes.Role, uzytkownik.RodzajUzytkownika.ToString())
-
                     };
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);
@@ -122,6 +120,5 @@ namespace ProjektMVC.Controllers
             ViewBag.Register = "Błąd, spróbuj ponownie";
             return BadRequest(model);
         }
-
     }
 }
