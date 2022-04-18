@@ -18,7 +18,6 @@ namespace ProjektMVC.Controllers
 
         public ListaFilmowController(IConfiguration configuration)
         {
-            //_context = context;
             _configuration = configuration;
             FilmyPath = _configuration["ProjektAPIConfig:Url"];
             client = new HttpClient();

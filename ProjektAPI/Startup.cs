@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,7 +35,7 @@ namespace ProjektAPI
                     In = ParameterLocation.Header,
                     Name = APIKEYNAME,
                     Type = SecuritySchemeType.ApiKey,
-                    Description = "Prosze podać klucz: kluczPrywatny",
+                    Description = "Prosze podać klucz:",
                 });
 
                 var key = new OpenApiSecurityScheme()
@@ -52,7 +53,7 @@ namespace ProjektAPI
 
                 c.AddSecurityRequirement(requirement);
             });
-            services.AddDbContext<APIDatabaseContext>();
+            services.AddDbContext<APIDatabaseContext>(config => config.UseSqlServer(Configuration.GetConnectionString("APIDatabaseContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,12 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProjektAPI.Attributes;
 using ProjektAPI.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProjektAPI.Controllers
 {
-    [Route("[controller]"), ApiController, ApiKey]
+    [Route("api/[controller]")]
+    [ApiController]
+    [ApiKey]
     public class FilmController : ControllerBase
     {
         private readonly APIDatabaseContext _context;
@@ -16,64 +20,74 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<FilmModel>> Get()
+        public async Task<ActionResult<IEnumerable<FilmModel>>> Get()
         {
-            return _context.Filmy.ToList();
+            return await _context.Filmy.ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<IEnumerable<FilmModel>> Get(int id)
+        public async Task<ActionResult<FilmModel>> Get(int id)
         {
-            var zapytanie = _context.Filmy.FirstOrDefault(q => q.Id == id);
-            if (zapytanie is null) return NotFound();
-            return Ok(zapytanie);
+            var query = await _context.Filmy.FindAsync(id);
+            if (query is null) 
+                return NotFound();
+            return query;
         }
 
         [HttpPost]
-        public ActionResult Create([FromBody] FilmModel model)
+        public async Task<ActionResult> Create([FromBody] FilmModel model)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest(model);
 
             _context.Filmy.Add(model);
-            _context.SaveChanges();
-            return Created($"api/film/{model.Id}", null);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("Get", new { id = model.Id }, model);
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var zapytanie = _context.Filmy.FirstOrDefault(q => q.Id == id);
-            if (zapytanie is null)
+            var query = await _context.Filmy.FindAsync(id);
+
+            if (query is null)
                 return NotFound();
 
-            _context.Filmy.Remove(zapytanie);
-            _context.SaveChanges();
+            _context.Filmy.Remove(query);
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public ActionResult EditAll(int id, [FromBody] FilmModel model)
+        public async Task<IActionResult> EditAll(int id, [FromBody] FilmModel model)
         {
-            var zapytanie = _context.Filmy.FirstOrDefault(q => q.Id == id);
-
-            if (zapytanie is null)
-                return NotFound();
-
             if (id != model.Id)
-                return BadRequest();
+                return BadRequest(); // 400
 
-            if (ModelState.IsValid)
+            _context.Entry(model).State = EntityState.Modified;
+
+            try
             {
-                zapytanie.Nazwa = model.Nazwa;
-                zapytanie.Gatunek = model.Gatunek;
-                zapytanie.OgraniczeniaWiek = model.OgraniczeniaWiek;
-                zapytanie.Opis = model.Opis;
-                zapytanie.Cena = model.Cena;
-                zapytanie.CzasTrwania = model.CzasTrwania;
+                await _context.SaveChangesAsync();
             }
-            _context.SaveChanges();
-            return Ok();
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!FilmyExists(id))
+                {
+                    return NotFound(); // 404
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent(); // 204
+        }
+
+        private bool FilmyExists(int id)
+        {
+            return _context.Filmy.Any(q => q.Id == id);
         }
     }
 }

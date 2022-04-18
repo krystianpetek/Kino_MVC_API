@@ -4,10 +4,13 @@ using ProjektAPI.Attributes;
 using ProjektAPI.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProjektAPI.Controllers
 {
-    [Route("[controller]"), ApiController, ApiKey]
+    [Route("api/[controller]")]
+    [ApiController]
+    [ApiKey]
     public class KlientController : ControllerBase
     {
         private readonly APIDatabaseContext _context;
@@ -17,98 +20,88 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<KlientModel>> Get()
+        public async Task<ActionResult<IEnumerable<KlientModel>>> Get()
         {
-            List<KlientModel> listaKlientow = ListaKlientow();
-            return Ok(listaKlientow);
+            return await _context.Klienci.Include(q => q.Uzytkownik).ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<IEnumerable<KlientModel>> Get(int id)
+        public async Task<ActionResult<KlientModel>> Get(int id)
         {
-            var zapytanie = _context.Klienci.Include(q => q.Uzytkownik).FirstOrDefault(q => q.Id == id);
-            if (zapytanie is null) return NotFound();
-            return Ok(zapytanie);
+            var query = await _context.Klienci.Include(q => q.Uzytkownik).FirstAsync(w=>w.Id == id);
+            if (query is null)
+                return NotFound();
+            return query;
         }
 
         [HttpPost]
-        public ActionResult Create([FromBody] KlientModel model)
+        public async Task<ActionResult<KlientModel>> Create([FromBody] KlientModel model)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest(model);
+
+            var query = _context.Klienci;
+            if (query.Any(q => q.Email == model.Email) || query.Any(w => w.Uzytkownik.Login == model.Uzytkownik.Login))
+                return BadRequest();
+
             _context.Klienci.Add(model);
-            _context.SaveChanges();
-            return Created($"{model.Id}", null);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("Get", new { id = model.Id }, model);
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var zapytanieKlient = _context.Klienci.FirstOrDefault(q => q.Id == id);
-            if (zapytanieKlient is null)
+            var queryKlient = await _context.Klienci.FindAsync(id);
+            if (queryKlient is null)
                 return NotFound();
 
-            var zapytanieUzytkownik = _context.Login.FirstOrDefault(q => q.Id == zapytanieKlient.UzytkownikId);
-            if (zapytanieUzytkownik is null)
+            var queryUzytkownik = await _context.Login.FindAsync(queryKlient.UzytkownikId);
+            if (queryUzytkownik is null)
                 return NotFound();
 
-            _context.Klienci.Remove(zapytanieKlient);
-            _context.Login.Remove(zapytanieUzytkownik);
+            _context.Klienci.Remove(queryKlient);
+            _context.Login.Remove(queryUzytkownik);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public ActionResult EditAll(int id, [FromBody] KlientModel model)
+        public async Task<IActionResult> EditAll(int id, [FromBody] KlientModel model)
         {
-            var klientZBazy = _context.Klienci.Include(q => q.Uzytkownik).FirstOrDefault(q => q.Id == id);
-            var loginZBazy = _context.Login.FirstOrDefault(q => q.Id == klientZBazy.UzytkownikId);
-
-            if (klientZBazy is null)
-                return NotFound();
-
             if (id != model.Id)
                 return BadRequest();
 
-            if (ModelState.IsValid)
+            if (model.UzytkownikId == 0 && model.UzytkownikId != model.Uzytkownik.Id)
+                return BadRequest();
+
+            _context.Entry(model).State = EntityState.Modified;
+
+            try
             {
-                klientZBazy.Imie = model.Imie;
-                klientZBazy.Nazwisko = model.Nazwisko;
-                klientZBazy.DataUrodzenia = model.DataUrodzenia;
-                klientZBazy.NumerTelefonu = model.NumerTelefonu;
-                klientZBazy.Email = model.Email;
-                klientZBazy.Miasto = model.Miasto;
-                klientZBazy.Ulica = model.Ulica;
-                klientZBazy.KodPocztowy = model.KodPocztowy;
-                loginZBazy.Login = model.Uzytkownik.Login;
-                loginZBazy.Haslo = model.Uzytkownik.Haslo;
-                loginZBazy.RodzajUzytkownika = model.Uzytkownik.RodzajUzytkownika;
+                await _context.SaveChangesAsync();
             }
-            _context.SaveChanges();
-            return Ok();
-        }
-        private List<KlientModel> ListaKlientow()
-        {
-            List<UzytkownikModel> listaUzytkownikow = new List<UzytkownikModel>();
-            foreach (var item in _context.Login)
-                listaUzytkownikow.Add(item);
-            List<KlientModel> listaKlientow = new List<KlientModel>();
-            foreach (var item in _context.Klienci)
-                listaKlientow.Add(item);
-            foreach (var item in listaKlientow)
+            catch (DbUpdateConcurrencyException)
             {
-                foreach (var item2 in listaUzytkownikow)
+                if (!KlientExists(id))
                 {
-                    if (item.UzytkownikId == item2.Id)
-                    {
-                        item.Uzytkownik = item2;
-                    }
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
                 }
             }
-            return listaKlientow;
+
+            return NoContent();
         }
 
-    }
-
+        private bool KlientExists(int id)
+        {
+            return _context.Klienci.Any(q => q.Id == id);
+        }
+    } 
 }
+

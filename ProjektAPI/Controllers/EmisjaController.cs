@@ -4,82 +4,92 @@ using ProjektAPI.Attributes;
 using ProjektAPI.Models;
 using System.Collections.Generic;
 using System.Linq;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Threading.Tasks;
 
 namespace ProjektAPI.Controllers
 {
-    [Route("[controller]"), ApiController, ApiKey]
+    [Route("api/[controller]")]
+    [ApiController]
+    [ApiKey]
     public class EmisjaController : ControllerBase
     {
         private readonly APIDatabaseContext _context;
+
         public EmisjaController(APIDatabaseContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<EmisjaModel>> Get()
+        public async Task<ActionResult<IEnumerable<EmisjaModel>>> Get()
         {
-            return _context.Emisja.Include(q => q.Sala).Include(q => q.Film).ToList();
+            return await _context.Emisja.Include(q => q.Sala).Include(w => w.Film).ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<IEnumerable<EmisjaModel>> Get(int id)
+        public async Task<ActionResult<EmisjaModel>> Get(int id)
         {
-            var zapytanie = _context.Emisja.FirstOrDefault(q => q.Id == id);
-            if (zapytanie is null) return NotFound();
-            return Ok(zapytanie);
+            var query = await _context.Emisja.Include(q => q.Sala).Include(w=>w.Film).FirstOrDefaultAsync(e=>e.Id == id);
+            if (query is null)
+                return NotFound();
+            return query;
         }
 
-        // POST api/<EmisjaFilmuController>
         [HttpPost]
-        public ActionResult Create([FromBody] EmisjaModel model)
+        public async Task<ActionResult<EmisjaModel>> Create([FromBody] EmisjaModel model)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest(model);
 
             _context.Emisja.Add(model);
-            _context.SaveChanges();
-            return Created($"emisja/{model.Id}", null);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("Get",new {id = model.Id}, model); // zwraca w response, obiekt który był requestowany postem
         }
 
-        // PUT api/<EmisjaFilmuController>/5
-        [HttpPut("{id}")]
-        public ActionResult EditAll(int id, [FromBody] EmisjaModel model)
-        {
-            var zapytanie = _context.Emisja.FirstOrDefault(q => q.Id == id);
-
-            if (zapytanie is null)
-                return NotFound();
-
-            if (id != model.Id)
-                return BadRequest();
-
-            if (ModelState.IsValid)
-            {
-                zapytanie.Data = model.Data.Date;
-                zapytanie.Godzina = model.Godzina;
-                zapytanie.Sala = model.Sala;
-                zapytanie.SalaId = model.SalaId;
-                zapytanie.Film = model.Film;
-                zapytanie.FilmId = model.FilmId;
-            }
-            _context.SaveChanges();
-            return Ok();
-        }
-
-        // DELETE api/<EmisjaFilmuController>/5
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var zapytanie = _context.Emisja.FirstOrDefault(q => q.Id == id);
-            if (zapytanie is null)
+            var query = await _context.Emisja.FindAsync(id);
+
+            if (query is null)
                 return NotFound();
 
-            _context.Emisja.Remove(zapytanie);
-            _context.SaveChanges();
+            _context.Emisja.Remove(query);
+            await _context.SaveChangesAsync();
             return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditAll(int id, [FromBody] EmisjaModel model)
+        {
+            if (id != model.Id)
+                return BadRequest(); // 400
+
+            _context.Entry(model).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(DbUpdateConcurrencyException)
+            {
+                if(!EmisjaExists(id))
+                {
+                    return NotFound(); // 404
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent(); // 204
+        }
+
+        private bool EmisjaExists(int id)
+        {
+            return _context.Emisja.Any(q => q.Id == id);
         }
     }
 }

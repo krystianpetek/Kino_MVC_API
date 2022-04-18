@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProjektAPI.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class RezerwacjaController : ControllerBase
     {
@@ -18,27 +18,76 @@ namespace ProjektAPI.Controllers
             _context = context;
         }
 
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<RezerwacjaModel>>> Get()
+        //{
+        //    return await _context.Rezerwacja.Include(q => q.Emisja).Include(q => q.Klient).Include(q => q.Klient.Uzytkownik).Include(q => q.Emisja.Sala).Include(q => q.Emisja.Film).ToListAsync();
+        //}
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RezerwacjaModel>>> Get()
         {
-            return await _context.Rezerwacja.Include(q => q.Emisja).Include(q => q.Klient).Include(q => q.Klient.Uzytkownik).Include(q => q.Emisja.Sala).Include(q => q.Emisja.Film).ToListAsync();
+            return await _context.Rezerwacja.ToListAsync();
         }
 
+        //[HttpGet("{id}")]
+        //public ActionResult<RezerwacjaModel> Get(int id)
+        //{
+        //    var model = _context.Rezerwacja.Include(q => q.Emisja).Include(q => q.Emisja.Sala).Include(q => q.Emisja.Film).Include(q => q.Klient).Include(q => q.Klient.Uzytkownik).FirstOrDefault(q => q.Id == id);
+
+        //    if (model == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return model;
+        //}
+
         [HttpGet("{id}")]
-        public ActionResult<RezerwacjaModel> Get(int id)
+        public async Task<ActionResult<RezerwacjaModel>> Get(int id)
         {
-            var model = _context.Rezerwacja.Include(q => q.Emisja).Include(q => q.Emisja.Sala).Include(q => q.Emisja.Film).Include(q => q.Klient).Include(q => q.Klient.Uzytkownik).FirstOrDefault(q => q.Id == id);
-
-            if (model == null)
-            {
+            var query = await _context.Rezerwacja.FindAsync(id);
+            if (query == null)
                 return NotFound();
-            }
+            return query;
+        }
 
-            return model;
+        [HttpPost]
+        public async Task<ActionResult<RezerwacjaModel>> Create(RezerwacjaModel model)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var query = await _context.Rezerwacja.FirstOrDefaultAsync(q=>q.EmisjaId == model.EmisjaId);
+            
+            if(query is null)
+                return NotFound();
+
+            if(query.Miejsce == model.Miejsce && query.Rzad == model.Rzad)
+                return BadRequest();
+
+            _context.Rezerwacja.Add(model);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("Get", new { id = model.Id }, model);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var query = await _context.Rezerwacja.FindAsync(id);
+            
+            if (query is null)
+                return NotFound();
+
+            _context.Rezerwacja.Remove(query);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRezerwacjaModel(int id, RezerwacjaModel rezerwacjaModel)
+        public async Task<IActionResult> Edit(int id, RezerwacjaModel rezerwacjaModel)
         {
             if (id != rezerwacjaModel.Id)
             {
@@ -62,39 +111,6 @@ namespace ProjektAPI.Controllers
                     throw;
                 }
             }
-
-            return NoContent();
-        }
-
-        // POST: api/Rezerwacja
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<RezerwacjaModel>> PostRezerwacjaModel(RezerwacjaModel rezerwacjaModel)
-        {
-            _context.Rezerwacja.Add(new RezerwacjaModel()
-            {
-                EmisjaId = rezerwacjaModel.EmisjaId,
-                KlientId = rezerwacjaModel.KlientId,
-                Miejsce = rezerwacjaModel.Miejsce,
-                Rzad = rezerwacjaModel.Rzad,
-            });
-            await _context.SaveChangesAsync();
-
-            return Ok();
-        }
-
-        // DELETE: api/Rezerwacja/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRezerwacjaModel(int id)
-        {
-            var rezerwacjaModel = await _context.Rezerwacja.FindAsync(id);
-            if (rezerwacjaModel == null)
-            {
-                return NotFound();
-            }
-
-            _context.Rezerwacja.Remove(rezerwacjaModel);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }

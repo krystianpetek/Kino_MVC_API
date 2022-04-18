@@ -6,11 +6,7 @@ namespace ProjektAPI.Models
     {
         public APIDatabaseContext(DbContextOptions<APIDatabaseContext> options) : base(options)
         { }
-        private string _dbConnect = "Server=(localdb)\\mssqllocaldb;Database=KinoDB;Trusted_Connection=True";
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(_dbConnect);
-        }
+
         public DbSet<FilmModel> Filmy { get; set; }
         public DbSet<KlientModel> Klienci { get; set; }
         public DbSet<SalaModel> SaleKinowe { get; set; }
@@ -24,5 +20,11 @@ namespace ProjektAPI.Models
             modelBuilder.Entity<KlientModel>().HasIndex(x => x.Email).IsUnique();
             modelBuilder.Entity<SalaModel>().HasIndex(x => x.NazwaSali).IsUnique();
         }
+
+        //private string _dbConnect = "Server=(localdb)\\mssqllocaldb;Database=KinoDB;Trusted_Connection=True";
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer(_dbConnect);
+        //}
     }
 }

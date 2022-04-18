@@ -10,7 +10,7 @@ namespace ProjektAPI.Attributes
     [AttributeUsage(validOn: AttributeTargets.Class)]
     public class ApiKeyAttribute : Attribute, IAsyncActionFilter
     {
-        private const string APIKEYNAME = "ApiKey"; // from appsettings.json
+        private const string APIKEYNAME = "ApiKey"; // appsettings.json
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {

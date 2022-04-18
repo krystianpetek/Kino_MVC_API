@@ -1,12 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProjektAPI.Attributes;
 using ProjektAPI.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProjektAPI.Controllers
 {
-    [Route("[controller]"), ApiController, ApiKey]
+    [Route("api/[controller]")]
+    [ApiController]
+    [ApiKey]
     public class SalaController : ControllerBase
     {
         private readonly APIDatabaseContext _context;
@@ -16,61 +20,78 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<SalaModel>> Get()
+        public async Task<ActionResult<IEnumerable<SalaModel>>> Get()
         {
-            return _context.SaleKinowe.ToList();
+            return await _context.SaleKinowe.ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<IEnumerable<SalaModel>> Get(int id)
+        public async Task<ActionResult<SalaModel>> Get(int id)
         {
-            var zapytanie = _context.SaleKinowe.FirstOrDefault(q => q.Id == id);
-            if (zapytanie is null) return NotFound();
-            return Ok(zapytanie);
+            var query = await _context.SaleKinowe.FindAsync(id);
+            if (query is null)
+                return NotFound();
+            return query;
         }
 
         [HttpPost]
-        public ActionResult Create([FromBody] SalaModel model)
+        public async Task<ActionResult<SalaModel>> Create([FromBody] SalaModel model)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest(model);
+
+            if(_context.SaleKinowe.Any(q => q.NazwaSali == model.NazwaSali))
+                return BadRequest();
 
             _context.SaleKinowe.Add(model);
-            _context.SaveChanges();
-            return Created($"film/{model.Id}", null);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("Get", new { id = model.Id }, model);
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var zapytanie = _context.SaleKinowe.FirstOrDefault(q => q.Id == id);
-            if (zapytanie is null)
+            var query = await _context.SaleKinowe.FindAsync(id);
+
+            if (query is null)
                 return NotFound();
 
-            _context.SaleKinowe.Remove(zapytanie);
-            _context.SaveChanges();
+            _context.SaleKinowe.Remove(query);
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public ActionResult EditAll(int id, [FromBody] SalaModel model)
+        public async Task<IActionResult> EditAll(int id, [FromBody] SalaModel model)
         {
-            var zapytanie = _context.SaleKinowe.FirstOrDefault(q => q.Id == id);
-
-            if (zapytanie is null)
-                return NotFound();
-
             if (id != model.Id)
                 return BadRequest();
 
-            if (ModelState.IsValid)
+            _context.Entry(model).State = EntityState.Modified;
+
+            try
             {
-                zapytanie.NazwaSali = model.NazwaSali;
-                zapytanie.IloscMiejsc = model.IloscMiejsc;
-                zapytanie.IloscRzedow = model.IloscRzedow;
+                await _context.SaveChangesAsync();
             }
-            _context.SaveChanges();
-            return Ok();
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!SalaExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        private bool SalaExists(int id)
+        {
+            return _context.SaleKinowe.Any(q => q.Id == id);
         }
     }
 }

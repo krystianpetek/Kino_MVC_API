@@ -9,7 +9,6 @@ namespace ProjektAPI.Models
         public int Id { get; set; }
         public int FilmId { get; set; }
         public int SalaId { get; set; }
-        // jesli dataemisji juz mineła to bład
         [DataType(DataType.Date)]
         public DateTime Data { get; set; }
         [DataType(DataType.Time)]

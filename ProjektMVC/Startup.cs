@@ -21,7 +21,6 @@ namespace ProjektMVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<APIDatabaseContext>();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
             {
                 x.LoginPath = "/Logowanie/Login";
