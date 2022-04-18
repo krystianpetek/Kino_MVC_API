@@ -14,6 +14,7 @@ namespace ProjektAPI.Controllers
     public class KlientController : ControllerBase
     {
         private readonly APIDatabaseContext _context;
+
         public KlientController(APIDatabaseContext context)
         {
             _context = context;
@@ -28,7 +29,7 @@ namespace ProjektAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<KlientModel>> Get(int id)
         {
-            var query = await _context.Klienci.Include(q => q.Uzytkownik).FirstAsync(w=>w.Id == id);
+            var query = await _context.Klienci.Include(q => q.Uzytkownik).FirstAsync(w => w.Id == id);
             if (query is null)
                 return NotFound();
             return query;
@@ -102,6 +103,5 @@ namespace ProjektAPI.Controllers
         {
             return _context.Klienci.Any(q => q.Id == id);
         }
-    } 
+    }
 }
-

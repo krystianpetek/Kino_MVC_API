@@ -14,6 +14,7 @@ namespace ProjektAPI.Controllers
     public class FilmController : ControllerBase
     {
         private readonly APIDatabaseContext _context;
+
         public FilmController(APIDatabaseContext context)
         {
             _context = context;
@@ -29,7 +30,7 @@ namespace ProjektAPI.Controllers
         public async Task<ActionResult<FilmModel>> Get(int id)
         {
             var query = await _context.Filmy.FindAsync(id);
-            if (query is null) 
+            if (query is null)
                 return NotFound();
             return query;
         }

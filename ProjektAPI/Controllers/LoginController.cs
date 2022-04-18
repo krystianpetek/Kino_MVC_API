@@ -10,6 +10,7 @@ namespace ProjektAPI.Controllers
     public class LoginController : Controller
     {
         private APIDatabaseContext _context;
+
         public LoginController(APIDatabaseContext context)
         {
             _context = context;

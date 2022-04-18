@@ -24,11 +24,10 @@ namespace ProjektAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProjektAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "KinoAPI", Version = "2.0" });
 
                 c.AddSecurityDefinition(APIKEYNAME, new OpenApiSecurityScheme()
                 {
@@ -48,10 +47,13 @@ namespace ProjektAPI
                     In = ParameterLocation.Header
                 };
 
-                var requirement = new OpenApiSecurityRequirement
-                    { { key, new List<string>() }};
-
-                c.AddSecurityRequirement(requirement);
+                c.AddSecurityRequirement(
+                    new OpenApiSecurityRequirement()
+                    {
+                        {
+                            key, new List<string>()
+                        }
+                    });
             });
             services.AddDbContext<APIDatabaseContext>(config => config.UseSqlServer(Configuration.GetConnectionString("APIDatabaseContext")));
         }
@@ -63,7 +65,7 @@ namespace ProjektAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProjektAPI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "KinoAPI 2.0"));
             }
 
             app.UseHttpsRedirection();

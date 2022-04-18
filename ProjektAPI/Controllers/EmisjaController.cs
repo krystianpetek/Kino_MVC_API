@@ -29,7 +29,7 @@ namespace ProjektAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<EmisjaModel>> Get(int id)
         {
-            var query = await _context.Emisja.Include(q => q.Sala).Include(w=>w.Film).FirstOrDefaultAsync(e=>e.Id == id);
+            var query = await _context.Emisja.Include(q => q.Sala).Include(w => w.Film).FirstOrDefaultAsync(e => e.Id == id);
             if (query is null)
                 return NotFound();
             return query;
@@ -44,7 +44,7 @@ namespace ProjektAPI.Controllers
             _context.Emisja.Add(model);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("Get",new {id = model.Id}, model); // zwraca w response, obiekt który był requestowany postem
+            return CreatedAtAction("Get", new { id = model.Id }, model); // zwraca w response, obiekt który był requestowany postem
         }
 
         [HttpDelete("{id}")]
@@ -72,9 +72,9 @@ namespace ProjektAPI.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch(DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException)
             {
-                if(!EmisjaExists(id))
+                if (!EmisjaExists(id))
                 {
                     return NotFound(); // 404
                 }

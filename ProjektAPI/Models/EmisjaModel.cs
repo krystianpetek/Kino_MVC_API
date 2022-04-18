@@ -7,12 +7,16 @@ namespace ProjektAPI.Models
     {
         [Required]
         public int Id { get; set; }
+
         public int FilmId { get; set; }
         public int SalaId { get; set; }
+
         [DataType(DataType.Date)]
         public DateTime Data { get; set; }
+
         [DataType(DataType.Time)]
         public DateTime Godzina { get; set; }
+
         public virtual FilmModel Film { get; set; }
         public virtual SalaModel Sala { get; set; }
     }

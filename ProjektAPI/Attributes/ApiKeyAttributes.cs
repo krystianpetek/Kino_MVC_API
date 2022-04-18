@@ -19,7 +19,7 @@ namespace ProjektAPI.Attributes
                 context.Result = new ContentResult()
                 {
                     StatusCode = 401,   //Unauthorized
-                    Content = "Api Key was not provided"
+                    Content = "Klucz API nie został dostarczony."
                 };
                 return;
             }
@@ -33,7 +33,7 @@ namespace ProjektAPI.Attributes
                 context.Result = new ContentResult()
                 {
                     StatusCode = 401, //Unauthorized
-                    Content = "Api Key is not valid"
+                    Content = "Klucz API jest nieprawidłowy."
                 };
                 return;
             }

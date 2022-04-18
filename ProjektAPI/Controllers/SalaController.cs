@@ -14,6 +14,7 @@ namespace ProjektAPI.Controllers
     public class SalaController : ControllerBase
     {
         private readonly APIDatabaseContext _context;
+
         public SalaController(APIDatabaseContext context)
         {
             _context = context;
@@ -40,7 +41,7 @@ namespace ProjektAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(model);
 
-            if(_context.SaleKinowe.Any(q => q.NazwaSali == model.NazwaSali))
+            if (_context.SaleKinowe.Any(q => q.NazwaSali == model.NazwaSali))
                 return BadRequest();
 
             _context.SaleKinowe.Add(model);

@@ -36,10 +36,10 @@ namespace ProjektAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<RezerwacjaModel>> Create(RezerwacjaModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var query = await _context.Rezerwacja.FirstOrDefaultAsync(q=>q.EmisjaId == model.EmisjaId);
+            var query = await _context.Rezerwacja.FirstOrDefaultAsync(q => q.EmisjaId == model.EmisjaId);
 
             if (query != null)
             {
@@ -56,7 +56,7 @@ namespace ProjektAPI.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var query = await _context.Rezerwacja.FindAsync(id);
-            
+
             if (query is null)
                 return NotFound();
 
@@ -120,4 +120,3 @@ namespace ProjektAPI.Controllers
         }
     }
 }
-
