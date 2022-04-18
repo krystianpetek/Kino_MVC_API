@@ -18,30 +18,11 @@ namespace ProjektAPI.Controllers
             _context = context;
         }
 
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<RezerwacjaModel>>> Get()
-        //{
-        //    return await _context.Rezerwacja.Include(q => q.Emisja).Include(q => q.Klient).Include(q => q.Klient.Uzytkownik).Include(q => q.Emisja.Sala).Include(q => q.Emisja.Film).ToListAsync();
-        //}
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RezerwacjaModel>>> Get()
         {
             return await _context.Rezerwacja.ToListAsync();
         }
-
-        //[HttpGet("{id}")]
-        //public ActionResult<RezerwacjaModel> Get(int id)
-        //{
-        //    var model = _context.Rezerwacja.Include(q => q.Emisja).Include(q => q.Emisja.Sala).Include(q => q.Emisja.Film).Include(q => q.Klient).Include(q => q.Klient.Uzytkownik).FirstOrDefault(q => q.Id == id);
-
-        //    if (model == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return model;
-        //}
 
         [HttpGet("{id}")]
         public async Task<ActionResult<RezerwacjaModel>> Get(int id)
@@ -59,13 +40,12 @@ namespace ProjektAPI.Controllers
                 return BadRequest(ModelState);
 
             var query = await _context.Rezerwacja.FirstOrDefaultAsync(q=>q.EmisjaId == model.EmisjaId);
-            
-            if(query is null)
-                return NotFound();
 
-            if(query.Miejsce == model.Miejsce && query.Rzad == model.Rzad)
-                return BadRequest();
-
+            if (query != null)
+            {
+                if (query.Miejsce == model.Miejsce && query.Rzad == model.Rzad)
+                    return BadRequest();
+            }
             _context.Rezerwacja.Add(model);
             await _context.SaveChangesAsync();
 
