@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProjektMVC.Controllers.DodawanieRekordow
 {
+    [Route("Dodawanie")]
     public class DodajRekordyController : Controller
     {
         private HttpClient _client;
@@ -30,7 +31,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
             _client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
         }
 
-        [HttpGet("Dodawanie/Klienci")]
+        [HttpGet("Klienci")]
         public async Task<ActionResult> Klienci()
         {
             List<KlientModel> list = new List<KlientModel>()
@@ -101,7 +102,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
             return Redirect("/");
         }
 
-        [HttpGet("Dodawanie/SaleKinowe")]
+        [HttpGet("SaleKinowe")]
         public async Task<ActionResult> SaleKinowe()
         {
             List<SalaModel> list = new List<SalaModel>()
@@ -132,7 +133,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
             return Redirect("/");
         }
 
-        [HttpGet("Dodawanie/Filmy")]
+        [HttpGet("Filmy")]
         public async Task<ActionResult> Filmy()
         {
             List<FilmModel> list = new List<FilmModel>()
@@ -216,7 +217,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
             {
                 try
                 {
-                    HttpResponseMessage response = await _client.PostAsJsonAsync(FilmyPath, x);
+                    HttpResponseMessage response = await _client.PostAsJsonAsync(FilmPath, x);
                     response.EnsureSuccessStatusCode();
                 }
                 catch (HttpRequestException)
@@ -225,7 +226,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
             return Redirect("/");
         }
 
-        [HttpGet("Dodawanie/Seanse")]
+        [HttpGet("Seanse")]
         public async Task<ActionResult> EmisjeFilmow()
         {
             List<EmisjaModel> list = new List<EmisjaModel>()
@@ -300,7 +301,7 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
             return Redirect("/");
         }
 
-        [HttpGet("Dodawanie/RezerwacjaBiletow")]
+        [HttpGet("RezerwacjaBiletow")]
         public async Task<ActionResult> RezerwacjaBiletow()
         {
             List<RezerwacjaModel> list = new List<RezerwacjaModel>()
