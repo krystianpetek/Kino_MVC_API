@@ -1,12 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProjektAPI.Attributes;
 using ProjektAPI.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProjektAPI.Controllers
 {
-    [Route("[controller]"), ApiController, ApiKey]
+    [Route("api/[controller]")]
+    [ApiController]
+    [ApiKey]
     public class LoginController : Controller
     {
         private APIDatabaseContext _context;
@@ -17,9 +21,9 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<ActionResult<UzytkownikModel>> Index()
         {
-            List<UzytkownikModel> model = _context.Login.ToList();
+            List<UzytkownikModel> model = await _context.Login.ToListAsync();
             if (model is null)
             {
                 return NotFound();

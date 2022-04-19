@@ -2,14 +2,14 @@
 @using ProjektAPI.Models;
 @{
     ViewData["Title"] = "Rejestracja w serwisie";
+    var rejestracja = ViewData["Register"];
 }
 
 <h1 style="font-weight:400" class="text-center">@ViewData["Title"]</h1>
 <hr />
 <div class="row justify-content-center">
     <div class="col-md-6">
-
-        
+                
         <form asp-action="Rejestracja">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             

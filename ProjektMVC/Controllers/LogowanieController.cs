@@ -107,7 +107,7 @@ namespace ProjektMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Rejestracja([Bind] KlientModel model)
+        public async Task<IActionResult> Rejestracja([Bind] KlientModel model)
         {
             model.Uzytkownik.RodzajUzytkownika = Rola.Klient;
             if (ModelState.IsValid)
@@ -115,10 +115,10 @@ namespace ProjektMVC.Controllers
                 HttpResponseMessage response = await client.PostAsJsonAsync(KlientPath, model);
                 response.EnsureSuccessStatusCode();
                 ViewBag.Register = $"{model.Imie}, rejestracja udana! Możesz się zalogować.";
-                return View("Login");
+                return RedirectToAction("Login",model);
             }
             ViewBag.Register = "Błąd, spróbuj ponownie";
-            return BadRequest(model);
+            return BadRequest();
         }
     }
 }

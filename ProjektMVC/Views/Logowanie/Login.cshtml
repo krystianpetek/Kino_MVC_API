@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var rejestracja = ViewData["Rejestracja"];
 }
 <h2 class="text-center">Logowanie do serwisu</h2>
 <hr />
@@ -33,6 +34,8 @@
             </div>
 
         </form>
+
+        <div>@rejestracja</div>
 
         <div><span>Nie masz jeszcze konta?</span> <a class="text-primary" asp-action="Rejestracja">Zarejestruj się!</a></div>
 
