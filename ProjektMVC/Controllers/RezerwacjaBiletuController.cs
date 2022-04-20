@@ -78,6 +78,7 @@ namespace ProjektMVC.Controllers
             int iloscMiejsc = model.Emisja.Sala.IloscMiejsc;
             int iloscRzedow = model.Emisja.Sala.IloscRzedow;
 
+
             bool[,] siedzenia = new bool[iloscRzedow, iloscMiejsc];
             for (int i = 0; i < siedzenia.GetLength(0); i++)
             {
