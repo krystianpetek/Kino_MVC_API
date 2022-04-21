@@ -73,11 +73,10 @@ namespace ProjektMVC.Controllers
         private async Task<bool[,]> ZajeteSiedzenia(RezerwacjaModel model)
         {
             await EmisjaAsync();
-            model.Emisja = _emisjaModels.Find(q=>q.Id == model.EmisjaId);
+            model.Emisja = _emisjaModels.Find(q => q.Id == model.EmisjaId);
             var listaMiejsc = _zajeteMiejsca.Where(x => x.EmisjaId == model.EmisjaId).ToList();
             int iloscMiejsc = model.Emisja.Sala.IloscMiejsc;
             int iloscRzedow = model.Emisja.Sala.IloscRzedow;
-
 
             bool[,] siedzenia = new bool[iloscRzedow, iloscMiejsc];
             for (int i = 0; i < siedzenia.GetLength(0); i++)
@@ -249,12 +248,12 @@ namespace ProjektMVC.Controllers
             await KlienciAsync();
             await RezerwacjaAsync();
 
-            _rezerwacjaModels.ForEach(q => q.Emisja = _emisjaModels.Find(w => w.Id == q.EmisjaId)); 
+            _rezerwacjaModels.ForEach(q => q.Emisja = _emisjaModels.Find(w => w.Id == q.EmisjaId));
             _rezerwacjaModels.ForEach(q => q.Klient = _klientModels.Find(w => w.Id == q.KlientId));
-            
-            model.Emisja = _rezerwacjaModels.Select(x=>x.Emisja).Where(q => q.FilmId == model.Emisja.FilmId).Where(q => q.Data.ToShortDateString() == model.Emisja.Data.ToShortDateString()).Where(q => q.Godzina.ToShortTimeString() == model.Emisja.Godzina.ToShortTimeString()).FirstOrDefault();
+
+            model.Emisja = _rezerwacjaModels.Select(x => x.Emisja).Where(q => q.FilmId == model.Emisja.FilmId).Where(q => q.Data.ToShortDateString() == model.Emisja.Data.ToShortDateString()).Where(q => q.Godzina.ToShortTimeString() == model.Emisja.Godzina.ToShortTimeString()).FirstOrDefault();
             model.EmisjaId = model.Emisja.Id;
-            model.KlientId = _rezerwacjaModels.Where(w=>w.Klient.Uzytkownik.Login == User.Identity.Name).Select(x=>x.KlientId).FirstOrDefault();
+            model.KlientId = _rezerwacjaModels.Where(w => w.Klient.Uzytkownik.Login == User.Identity.Name).Select(x => x.KlientId).FirstOrDefault();
             model.Miejsce++;
             model.Rzad++;
 

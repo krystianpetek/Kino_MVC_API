@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using ProjektAPI.Attributes;
 using ProjektAPI.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProjektAPI.Controllers

@@ -115,7 +115,7 @@ namespace ProjektMVC.Controllers
                 HttpResponseMessage response = await client.PostAsJsonAsync(KlientPath, model);
                 response.EnsureSuccessStatusCode();
                 ViewBag.Register = $"{model.Imie}, rejestracja udana! Możesz się zalogować.";
-                return RedirectToAction("Login",model);
+                return RedirectToAction("Login", model);
             }
             ViewBag.Register = "Błąd, spróbuj ponownie";
             return BadRequest();

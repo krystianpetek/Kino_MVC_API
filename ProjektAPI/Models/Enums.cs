@@ -26,7 +26,7 @@ namespace ProjektAPI.Models
         Admin,
 
         [Display(Name = "Pracownik")]
-        Pracownik, 
+        Pracownik,
 
         [Display(Name = "Klient")]
         Klient

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ProjektAPI.Models;
 
 namespace ProjektMVC
 {
@@ -25,7 +24,7 @@ namespace ProjektMVC
             {
                 x.LoginPath = "/Logowanie/Login";
                 x.AccessDeniedPath = "/";
-                x.LogoutPath= "/";
+                x.LogoutPath = "/";
             });
         }
 

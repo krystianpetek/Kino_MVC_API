@@ -77,10 +77,10 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpPost("Edit/{id}"), Authorize(Roles = "Admin,Pracownik"), ValidateAntiForgeryToken]  // modelstate
-        public async Task<ActionResult> Edit([FromRoute] int id, [Bind("Id, NazwaSali, IloscRzedow, IloscMiejsc")] SalaModel model)
+        public async Task<ActionResult> Edit([FromRoute] int id, SalaModel model)
         {
             await PobierzSaleKinowe();
-            if (_listaSalKinowych.Where(x => x.NazwaSali == model.NazwaSali).Count() < 2)
+            if (_listaSalKinowych.Where(x => x.NazwaSali == model.NazwaSali).SingleOrDefault().Id == id)
             {
                 HttpResponseMessage odpowiedz = await client.PutAsJsonAsync(SaleKinowePath + id, model);
                 odpowiedz.EnsureSuccessStatusCode();

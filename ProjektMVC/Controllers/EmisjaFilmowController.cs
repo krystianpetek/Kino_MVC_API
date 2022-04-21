@@ -62,7 +62,7 @@ namespace ProjektMVC.Controllers
             return View(listaKlientow.OrderByDescending(d => d.Data));
         }
 
-        [HttpGet("Create"), Authorize(Roles = "Admin"), ValidateAntiForgeryToken]
+        [HttpGet("Create"), Authorize(Roles = "Admin")]
         public async Task<ActionResult> Create()
         {
             await FilmyAsync();
@@ -116,17 +116,7 @@ namespace ProjektMVC.Controllers
         [HttpGet("Delete"), Authorize(Roles = "Admin, Pracownik")]
         public async Task<ActionResult> Delete(int? id)
         {
-            HttpResponseMessage response = await client.GetAsync(EmisjaPath + id);
-            if (response.IsSuccessStatusCode)
-            {
-                EmisjaModel model = await response.Content.ReadAsAsync<EmisjaModel>();
-                await FilmyAsync();
-                await SalaAsync();
-                model.Film = _filmModels.FirstOrDefault(q => q.Id == model.FilmId);
-                model.Sala = _salaModels.FirstOrDefault(q => q.Id == model.SalaId);
-                return View(model);
-            }
-            return NotFound();
+            return await AddItToConfirmation(id);
         }
 
         [HttpPost("Delete/{id}"), Authorize(Roles = "Admin, Pracownik")]
@@ -140,6 +130,11 @@ namespace ProjektMVC.Controllers
 
         [HttpGet("Details/{id}"), Authorize(Roles = "Admin, Pracownik")]
         public async Task<ActionResult> Details(int? id)
+        {
+            return await AddItToConfirmation(id);
+        }
+
+        private async Task<ActionResult> AddItToConfirmation(int? id)
         {
             HttpResponseMessage response = await client.GetAsync(EmisjaPath + id);
             if (response.IsSuccessStatusCode)

@@ -14,13 +14,16 @@ namespace ProjektMVC.Controllers
     public class ListaKlientowController : Controller
     {
         private readonly HttpClient client;
+        private readonly string UzytkownikPath;
         private readonly string KlienciPath;
         private readonly IConfiguration _configuration;
         private List<KlientModel> _listaKlientow;
+        private List<UzytkownikModel> _listaUzytkowniokow;
 
         public ListaKlientowController(IConfiguration configuration)
         {
             _configuration = configuration;
+            UzytkownikPath = _configuration["ProjektAPIConfig:Login"];
             KlienciPath = _configuration["ProjektAPIConfig:Klient"];
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("ApiKey", _configuration["ProjektAPIConfig:ApiKey"]);
@@ -31,6 +34,13 @@ namespace ProjektMVC.Controllers
             HttpResponseMessage response = await client.GetAsync(KlienciPath);
             if (response.IsSuccessStatusCode)
                 _listaKlientow = await response.Content.ReadAsAsync<List<KlientModel>>();
+        }
+
+        private async Task PobierzKlientowUzytkownikow()
+        {
+            HttpResponseMessage response = await client.GetAsync(UzytkownikPath);
+            if (response.IsSuccessStatusCode)
+                _listaUzytkowniokow = await response.Content.ReadAsAsync<List<UzytkownikModel>>();
         }
 
         [HttpGet("Index"), Authorize(Roles = "Admin,Pracownik")]
@@ -51,9 +61,10 @@ namespace ProjektMVC.Controllers
             return View();
         }
 
-        [HttpPost("Create"), Authorize(Roles = "Admin")] // modelstate
+        [HttpPost("Create")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("Id,Imie,Nazwisko,DataUrodzenia,NumerTelefonu,Email,Miasto,Ulica,KodPocztowy,Uzytkownik")] KlientModel model)
+        public async Task<ActionResult> Create(KlientModel model)
         {
             if (ModelState.IsValid)
             {
@@ -72,10 +83,15 @@ namespace ProjektMVC.Controllers
                 response.EnsureSuccessStatusCode();
                 return RedirectToAction(nameof(Index));
             }
-            return Redirect($"Create");
+            else
+            {
+                TempData["duplikat"] = "Błędne dane";
+            }
+            return RedirectToAction($"Create");
         }
 
-        [HttpGet("Edit/{id}"), Authorize(Roles = "Admin")]
+        [HttpGet("Edit/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit([FromRoute] int? id)
         {
             HttpResponseMessage response = await client.GetAsync(KlienciPath + id);
@@ -87,9 +103,14 @@ namespace ProjektMVC.Controllers
             return NotFound();
         }
 
-        [HttpPost("Edit/{id}"), Authorize(Roles = "Admin"), ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([FromRoute] int id, [Bind("Id,Imie,Nazwisko,DataUrodzenia,NumerTelefonu,Email,Miasto,Ulica,KodPocztowy,Uzytkownik")] KlientModel model)
+        [HttpPost("Edit/{id}")]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit([FromRoute] int id, KlientModel model)
         {
+            await PobierzKlientowUzytkownikow();
+            model.Uzytkownik = _listaUzytkowniokow.SingleOrDefault(q => q.Login == model.Uzytkownik.Login);
+            model.UzytkownikId = model.Uzytkownik.Id;
             if (ModelState.IsValid) // todo - duplikaty
             {
                 HttpResponseMessage response = await client.PutAsJsonAsync(KlienciPath + id, model);

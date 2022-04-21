@@ -1,31 +1,37 @@
-﻿.wyswietlWLinii{
+﻿.wyswietlWLinii {
     display: inline;
 }
+
 .buttonyPadding {
     padding: 20px;
     padding-left: 10px;
 }
+
 .buttonyPaddingMniejsze {
     padding: 10px;
     padding-left: 10px;
 }
-.buttonyPaddingMniejsze a, .buttonyPaddingMniejsze button{
-    width: 130px;
-}
+
+    .buttonyPaddingMniejsze a, .buttonyPaddingMniejsze button {
+        width: 130px;
+    }
+
 .user {
     padding: 2px;
     margin: 0px;
 }
+
 .krystian:hover {
     transform: scale(1.3) rotate(-5deg) translate(0,10px);
     transition-duration: 0.5s;
     transition-timing-function: ease-in;
 }
+
 .krystian {
     transition-duration: 1s;
     display: flex;
     justify-content: center;
-    overflow:hidden;
+    overflow: hidden;
 }
 
 @media (max-width: 1200px) {
@@ -33,12 +39,13 @@
         line-height: 30px;
     }
 }
-@media (max-width: 768px)
-{
+
+@media (max-width: 768px) {
     div a.navbar-brand:first-child {
         display: none;
     }
 }
+
 .pracownik {
     line-height: 30px;
 }
