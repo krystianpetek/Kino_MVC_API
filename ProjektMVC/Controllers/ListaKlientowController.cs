@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ProjektAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -92,7 +93,7 @@ namespace ProjektMVC.Controllers
 
         [HttpGet("Edit/{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Edit([FromRoute] int? id)
+        public async Task<ActionResult> Edit([FromRoute] Guid? id)
         {
             HttpResponseMessage response = await client.GetAsync(KlienciPath + id);
             if (response.IsSuccessStatusCode)
@@ -106,7 +107,7 @@ namespace ProjektMVC.Controllers
         [HttpPost("Edit/{id}")]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([FromRoute] int id, KlientModel model)
+        public async Task<ActionResult> Edit([FromRoute] Guid id, KlientModel model)
         {
             await PobierzKlientowUzytkownikow();
             model.Uzytkownik = _listaUzytkowniokow.SingleOrDefault(q => q.Login == model.Uzytkownik.Login);
@@ -121,7 +122,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Delete"), Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Delete(int? id)
+        public async Task<ActionResult> Delete(Guid? id)
         {
             HttpResponseMessage response = await client.GetAsync(KlienciPath + id);
             if (response.IsSuccessStatusCode)
@@ -133,7 +134,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpPost("Delete/{id}"), Authorize(Roles = "Admin"), ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
             HttpResponseMessage response = await client.DeleteAsync(KlienciPath + id);
             response.EnsureSuccessStatusCode();
@@ -141,7 +142,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Details/{id}"), Authorize(Roles = "Admin,Pracownik")]
-        public async Task<ActionResult> Details(int? id)
+        public async Task<ActionResult> Details(Guid? id)
         {
             HttpResponseMessage response = await client.GetAsync(KlienciPath + id);
             if (response.IsSuccessStatusCode)

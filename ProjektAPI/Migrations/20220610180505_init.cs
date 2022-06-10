@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
 
 namespace ProjektAPI.Migrations
 {
-    public partial class kinodb : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,8 +13,7 @@ namespace ProjektAPI.Migrations
                 name: "Filmy",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nazwa = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     Opis = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Gatunek = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -29,8 +30,7 @@ namespace ProjektAPI.Migrations
                 name: "Login",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Login = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Haslo = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     RodzajUzytkownika = table.Column<int>(type: "int", nullable: false)
@@ -44,8 +44,7 @@ namespace ProjektAPI.Migrations
                 name: "SaleKinowe",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     NazwaSali = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IloscRzedow = table.Column<int>(type: "int", nullable: false),
                     IloscMiejsc = table.Column<int>(type: "int", nullable: false)
@@ -59,8 +58,7 @@ namespace ProjektAPI.Migrations
                 name: "Klienci",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Imie = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Nazwisko = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     DataUrodzenia = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -69,7 +67,7 @@ namespace ProjektAPI.Migrations
                     Ulica = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     KodPocztowy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UzytkownikId = table.Column<int>(type: "int", nullable: false)
+                    UzytkownikId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,10 +84,9 @@ namespace ProjektAPI.Migrations
                 name: "Emisja",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FilmId = table.Column<int>(type: "int", nullable: false),
-                    SalaId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FilmId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SalaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Data = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Godzina = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -114,12 +111,11 @@ namespace ProjektAPI.Migrations
                 name: "Rezerwacja",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Rzad = table.Column<int>(type: "int", nullable: false),
                     Miejsce = table.Column<int>(type: "int", nullable: false),
-                    EmisjaId = table.Column<int>(type: "int", nullable: false),
-                    KlientId = table.Column<int>(type: "int", nullable: false)
+                    EmisjaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    KlientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {

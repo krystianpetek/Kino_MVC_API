@@ -5,56 +5,62 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ProjektAPI.Models;
+using ProjektAPI.Database;
+
+#nullable disable
 
 namespace ProjektAPI.Migrations
 {
     [DbContext(typeof(APIDatabaseContext))]
-    [Migration("20220104203059_kinodb")]
-    partial class kinodb
+    [Migration("20220610183417_initializer")]
+    partial class initializer
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.13")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.5")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("ProjektAPI.Models.EmisjaModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FilmId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("FilmId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Godzina")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SalaId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("SalaId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FilmId");
+                    b.HasIndex("FilmId")
+                        .IsUnique();
 
-                    b.HasIndex("SalaId");
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("SalaId")
+                        .IsUnique();
 
                     b.ToTable("Emisja");
                 });
 
             modelBuilder.Entity("ProjektAPI.Models.FilmModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<float>("Cena")
                         .HasColumnType("real");
@@ -81,15 +87,17 @@ namespace ProjektAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id")
+                        .IsUnique();
+
                     b.ToTable("Filmy");
                 });
 
             modelBuilder.Entity("ProjektAPI.Models.KlientModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataUrodzenia")
                         .HasColumnType("datetime2");
@@ -121,31 +129,34 @@ namespace ProjektAPI.Migrations
                     b.Property<string>("Ulica")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UzytkownikId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UzytkownikId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.HasIndex("UzytkownikId");
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("UzytkownikId")
+                        .IsUnique();
 
                     b.ToTable("Klienci");
                 });
 
             modelBuilder.Entity("ProjektAPI.Models.RezerwacjaModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("EmisjaId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("EmisjaId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("KlientId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("KlientId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Miejsce")
                         .HasColumnType("int");
@@ -157,6 +168,9 @@ namespace ProjektAPI.Migrations
 
                     b.HasIndex("EmisjaId");
 
+                    b.HasIndex("Id")
+                        .IsUnique();
+
                     b.HasIndex("KlientId");
 
                     b.ToTable("Rezerwacja");
@@ -164,10 +178,9 @@ namespace ProjektAPI.Migrations
 
             modelBuilder.Entity("ProjektAPI.Models.SalaModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("IloscMiejsc")
                         .HasColumnType("int");
@@ -181,6 +194,9 @@ namespace ProjektAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id")
+                        .IsUnique();
+
                     b.HasIndex("NazwaSali")
                         .IsUnique();
 
@@ -189,10 +205,9 @@ namespace ProjektAPI.Migrations
 
             modelBuilder.Entity("ProjektAPI.Models.UzytkownikModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Haslo")
                         .IsRequired()
@@ -209,23 +224,49 @@ namespace ProjektAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id")
+                        .IsUnique();
+
                     b.HasIndex("Login")
                         .IsUnique();
 
                     b.ToTable("Login");
                 });
 
+            modelBuilder.Entity("ProjektAPI.Models.ZajeteMiejsca", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EmisjaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Miejsce")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rzad")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.ToTable("ZajeteMiejsca");
+                });
+
             modelBuilder.Entity("ProjektAPI.Models.EmisjaModel", b =>
                 {
                     b.HasOne("ProjektAPI.Models.FilmModel", "Film")
-                        .WithMany()
-                        .HasForeignKey("FilmId")
+                        .WithOne("Emisja")
+                        .HasForeignKey("ProjektAPI.Models.EmisjaModel", "FilmId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ProjektAPI.Models.SalaModel", "Sala")
-                        .WithMany()
-                        .HasForeignKey("SalaId")
+                        .WithOne("Emisja")
+                        .HasForeignKey("ProjektAPI.Models.EmisjaModel", "SalaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -237,8 +278,8 @@ namespace ProjektAPI.Migrations
             modelBuilder.Entity("ProjektAPI.Models.KlientModel", b =>
                 {
                     b.HasOne("ProjektAPI.Models.UzytkownikModel", "Uzytkownik")
-                        .WithMany()
-                        .HasForeignKey("UzytkownikId")
+                        .WithOne("Klient")
+                        .HasForeignKey("ProjektAPI.Models.KlientModel", "UzytkownikId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -248,19 +289,44 @@ namespace ProjektAPI.Migrations
             modelBuilder.Entity("ProjektAPI.Models.RezerwacjaModel", b =>
                 {
                     b.HasOne("ProjektAPI.Models.EmisjaModel", "Emisja")
-                        .WithMany()
+                        .WithMany("Rezerwacje")
                         .HasForeignKey("EmisjaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ProjektAPI.Models.KlientModel", "Klient")
-                        .WithMany()
+                        .WithMany("Rezerwacje")
                         .HasForeignKey("KlientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Emisja");
 
+                    b.Navigation("Klient");
+                });
+
+            modelBuilder.Entity("ProjektAPI.Models.EmisjaModel", b =>
+                {
+                    b.Navigation("Rezerwacje");
+                });
+
+            modelBuilder.Entity("ProjektAPI.Models.FilmModel", b =>
+                {
+                    b.Navigation("Emisja");
+                });
+
+            modelBuilder.Entity("ProjektAPI.Models.KlientModel", b =>
+                {
+                    b.Navigation("Rezerwacje");
+                });
+
+            modelBuilder.Entity("ProjektAPI.Models.SalaModel", b =>
+                {
+                    b.Navigation("Emisja");
+                });
+
+            modelBuilder.Entity("ProjektAPI.Models.UzytkownikModel", b =>
+                {
                     b.Navigation("Klient");
                 });
 #pragma warning restore 612, 618

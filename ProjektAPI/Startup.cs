@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using ProjektAPI.Models;
+using ProjektAPI.Database;
 using System.Collections.Generic;
 
 namespace ProjektAPI
@@ -34,7 +34,7 @@ namespace ProjektAPI
                     In = ParameterLocation.Header,
                     Name = APIKEYNAME,
                     Type = SecuritySchemeType.ApiKey,
-                    Description = "Prosze podać klucz:",
+                    Description = "Prosze podać klucz: kluczPrywatny",
                 });
 
                 var key = new OpenApiSecurityScheme()

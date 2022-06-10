@@ -1,11 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ProjektAPI.Models
 {
     public class FilmModel
     {
         [Required, Display(Name = "ID")]
-        public int Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required, StringLength(80), Display(Name = "Nazwa")]
         public string Nazwa { get; set; }
@@ -24,5 +26,9 @@ namespace ProjektAPI.Models
 
         [Required, Display(Name = "Kwota")]
         public float Cena { get; set; }
+
+        [JsonIgnore]
+        public virtual EmisjaModel Emisja { get; set; }
+
     }
 }

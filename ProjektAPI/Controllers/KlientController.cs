@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using ProjektAPI.Attributes;
 using ProjektAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using ProjektAPI.Database;
 using System.Threading.Tasks;
 
 namespace ProjektAPI.Controllers
@@ -27,7 +29,7 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<KlientModel>> Get(int id)
+        public async Task<ActionResult<KlientModel>> Get(Guid id)
         {
             var query = await _context.Klienci.Include(q => q.Uzytkownik).FirstAsync(w => w.Id == id);
             if (query is null)
@@ -52,7 +54,7 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             var queryKlient = await _context.Klienci.FindAsync(id);
             if (queryKlient is null)
@@ -70,12 +72,12 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditAll(int id, [FromBody] KlientModel model)
+        public async Task<IActionResult> EditAll(Guid id, [FromBody] KlientModel model)
         {
             if (id != model.Id)
                 return BadRequest();
 
-            if (model.UzytkownikId == 0 && model.UzytkownikId != model.Uzytkownik.Id)
+            if (model.UzytkownikId != model.Uzytkownik.Id)
                 return BadRequest();
 
             _context.Entry(model).State = EntityState.Modified;
@@ -99,7 +101,7 @@ namespace ProjektAPI.Controllers
             return NoContent();
         }
 
-        private bool KlientExists(int id)
+        private bool KlientExists(Guid id)
         {
             return _context.Klienci.Any(q => q.Id == id);
         }

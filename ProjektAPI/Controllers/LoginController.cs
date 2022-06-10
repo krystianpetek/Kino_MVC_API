@@ -4,7 +4,7 @@ using ProjektAPI.Attributes;
 using ProjektAPI.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using ProjektAPI.Database;
 namespace ProjektAPI.Controllers
 {
     [Route("api/[controller]")]

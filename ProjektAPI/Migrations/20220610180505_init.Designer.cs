@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjektAPI.Database;
+using ProjektAPI.Models;
 
 #nullable disable
 
 namespace ProjektAPI.Migrations
 {
     [DbContext(typeof(APIDatabaseContext))]
-    partial class APIDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220610180505_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,14 +45,9 @@ namespace ProjektAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FilmId")
-                        .IsUnique();
+                    b.HasIndex("FilmId");
 
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.HasIndex("SalaId")
-                        .IsUnique();
+                    b.HasIndex("SalaId");
 
                     b.ToTable("Emisja");
                 });
@@ -84,9 +82,6 @@ namespace ProjektAPI.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
 
                     b.ToTable("Filmy");
                 });
@@ -135,11 +130,7 @@ namespace ProjektAPI.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.HasIndex("UzytkownikId")
-                        .IsUnique();
+                    b.HasIndex("UzytkownikId");
 
                     b.ToTable("Klienci");
                 });
@@ -166,9 +157,6 @@ namespace ProjektAPI.Migrations
 
                     b.HasIndex("EmisjaId");
 
-                    b.HasIndex("Id")
-                        .IsUnique();
-
                     b.HasIndex("KlientId");
 
                     b.ToTable("Rezerwacja");
@@ -191,9 +179,6 @@ namespace ProjektAPI.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
 
                     b.HasIndex("NazwaSali")
                         .IsUnique();
@@ -222,49 +207,23 @@ namespace ProjektAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id")
-                        .IsUnique();
-
                     b.HasIndex("Login")
                         .IsUnique();
 
                     b.ToTable("Login");
                 });
 
-            modelBuilder.Entity("ProjektAPI.Models.ZajeteMiejsca", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("EmisjaId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Miejsce")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Rzad")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.ToTable("ZajeteMiejsca");
-                });
-
             modelBuilder.Entity("ProjektAPI.Models.EmisjaModel", b =>
                 {
                     b.HasOne("ProjektAPI.Models.FilmModel", "Film")
-                        .WithOne("Emisja")
-                        .HasForeignKey("ProjektAPI.Models.EmisjaModel", "FilmId")
+                        .WithMany()
+                        .HasForeignKey("FilmId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ProjektAPI.Models.SalaModel", "Sala")
-                        .WithOne("Emisja")
-                        .HasForeignKey("ProjektAPI.Models.EmisjaModel", "SalaId")
+                        .WithMany()
+                        .HasForeignKey("SalaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -276,8 +235,8 @@ namespace ProjektAPI.Migrations
             modelBuilder.Entity("ProjektAPI.Models.KlientModel", b =>
                 {
                     b.HasOne("ProjektAPI.Models.UzytkownikModel", "Uzytkownik")
-                        .WithOne("Klient")
-                        .HasForeignKey("ProjektAPI.Models.KlientModel", "UzytkownikId")
+                        .WithMany()
+                        .HasForeignKey("UzytkownikId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -287,44 +246,19 @@ namespace ProjektAPI.Migrations
             modelBuilder.Entity("ProjektAPI.Models.RezerwacjaModel", b =>
                 {
                     b.HasOne("ProjektAPI.Models.EmisjaModel", "Emisja")
-                        .WithMany("Rezerwacje")
+                        .WithMany()
                         .HasForeignKey("EmisjaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ProjektAPI.Models.KlientModel", "Klient")
-                        .WithMany("Rezerwacje")
+                        .WithMany()
                         .HasForeignKey("KlientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Emisja");
 
-                    b.Navigation("Klient");
-                });
-
-            modelBuilder.Entity("ProjektAPI.Models.EmisjaModel", b =>
-                {
-                    b.Navigation("Rezerwacje");
-                });
-
-            modelBuilder.Entity("ProjektAPI.Models.FilmModel", b =>
-                {
-                    b.Navigation("Emisja");
-                });
-
-            modelBuilder.Entity("ProjektAPI.Models.KlientModel", b =>
-                {
-                    b.Navigation("Rezerwacje");
-                });
-
-            modelBuilder.Entity("ProjektAPI.Models.SalaModel", b =>
-                {
-                    b.Navigation("Emisja");
-                });
-
-            modelBuilder.Entity("ProjektAPI.Models.UzytkownikModel", b =>
-                {
                     b.Navigation("Klient");
                 });
 #pragma warning restore 612, 618

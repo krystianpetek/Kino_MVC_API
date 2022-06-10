@@ -1,11 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ProjektAPI.Models
 {
     public class SalaModel
     {
         [Required, Display(Name = "ID")]
-        public int Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required, Display(Name = "Nazwa sali")]
         public string NazwaSali { get; set; }
@@ -18,5 +21,8 @@ namespace ProjektAPI.Models
 
         [Display(Name = "Liczba dostępnych miejsc")]
         public int LiczbaMiejsc => IloscMiejsc * IloscRzedow;
+
+        [JsonIgnore]
+        public virtual EmisjaModel Emisja { get; set; }
     }
 }
