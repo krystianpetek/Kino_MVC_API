@@ -25,7 +25,9 @@ namespace ProjektAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FilmModel>>> Get()
         {
-            return await _context.Filmy.ToListAsync();
+            var model = await _context.Filmy.ToListAsync();
+
+            return model;
         }
 
         [HttpGet("{id}")]
@@ -45,6 +47,7 @@ namespace ProjektAPI.Controllers
 
             _context.Filmy.Add(model);
             await _context.SaveChangesAsync();
+
             return CreatedAtAction("Get", new { id = model.Id }, model);
         }
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ProjektAPI.Models;
+using ProjektAPI.Producer;
 using ProjektMVC;
 using ProjektMVC.Models;
 using System;
@@ -13,6 +14,7 @@ namespace ProjektAPI.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IMessageProducer _producer;
         private HttpClient _client;
         private readonly string FilmyPath;
         private readonly string KlientPath;
@@ -21,9 +23,10 @@ namespace ProjektAPI.Controllers
         private readonly string RezerwacjaPath;
         private IConfiguration _configuration;
 
-        public HomeController(IConfiguration configuration)
+        public HomeController(IConfiguration configuration, IMessageProducer producer)
         {
             _configuration = configuration;
+            _producer = producer;
             KlientPath = _configuration["ProjektAPIConfig:Klient"];
             SalaPath = _configuration["ProjektAPIConfig:Sala"];
             FilmyPath = _configuration["ProjektAPIConfig:Film"];
@@ -95,7 +98,16 @@ namespace ProjektAPI.Controllers
                     list[4] = true;
             }
 
-            return View(new Tuple<List<bool>, List<UzytkownikModel>>(list, listaUzytkownikow));
+            var message = string.Empty;
+
+            return View(new Tuple<List<bool>, List<UzytkownikModel>, string>(list, listaUzytkownikow, message));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Message(string Item3)
+        {
+            _producer.SendMessage(Item3);
+            return LocalRedirect("/");
         }
 
         public async Task<ActionResult> AktualneFilmy()
