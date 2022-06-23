@@ -87,7 +87,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Edit/{id}"), Authorize(Roles = "Admin, Pracownik")]
-        public async Task<ActionResult> Edit(/*Guid id*/int id)
+        public async Task<ActionResult> Edit(Guid id/*int id*/)
         {
             await SalaAsync();
             await FilmyAsync();
@@ -103,7 +103,7 @@ namespace ProjektMVC.Controllers
 
         [HttpPost("Edit/{id}"), Authorize(Roles = "Admin, Pracownik")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(/*Guid id*/int id, [Bind(Prefix = "Item3")] EmisjaModel model)
+        public async Task<ActionResult> Edit(Guid id/*int id*/, [Bind(Prefix = "Item3")] EmisjaModel model)
         {
             if (ModelState.IsValid)
             {
@@ -115,14 +115,14 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Delete"), Authorize(Roles = "Admin, Pracownik")]
-        public async Task<ActionResult> Delete(/*Guid id*/int id)
+        public async Task<ActionResult> Delete(Guid id/*int id*/)
         {
             return await AddItToConfirmation(id);
         }
 
         [HttpPost("Delete/{id}"), Authorize(Roles = "Admin, Pracownik")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(/*Guid id*/int id)
+        public async Task<ActionResult> DeleteConfirmed(Guid id/*int id*/)
         {
             HttpResponseMessage response = await client.DeleteAsync(EmisjaPath + id);
             response.EnsureSuccessStatusCode();
@@ -130,12 +130,12 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Details/{id}"), Authorize(Roles = "Admin, Pracownik")]
-        public async Task<ActionResult> Details(/*Guid id*/int id)
+        public async Task<ActionResult> Details(Guid id/*int id*/)
         {
             return await AddItToConfirmation(id);
         }
 
-        private async Task<ActionResult> AddItToConfirmation(/*Guid id*/int id)
+        private async Task<ActionResult> AddItToConfirmation(Guid id/*int id*/)
         {
             HttpResponseMessage response = await client.GetAsync(EmisjaPath + id);
             if (response.IsSuccessStatusCode)

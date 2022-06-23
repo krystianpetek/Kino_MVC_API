@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProjektAPI.Attributes;
 using ProjektAPI.Database;
 using ProjektAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,7 +29,7 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<EmisjaModel>> Get(/*Guid id*/int id)
+        public async Task<ActionResult<EmisjaModel>> Get(Guid id/*int id*/)
         {
             var query = await _context.Emisja.Include(q => q.Sala).Include(w => w.Film).FirstOrDefaultAsync(e => e.Id == id);
             if (query is null)
@@ -49,7 +50,7 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(/*Guid id*/int id)
+        public async Task<IActionResult> Delete(Guid id/*int id*/)
         {
             var query = await _context.Emisja.FindAsync(id);
 
@@ -62,7 +63,7 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditAll(/*Guid id*/int id, [FromBody] EmisjaModel model)
+        public async Task<IActionResult> EditAll(Guid id/*int id*/, [FromBody] EmisjaModel model)
         {
             if (id != model.Id)
                 return BadRequest(); // 400
@@ -88,7 +89,7 @@ namespace ProjektAPI.Controllers
             return NoContent(); // 204
         }
 
-        private bool EmisjaExists(/*Guid id*/int id)
+        private bool EmisjaExists(Guid id/*int id*/)
         {
             return _context.Emisja.Any(q => q.Id == id);
         }

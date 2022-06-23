@@ -1,12 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjektAPI.Models
 {
     public class FilmModel
     {
         [Required, Display(Name = "ID")]
-        //public Guid Id { get; set; }
-        public int Id { get; set; }
+        public Guid Id { get; set; }
+        //public int Id { get; set; }
 
         [Required, StringLength(80), Display(Name = "Nazwa")]
         public string Nazwa { get; set; }

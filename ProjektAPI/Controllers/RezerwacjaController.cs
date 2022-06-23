@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProjektAPI.Database;
 using ProjektAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<RezerwacjaModel>> Get(/*Guid id*/int id)
+        public async Task<ActionResult<RezerwacjaModel>> Get(Guid id/*int id*/)
         {
             var query = await _context.Rezerwacja.FindAsync(id);
             if (query == null)
@@ -40,7 +41,7 @@ namespace ProjektAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var query = await _context.Rezerwacja.FirstOrDefaultAsync(q => q.Emisja.Id == model.Emisja.Id);
+            var query = await _context.Rezerwacja.FirstOrDefaultAsync(q => q.EmisjaId == model.EmisjaId);
 
             if (query != null)
             {
@@ -54,7 +55,7 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(/*Guid id*/int id)
+        public async Task<IActionResult> Delete(Guid id/*int id*/)
         {
             var query = await _context.Rezerwacja.FindAsync(id);
 
@@ -68,7 +69,7 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit(/*Guid id*/int id, RezerwacjaModel rezerwacjaModel)
+        public async Task<IActionResult> Edit(Guid id/*int id*/, RezerwacjaModel rezerwacjaModel)
         {
             if (id != rezerwacjaModel.Id)
             {
@@ -96,7 +97,7 @@ namespace ProjektAPI.Controllers
             return NoContent();
         }
 
-        private bool RezerwacjaModelExists(/*Guid id*/int id)
+        private bool RezerwacjaModelExists(Guid id/*int id*/)
         {
             return _context.Rezerwacja.Any(e => e.Id == id);
         }
@@ -111,7 +112,7 @@ namespace ProjektAPI.Controllers
                 var modelik = new ZajeteMiejsca()
                 {
                     Id = item.Id,
-                    EmisjaId = item.Emisja.Id,
+                    EmisjaId = item.EmisjaId,
                     Miejsce = item.Miejsce,
                     Rzad = item.Rzad
                 };

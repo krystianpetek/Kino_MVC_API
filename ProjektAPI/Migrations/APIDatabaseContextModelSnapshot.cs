@@ -24,27 +24,28 @@ namespace ProjektAPI.Migrations
 
             modelBuilder.Entity("ProjektAPI.Models.EmisjaModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FilmId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("FilmId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Godzina")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SalaId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("SalaId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FilmId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
 
                     b.HasIndex("SalaId");
 
@@ -53,11 +54,9 @@ namespace ProjektAPI.Migrations
 
             modelBuilder.Entity("ProjektAPI.Models.FilmModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<float>("Cena")
                         .HasColumnType("real");
@@ -84,16 +83,17 @@ namespace ProjektAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id")
+                        .IsUnique();
+
                     b.ToTable("Filmy");
                 });
 
             modelBuilder.Entity("ProjektAPI.Models.KlientModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataUrodzenia")
                         .HasColumnType("datetime2");
@@ -125,12 +125,15 @@ namespace ProjektAPI.Migrations
                     b.Property<string>("Ulica")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UzytkownikId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UzytkownikId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("Id")
                         .IsUnique();
 
                     b.HasIndex("UzytkownikId")
@@ -141,17 +144,15 @@ namespace ProjektAPI.Migrations
 
             modelBuilder.Entity("ProjektAPI.Models.RezerwacjaModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<Guid>("EmisjaId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("EmisjaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("KlientId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("KlientId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Miejsce")
                         .HasColumnType("int");
@@ -163,6 +164,9 @@ namespace ProjektAPI.Migrations
 
                     b.HasIndex("EmisjaId");
 
+                    b.HasIndex("Id")
+                        .IsUnique();
+
                     b.HasIndex("KlientId");
 
                     b.ToTable("Rezerwacja");
@@ -170,11 +174,9 @@ namespace ProjektAPI.Migrations
 
             modelBuilder.Entity("ProjektAPI.Models.SalaModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("IloscMiejsc")
                         .HasColumnType("int");
@@ -188,6 +190,9 @@ namespace ProjektAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id")
+                        .IsUnique();
+
                     b.HasIndex("NazwaSali")
                         .IsUnique();
 
@@ -196,11 +201,9 @@ namespace ProjektAPI.Migrations
 
             modelBuilder.Entity("ProjektAPI.Models.UzytkownikModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Haslo")
                         .IsRequired()
@@ -217,10 +220,36 @@ namespace ProjektAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id")
+                        .IsUnique();
+
                     b.HasIndex("Login")
                         .IsUnique();
 
                     b.ToTable("Login");
+                });
+
+            modelBuilder.Entity("ProjektAPI.Models.ZajeteMiejsca", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EmisjaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Miejsce")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rzad")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.ToTable("ZajeteMiejsca");
                 });
 
             modelBuilder.Entity("ProjektAPI.Models.EmisjaModel", b =>

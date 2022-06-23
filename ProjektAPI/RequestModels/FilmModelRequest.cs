@@ -1,9 +1,11 @@
-﻿namespace ProjektAPI.RequestModels
+﻿using System;
+
+namespace ProjektAPI.RequestModels
 {
     public class FilmModelRequest
     {
-        //public Guid Id { get; set; }
-        public int Id { get; set; }
+        public Guid Id { get; set; }
+        //public int Id { get; set; }
         public string Nazwa { get; set; }
 
         public string Opis { get; set; }

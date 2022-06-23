@@ -36,7 +36,7 @@
             <label asp-for="Item1.Emisja.Data" class="col-sm-4 col-form-label"></label>
             <div class="col-sm-8">
                 <select onchange="wywolajData();" asp-for="Item1.Emisja.Data" id="wybieramyDateId" class="form-control"
-                        asp-items="@Model.Item2.Where(g=>g.Data > DateTime.Now).Where(q=>q.FilmId == int.Parse(Model.Item3[0])).Select(w=>w.Data.ToShortDateString()).Distinct().Select(c=> new SelectListItem{ Text = c.ToString(), Value = c.ToString()})">
+                        asp-items="@Model.Item2.Where(g=>g.Data > DateTime.Now).Where(q=>q.FilmId == Guid.Parse(Model.Item3[0])).Select(w=>w.Data.ToShortDateString()).Distinct().Select(c=> new SelectListItem{ Text = c.ToString(), Value = c.ToString()})">
                     <option value="">Wybierz datę!</option>
                 </select>
                 <span asp-validation-for="Item1.Emisja.Data" class="text-danger"></span>
