@@ -73,8 +73,8 @@ namespace ProjektMVC.Controllers
         private async Task<bool[,]> ZajeteSiedzenia(RezerwacjaModel model)
         {
             await EmisjaAsync();
-            model.Emisja = _emisjaModels.Find(q => q.Id == model.Emisja.Id);
-            var listaMiejsc = _zajeteMiejsca.Where(x => x.EmisjaId == model.Emisja.Id).ToList();
+            model.Emisja = _emisjaModels.Find(q => q.Id == model.EmisjaId);
+            var listaMiejsc = _zajeteMiejsca.Where(x => x.EmisjaId == model.EmisjaId).ToList();
             int iloscMiejsc = model.Emisja.Sala.IloscMiejsc;
             int iloscRzedow = model.Emisja.Sala.IloscRzedow;
 
@@ -249,27 +249,28 @@ namespace ProjektMVC.Controllers
             await KlienciAsync();
             await RezerwacjaAsync();
 
+
+
             model.EmisjaId = _emisjaModels.Where(x => x.Data.ToShortDateString() == model.Emisja.Data.ToShortDateString() && x.Godzina.ToShortTimeString() == model.Emisja.Godzina.ToShortTimeString() && x.FilmId == model.Emisja.FilmId).FirstOrDefault().Id;
             model.KlientId = _klientModels.Where(w => w.Uzytkownik.Login == User.Identity.Name).Select(x => x.Id).FirstOrDefault();
             model.Miejsce++;
             model.Rzad++;
 
             var przefiltowana = _rezerwacjaModels.Where(q => q.EmisjaId == model.EmisjaId);
-            var ModelWyjsciowy = new Tuple<RezerwacjaModel, List<EmisjaModel>>(new RezerwacjaModel(), _emisjaModels);
 
-            foreach (var item in przefiltowana)
-            {
-                if (model.Miejsce <= 0 || model.Rzad <= 0 || model.Miejsce > item.Emisja.Sala.IloscMiejsc || model.Rzad > item.Emisja.Sala.IloscRzedow)
-                {
-                    TempData["x"] = $"Niepoprawne miejsce";
-                    return Redirect($"Create4?film={model.Emisja.FilmId}&data={model.Emisja.Data.ToShortDateString()}&godzina={model.Emisja.Godzina.ToShortTimeString()}");
-                }
-                if (model.Miejsce == item.Miejsce && model.Rzad == item.Rzad)
-                {
-                    TempData["x"] = $"To miejsce jest zajęte";
-                    return Redirect($"Create4?film={model.Emisja.FilmId}&data={model.Emisja.Data.ToShortDateString()}&godzina={model.Emisja.Godzina.ToShortTimeString()}");
-                }
-            }
+            //foreach (var item in przefiltowana)
+            //{
+            //    if (model.Miejsce <= 0 || model.Rzad <= 0 || model.Miejsce > item.Emisja.Sala.IloscMiejsc || model.Rzad > item.Emisja.Sala.IloscRzedow)
+            //    {
+            //        TempData["x"] = $"Niepoprawne miejsce";
+            //        return Redirect($"Create4?film={model.Emisja.FilmId}&data={model.Emisja.Data.ToShortDateString()}&godzina={model.Emisja.Godzina.ToShortTimeString()}");
+            //    }
+            //    if (model.Miejsce == item.Miejsce && model.Rzad == item.Rzad)
+            //    {
+            //        TempData["x"] = $"To miejsce jest zajęte";
+            //        return Redirect($"Create4?film={model.Emisja.FilmId}&data={model.Emisja.Data.ToShortDateString()}&godzina={model.Emisja.Godzina.ToShortTimeString()}");
+            //    }
+            //}
             model.Emisja = null;
             HttpResponseMessage response = await client.PostAsJsonAsync(RezerwacjaPath, model);
             response.EnsureSuccessStatusCode();
