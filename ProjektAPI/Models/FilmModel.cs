@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace ProjektAPI.Models
 {
@@ -27,8 +26,8 @@ namespace ProjektAPI.Models
         [Required, Display(Name = "Kwota")]
         public float Cena { get; set; }
 
-        [JsonIgnore]
-        public virtual EmisjaModel Emisja { get; set; }
+        //[JsonIgnore]
+        //public virtual EmisjaModel Emisja { get; set; }
 
     }
 }

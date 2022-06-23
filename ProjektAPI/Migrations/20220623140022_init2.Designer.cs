@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjektAPI.Database;
 
@@ -11,9 +12,10 @@ using ProjektAPI.Database;
 namespace ProjektAPI.Migrations
 {
     [DbContext(typeof(APIDatabaseContext))]
-    partial class APIDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220623140022_init2")]
+    partial class init2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,9 +46,11 @@ namespace ProjektAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FilmId");
+                    b.HasIndex("FilmId")
+                        .IsUnique();
 
-                    b.HasIndex("SalaId");
+                    b.HasIndex("SalaId")
+                        .IsUnique();
 
                     b.ToTable("Emisja");
                 });
@@ -226,14 +230,14 @@ namespace ProjektAPI.Migrations
             modelBuilder.Entity("ProjektAPI.Models.EmisjaModel", b =>
                 {
                     b.HasOne("ProjektAPI.Models.FilmModel", "Film")
-                        .WithMany()
-                        .HasForeignKey("FilmId")
+                        .WithOne("Emisja")
+                        .HasForeignKey("ProjektAPI.Models.EmisjaModel", "FilmId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ProjektAPI.Models.SalaModel", "Sala")
-                        .WithMany()
-                        .HasForeignKey("SalaId")
+                        .WithOne("Emisja")
+                        .HasForeignKey("ProjektAPI.Models.EmisjaModel", "SalaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -277,9 +281,19 @@ namespace ProjektAPI.Migrations
                     b.Navigation("Rezerwacje");
                 });
 
+            modelBuilder.Entity("ProjektAPI.Models.FilmModel", b =>
+                {
+                    b.Navigation("Emisja");
+                });
+
             modelBuilder.Entity("ProjektAPI.Models.KlientModel", b =>
                 {
                     b.Navigation("Rezerwacje");
+                });
+
+            modelBuilder.Entity("ProjektAPI.Models.SalaModel", b =>
+                {
+                    b.Navigation("Emisja");
                 });
 
             modelBuilder.Entity("ProjektAPI.Models.UzytkownikModel", b =>

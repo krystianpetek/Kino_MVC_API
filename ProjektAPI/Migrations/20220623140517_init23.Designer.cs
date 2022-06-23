@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjektAPI.Database;
 
@@ -11,9 +12,10 @@ using ProjektAPI.Database;
 namespace ProjektAPI.Migrations
 {
     [DbContext(typeof(APIDatabaseContext))]
-    partial class APIDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220623140517_init23")]
+    partial class init23
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

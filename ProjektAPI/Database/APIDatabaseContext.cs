@@ -17,6 +17,9 @@ namespace ProjektAPI.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<UzytkownikModel>().HasIndex(x => x.Login).IsUnique();
+            modelBuilder.Entity<KlientModel>().HasIndex(x => x.Email).IsUnique();
+            modelBuilder.Entity<SalaModel>().HasIndex(x => x.NazwaSali).IsUnique();
             //modelBuilder.Entity<EmisjaModel>().HasKey(x => x.Id);
             //modelBuilder.Entity<EmisjaModel>().HasIndex(x => x.Id).IsUnique();
             //modelBuilder.Entity<EmisjaModel>().HasOne(x => x.Sala).WithOne(x => x.Emisja);

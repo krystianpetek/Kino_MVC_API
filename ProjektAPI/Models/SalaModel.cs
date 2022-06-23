@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace ProjektAPI.Models
 {
@@ -22,7 +21,7 @@ namespace ProjektAPI.Models
         [Display(Name = "Liczba dostępnych miejsc")]
         public int LiczbaMiejsc => IloscMiejsc * IloscRzedow;
 
-        [JsonIgnore]
-        public virtual EmisjaModel Emisja { get; set; }
+        //[JsonIgnore]
+        //public virtual EmisjaModel Emisja { get; set; }
     }
 }
