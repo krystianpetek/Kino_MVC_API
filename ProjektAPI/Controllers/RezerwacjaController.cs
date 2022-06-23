@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProjektAPI.Models;
-using System;
-using System.Collections.Generic;
 using ProjektAPI.Database;
+using ProjektAPI.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,7 +26,7 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<RezerwacjaModel>> Get(Guid id)
+        public async Task<ActionResult<RezerwacjaModel>> Get(/*Guid id*/int id)
         {
             var query = await _context.Rezerwacja.FindAsync(id);
             if (query == null)
@@ -55,7 +54,7 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(/*Guid id*/int id)
         {
             var query = await _context.Rezerwacja.FindAsync(id);
 
@@ -69,7 +68,7 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit(Guid id, RezerwacjaModel rezerwacjaModel)
+        public async Task<IActionResult> Edit(/*Guid id*/int id, RezerwacjaModel rezerwacjaModel)
         {
             if (id != rezerwacjaModel.Id)
             {
@@ -97,7 +96,7 @@ namespace ProjektAPI.Controllers
             return NoContent();
         }
 
-        private bool RezerwacjaModelExists(Guid id)
+        private bool RezerwacjaModelExists(/*Guid id*/int id)
         {
             return _context.Rezerwacja.Any(e => e.Id == id);
         }

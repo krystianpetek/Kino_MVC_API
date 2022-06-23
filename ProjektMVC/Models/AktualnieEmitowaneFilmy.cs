@@ -6,7 +6,8 @@ namespace ProjektMVC.Models
     public class AktualnieEmitowaneFilmy
     {
         [Required]
-        public Guid Id { get; set; }
+        //public Guid Id { get; set; }
+        public int Id { get; set; }
 
         [Required, DataType(DataType.Date), Display(Name = "Data")]
         public DateTime Data { get; set; }

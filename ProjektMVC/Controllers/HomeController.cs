@@ -15,13 +15,13 @@ namespace ProjektAPI.Controllers
     public class HomeController : Controller
     {
         private readonly IMessageProducer _producer;
-        private HttpClient _client;
+        private readonly HttpClient _client;
         private readonly string FilmyPath;
         private readonly string KlientPath;
         private readonly string SalaPath;
         private readonly string EmisjaPath;
         private readonly string RezerwacjaPath;
-        private IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
 
         public HomeController(IConfiguration configuration, IMessageProducer producer)
         {

@@ -17,35 +17,35 @@ namespace ProjektAPI.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<EmisjaModel>().HasKey(x => x.Id);
-            modelBuilder.Entity<EmisjaModel>().HasIndex(x => x.Id).IsUnique();
-            modelBuilder.Entity<EmisjaModel>().HasOne(x => x.Sala).WithOne(x => x.Emisja);
-            modelBuilder.Entity<EmisjaModel>().HasOne(x => x.Film).WithOne(x => x.Emisja);
-            modelBuilder.Entity<EmisjaModel>().HasMany(x => x.Rezerwacje).WithOne(x => x.Emisja);
+            //modelBuilder.Entity<EmisjaModel>().HasKey(x => x.Id);
+            //modelBuilder.Entity<EmisjaModel>().HasIndex(x => x.Id).IsUnique();
+            //modelBuilder.Entity<EmisjaModel>().HasOne(x => x.Sala).WithOne(x => x.Emisja);
+            //modelBuilder.Entity<EmisjaModel>().HasOne(x => x.Film).WithOne(x => x.Emisja);
+            //modelBuilder.Entity<EmisjaModel>().HasMany(x => x.Rezerwacje).WithOne(x => x.Emisja);
 
-            modelBuilder.Entity<FilmModel>().HasKey(x => x.Id);
-            modelBuilder.Entity<FilmModel>().HasIndex(x => x.Id).IsUnique();
+            //modelBuilder.Entity<FilmModel>().HasKey(x => x.Id);
+            //modelBuilder.Entity<FilmModel>().HasIndex(x => x.Id).IsUnique();
 
-            modelBuilder.Entity<KlientModel>().HasKey(x => x.Id);
-            modelBuilder.Entity<KlientModel>().HasIndex(x => x.Id).IsUnique();
-            modelBuilder.Entity<KlientModel>().HasIndex(x => x.Email).IsUnique();
-            modelBuilder.Entity<KlientModel>().HasOne(x => x.Uzytkownik).WithOne(x => x.Klient);
+            //modelBuilder.Entity<KlientModel>().HasKey(x => x.Id);
+            //modelBuilder.Entity<KlientModel>().HasIndex(x => x.Id).IsUnique();
+            //modelBuilder.Entity<KlientModel>().HasIndex(x => x.Email).IsUnique();
+            //modelBuilder.Entity<KlientModel>().HasOne(x => x.Uzytkownik).WithOne(x => x.Klient);
 
-            modelBuilder.Entity<RezerwacjaModel>().HasKey(x => x.Id);
-            modelBuilder.Entity<RezerwacjaModel>().HasIndex(x => x.Id).IsUnique();
-            modelBuilder.Entity<RezerwacjaModel>().HasOne(x => x.Klient).WithMany(x => x.Rezerwacje);
-            modelBuilder.Entity<RezerwacjaModel>().HasOne(x => x.Emisja).WithMany(x => x.Rezerwacje);
+            //modelBuilder.Entity<RezerwacjaModel>().HasKey(x => x.Id);
+            //modelBuilder.Entity<RezerwacjaModel>().HasIndex(x => x.Id).IsUnique();
+            //modelBuilder.Entity<RezerwacjaModel>().HasOne(x => x.Klient).WithMany(x => x.Rezerwacje);
+            //modelBuilder.Entity<RezerwacjaModel>().HasOne(x => x.Emisja).WithMany(x => x.Rezerwacje);
 
-            modelBuilder.Entity<SalaModel>().HasKey(x => x.Id);
-            modelBuilder.Entity<SalaModel>().HasIndex(x => x.Id).IsUnique();
-            modelBuilder.Entity<SalaModel>().HasIndex(x => x.NazwaSali).IsUnique();
+            //modelBuilder.Entity<SalaModel>().HasKey(x => x.Id);
+            //modelBuilder.Entity<SalaModel>().HasIndex(x => x.Id).IsUnique();
+            //modelBuilder.Entity<SalaModel>().HasIndex(x => x.NazwaSali).IsUnique();
 
-            modelBuilder.Entity<UzytkownikModel>().HasKey(x => x.Id);
-            modelBuilder.Entity<UzytkownikModel>().HasIndex(x => x.Id).IsUnique();
-            modelBuilder.Entity<UzytkownikModel>().HasIndex(x => x.Login).IsUnique();
+            //modelBuilder.Entity<UzytkownikModel>().HasKey(x => x.Id);
+            //modelBuilder.Entity<UzytkownikModel>().HasIndex(x => x.Id).IsUnique();
+            //modelBuilder.Entity<UzytkownikModel>().HasIndex(x => x.Login).IsUnique();
 
-            modelBuilder.Entity<ZajeteMiejsca>().HasKey(x => x.Id);
-            modelBuilder.Entity<ZajeteMiejsca>().HasIndex(x => x.Id).IsUnique();
+            //modelBuilder.Entity<ZajeteMiejsca>().HasKey(x => x.Id);
+            //modelBuilder.Entity<ZajeteMiejsca>().HasIndex(x => x.Id).IsUnique();
         }
     }
 }

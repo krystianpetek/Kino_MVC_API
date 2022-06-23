@@ -2,10 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ProjektAPI.Models;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ProjektMVC.Controllers
@@ -57,7 +55,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Edit/{id}"), Authorize(Roles = "Admin, Pracownik")]
-        public async Task<ActionResult> Edit(Guid? id)
+        public async Task<ActionResult> Edit(/*Guid id*/int id)
         {
             HttpResponseMessage response = await client.GetAsync(FilmyPath + id);
             if (response.IsSuccessStatusCode)
@@ -69,7 +67,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpPost("Edit/{id}"), Authorize(Roles = "Admin, Pracownik"), ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(Guid id, [Bind("Id,Nazwa, Opis, Gatunek, OgraniczeniaWiek, CzasTrwania, Cena")] FilmModel model)
+        public async Task<ActionResult> Edit(/*Guid id*/int id, [Bind("Id,Nazwa, Opis, Gatunek, OgraniczeniaWiek, CzasTrwania, Cena")] FilmModel model)
         {
             if (ModelState.IsValid)
             {
@@ -81,7 +79,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Delete"), Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Delete(Guid? id)
+        public async Task<ActionResult> Delete(/*Guid id*/int id)
         {
             HttpResponseMessage response = await client.GetAsync(FilmyPath + id);
             if (response.IsSuccessStatusCode)
@@ -94,7 +92,7 @@ namespace ProjektMVC.Controllers
 
         [HttpPost("Delete/{id}"), Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(Guid id)
+        public async Task<ActionResult> DeleteConfirmed(/*Guid id*/int id)
         {
             HttpResponseMessage response = await client.DeleteAsync(FilmyPath + id);
             response.EnsureSuccessStatusCode();
@@ -102,7 +100,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Details/{id}"), Authorize(Roles = "Admin, Pracownik")]
-        public async Task<ActionResult> Details(Guid? id)
+        public async Task<ActionResult> Details(/*Guid id*/int id)
         {
             HttpResponseMessage response = await client.GetAsync(FilmyPath + id);
             if (response.IsSuccessStatusCode)

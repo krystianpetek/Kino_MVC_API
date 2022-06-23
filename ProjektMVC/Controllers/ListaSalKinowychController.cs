@@ -66,7 +66,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Edit/{id}"), Authorize(Roles = "Admin,Pracownik")]
-        public async Task<ActionResult> Edit([FromRoute] Guid? id)
+        public async Task<ActionResult> Edit([FromRoute] /*Guid id*/int id)
         {
             HttpResponseMessage odpowiedz = await client.GetAsync(SaleKinowePath + id);
             if (odpowiedz.IsSuccessStatusCode)
@@ -78,7 +78,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpPost("Edit/{id}"), Authorize(Roles = "Admin,Pracownik"), ValidateAntiForgeryToken]  // modelstate
-        public async Task<ActionResult> Edit([FromRoute] Guid id, SalaModel model)
+        public async Task<ActionResult> Edit([FromRoute] /*Guid id*/int id, SalaModel model)
         {
             await PobierzSaleKinowe();
             if (_listaSalKinowych.Where(x => x.NazwaSali == model.NazwaSali).SingleOrDefault().Id == id)
@@ -92,7 +92,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Delete"), Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Delete(Guid? id)
+        public async Task<ActionResult> Delete(/*Guid id*/int id)
         {
             HttpResponseMessage odpowiedz = await client.GetAsync(SaleKinowePath + id);
             if (odpowiedz.IsSuccessStatusCode)
@@ -104,7 +104,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpPost("Delete/{id}"), Authorize(Roles = "Admin"), ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(Guid id)
+        public async Task<ActionResult> DeleteConfirmed(/*Guid id*/int id)
         {
             HttpResponseMessage odpowiedz = await client.DeleteAsync(SaleKinowePath + id);
             odpowiedz.EnsureSuccessStatusCode();
@@ -112,7 +112,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Details/{id}"), Authorize(Roles = "Admin,Pracownik")]
-        public async Task<ActionResult> Details(Guid? id)
+        public async Task<ActionResult> Details(/*Guid id*/int id)
         {
             HttpResponseMessage response = await client.GetAsync(SaleKinowePath + id);
             if (response.IsSuccessStatusCode)

@@ -38,7 +38,7 @@
             <label asp-for="Item1.Emisja.Data" class="col-sm-4 col-form-label"></label>
             <div class="col-sm-8">
                 <select onchange="wywolajData();" asp-for="Item1.Emisja.Data" id="wybieramyDateId" class="form-control"
-                        asp-items="@Model.Item2.Where(g=>g.Data > DateTime.Now).Where(q=>q.FilmId == Guid.Parse(Model.Item3[0])).Select(w=>w.Data.ToShortDateString()).Distinct().Select(c=> new SelectListItem{ Text = c.ToString(), Value = c.ToString()})">
+                        asp-items="@Model.Item2.Where(g=>g.Data > DateTime.Now).Where(q=>q.FilmId == int.Parse(Model.Item3[0])).Select(w=>w.Data.ToShortDateString()).Distinct().Select(c=> new SelectListItem{ Text = c.ToString(), Value = c.ToString()})">
                     <option class="bg-secondary text-light"  value="@Model.Item3[2]">@Model.Item3[2]</option>
                 </select>
                 <span asp-validation-for="Item1.Emisja.Data" class="text-danger"></span>
@@ -63,7 +63,7 @@
             <label asp-for="Item1.Emisja.Godzina" class="col-sm-4 col-form-label"></label>
             <div class="col-sm-8">
                 <select onchange="wywolajGodzina();" asp-for="Item1.Emisja.Godzina" id="wybieramyGodzineId" class="form-control"
-                        asp-items="@Model.Item2.Where(g=>g.Data > DateTime.Now).Where(q=>q.FilmId == Guid.Parse(Model.Item3[0])).Where(q=>q.Data.ToShortDateString() == @Model.Item3[2]).Select(w=>w.Godzina.ToShortTimeString()).Distinct().Select(c=> new SelectListItem{ Text = c.ToString(), Value = c.ToString()})">
+                        asp-items="@Model.Item2.Where(g=>g.Data > DateTime.Now).Where(q=>q.FilmId == int.Parse(Model.Item3[0])).Where(q=>q.Data.ToShortDateString() == @Model.Item3[2]).Select(w=>w.Godzina.ToShortTimeString()).Distinct().Select(c=> new SelectListItem{ Text = c.ToString(), Value = c.ToString()})">
                     <option value="@Model.Item3[3]">@Model.Item3[3]</option>
                 </select>
                 <span asp-validation-for="Item1.Emisja.Godzina" class="text-danger"></span>

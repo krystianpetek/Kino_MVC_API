@@ -8,7 +8,8 @@ namespace ProjektAPI.Models
     public class KlientModel
     {
         [Required, Display(Name = "ID")]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
+        //public Guid Id { get; set; }
 
         [Required, Display(Name = "Imię"), StringLength(30)]
         public string Imie { get; set; }
@@ -34,7 +35,8 @@ namespace ProjektAPI.Models
         [EmailAddress, Required]
         public string Email { get; set; }
 
-        public Guid UzytkownikId { get; set; }
+        public int UzytkownikId { get; set; }
+        //public Guid UzytkownikId { get; set; }
         public virtual UzytkownikModel Uzytkownik { get; set; }
 
         public virtual List<RezerwacjaModel> Rezerwacje { get; set; }

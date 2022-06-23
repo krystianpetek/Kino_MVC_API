@@ -107,7 +107,8 @@ namespace ProjektMVC.Controllers
             await EmisjaAsync();
 
             var zalogowanyUzytkownik = User.Identity.Name;
-            Guid idZalogowanego = _klientModels.FirstOrDefault(q => q.Uzytkownik.Login == zalogowanyUzytkownik).Id;
+            //Guid idZalogowanego = _klientModels.FirstOrDefault(q => q.Uzytkownik.Login == zalogowanyUzytkownik).Id;
+            int idZalogowanego = _klientModels.FirstOrDefault(q => q.Uzytkownik.Login == zalogowanyUzytkownik).Id;
 
             foreach (var item in _rezerwacjaModels)
             {
@@ -147,7 +148,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("[controller]/Details/{id}")]
-        public async Task<ActionResult> Details(Guid id)
+        public async Task<ActionResult> Details(/*Guid id*/int id)
         {
             await ZajeteMiejscaAsync();
             RezerwacjaModel model = new RezerwacjaModel();
@@ -176,7 +177,7 @@ namespace ProjektMVC.Controllers
             await EmisjaAsync();
             if (film is null)
                 return RedirectToAction("Create");
-            string nazwaFilmu = _emisjaModels.FirstOrDefault(q => q.FilmId == Guid.Parse(film)).Film.Nazwa;
+            string nazwaFilmu = _emisjaModels.FirstOrDefault(q => q.FilmId == int.Parse(film)).Film.Nazwa;
             string[] wartosci = new string[] { film, nazwaFilmu };
             var model = new Tuple<RezerwacjaModel, List<EmisjaModel>, string[]>(new RezerwacjaModel(), _emisjaModels, wartosci);
             return View(model);
@@ -192,7 +193,7 @@ namespace ProjektMVC.Controllers
                 else
                     return RedirectToAction("Create2", film);
 
-            string nazwaFilmu = _emisjaModels.FirstOrDefault(q => q.FilmId == Guid.Parse(film)).Film.Nazwa;
+            string nazwaFilmu = _emisjaModels.FirstOrDefault(q => q.FilmId == int.Parse(film)).Film.Nazwa;
             string[] wartosci = new string[] { film, nazwaFilmu, data };
             var model = new Tuple<RezerwacjaModel, List<EmisjaModel>, string[]>(new RezerwacjaModel(), _emisjaModels, wartosci);
             return View(model);
@@ -210,26 +211,26 @@ namespace ProjektMVC.Controllers
                     return RedirectToAction("Create2", film);
                 else
                     return RedirectToAction("Create3", new string(film + "&data=" + data));
-            string nazwaFilmu = _emisjaModels.FirstOrDefault(q => q.FilmId == Guid.Parse(film)).Film.Nazwa;
+            string nazwaFilmu = _emisjaModels.FirstOrDefault(q => q.FilmId == int.Parse(film)).Film.Nazwa;
             string[] wartosci = new string[] { film, nazwaFilmu, data, godzina };
 
             await RezerwacjaAsync();
             await ZajeteMiejscaAsync();
             await EmisjaAsync();
             _rezerwacjaModels.ForEach(model => model.Emisja = _emisjaModels.Find(q => q.Id == model.Emisja.Id));
-            RezerwacjaModel model = _rezerwacjaModels.Where(q => q.Emisja.FilmId == Guid.Parse(film)).Where(q => q.Emisja.Data.ToShortDateString() == data).Where(q => q.Emisja.Godzina.ToShortTimeString() == godzina).FirstOrDefault();
+            RezerwacjaModel model = _rezerwacjaModels.Where(q => q.Emisja.FilmId == int.Parse(film)).Where(q => q.Emisja.Data.ToShortDateString() == data).Where(q => q.Emisja.Godzina.ToShortTimeString() == godzina).FirstOrDefault();
             if (model is null)
             {
                 model = new RezerwacjaModel()
                 {
                     Emisja = new EmisjaModel()
                     {
-                        FilmId = Guid.Parse(film),
+                        FilmId = int.Parse(film),
                         Data = DateTime.Parse(data),
                         Godzina = DateTime.Parse(godzina)
                     }
                 };
-                model.Emisja = _emisjaModels.Where(q => q.FilmId == Guid.Parse(film)).Where(q => q.Data.ToShortDateString() == data).Where(q => q.Godzina.ToShortTimeString() == godzina).FirstOrDefault();
+                model.Emisja = _emisjaModels.Where(q => q.FilmId == int.Parse(film)).Where(q => q.Data.ToShortDateString() == data).Where(q => q.Godzina.ToShortTimeString() == godzina).FirstOrDefault();
             }
             model.Rzad = rzad - 1;
             model.Miejsce = miejsce - 1;
@@ -279,7 +280,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Delete")]
-        public async Task<ActionResult> Delete(Guid? id)
+        public async Task<ActionResult> Delete(/*Guid id*/int id)
         {
             await ZajeteMiejscaAsync();
             await RezerwacjaAsync();
@@ -304,7 +305,7 @@ namespace ProjektMVC.Controllers
 
         [HttpPost("Delete/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(Guid id)
+        public async Task<ActionResult> DeleteConfirmed(/*Guid id*/int id)
         {
             HttpResponseMessage response = await client.DeleteAsync(RezerwacjaPath + id);
             response.EnsureSuccessStatusCode();

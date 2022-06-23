@@ -11,13 +11,13 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
     [Route("Dodawanie")]
     public class DodajRekordyController : Controller
     {
-        private HttpClient _client;
+        private readonly HttpClient _client;
         private readonly string FilmPath;
         private readonly string KlientPath;
         private readonly string SalaPath;
         private readonly string EmisjaPath;
         private readonly string RezerwacjaPath;
-        private IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
 
         public DodajRekordyController(IConfiguration configuration)
         {
@@ -226,130 +226,130 @@ namespace ProjektMVC.Controllers.DodawanieRekordow
             return Redirect("/");
         }
 
-        //[HttpGet("Seanse")]
-        //public async Task<ActionResult> EmisjeFilmow()
-        //{
-        //    List<EmisjaModel> list = new List<EmisjaModel>()
-        //    {
-        //        new EmisjaModel()
-        //    {
-        //        Data = DateTime.Now.AddDays(-20),
-        //        Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 10, 30, 0),
-        //        FilmId = 5,
-        //        SalaId = 9
-        //    },new EmisjaModel()
-        //    {
-        //        Data = DateTime.Now.AddDays(1),
-        //        Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 20, 0, 0),
-        //        FilmId = 1,
-        //        SalaId = 1
-        //    },new EmisjaModel()
-        //    {
-        //        Data = DateTime.Now.AddDays(3),
-        //        Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 0, 0),
-        //        FilmId = 7,
-        //        SalaId = 1
-        //    },new EmisjaModel()
-        //    {
-        //        Data = DateTime.Now.AddDays(10),
-        //        Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 18, 0, 0),
-        //        FilmId = 1,
-        //        SalaId = 2
-        //    },new EmisjaModel()
-        //    {
-        //        Data = DateTime.Now.AddDays(31),
-        //        Godzina = DateTime.Now,
-        //        FilmId = 9,
-        //        SalaId = 9
-        //    },new EmisjaModel()
-        //    {
-        //        Data = DateTime.Now.AddDays(-15),
-        //        Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 11, 0, 0),
-        //        FilmId = 3,
-        //        SalaId = 8
-        //    },new EmisjaModel()
-        //    {
-        //        Data = DateTime.Now.AddDays(7),
-        //        Godzina = DateTime.Now.AddHours(3),
-        //        FilmId = 5,
-        //        SalaId = 8
-        //    },new EmisjaModel()
-        //    {
-        //        Data = DateTime.Now,
-        //        Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 22, 0, 0),
-        //        FilmId = 1,
-        //        SalaId = 2
-        //    },new EmisjaModel()
-        //    {
-        //        Data = DateTime.Now,
-        //        Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 0, 0),
-        //        FilmId = 5,
-        //        SalaId = 10
-        //    }
-        //    };
-        //    foreach (var x in list)
-        //    {
-        //        try
-        //        {
-        //            HttpResponseMessage response = await _client.PostAsJsonAsync(EmisjaPath, x);
-        //            response.EnsureSuccessStatusCode();
-        //        }
-        //        catch (HttpRequestException)
-        //        { }
-        //    }
+        [HttpGet("Seanse")]
+        public async Task<ActionResult> EmisjeFilmow()
+        {
+            List<EmisjaModel> list = new List<EmisjaModel>()
+            {
+                new EmisjaModel()
+            {
+                Data = DateTime.Now.AddDays(-20),
+                Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 10, 30, 0),
+                FilmId = 5,
+                SalaId = 9
+            },new EmisjaModel()
+            {
+                Data = DateTime.Now.AddDays(1),
+                Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 20, 0, 0),
+                FilmId = 1,
+                SalaId = 1
+            },new EmisjaModel()
+            {
+                Data = DateTime.Now.AddDays(3),
+                Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 0, 0),
+                FilmId = 7,
+                SalaId = 1
+            },new EmisjaModel()
+            {
+                Data = DateTime.Now.AddDays(10),
+                Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 18, 0, 0),
+                FilmId = 1,
+                SalaId = 2
+            },new EmisjaModel()
+            {
+                Data = DateTime.Now.AddDays(31),
+                Godzina = DateTime.Now,
+                FilmId = 9,
+                SalaId = 9
+            },new EmisjaModel()
+            {
+                Data = DateTime.Now.AddDays(-15),
+                Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 11, 0, 0),
+                FilmId = 3,
+                SalaId = 8
+            },new EmisjaModel()
+            {
+                Data = DateTime.Now.AddDays(7),
+                Godzina = DateTime.Now.AddHours(3),
+                FilmId = 5,
+                SalaId = 8
+            },new EmisjaModel()
+            {
+                Data = DateTime.Now,
+                Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 22, 0, 0),
+                FilmId = 1,
+                SalaId = 2
+            },new EmisjaModel()
+            {
+                Data = DateTime.Now,
+                Godzina = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 0, 0),
+                FilmId = 5,
+                SalaId = 10
+            }
+            };
+            foreach (var x in list)
+            {
+                try
+                {
+                    HttpResponseMessage response = await _client.PostAsJsonAsync(EmisjaPath, x);
+                    response.EnsureSuccessStatusCode();
+                }
+                catch (HttpRequestException)
+                { }
+            }
 
-        //    return Redirect("/");
-        //}
+            return Redirect("/");
+        }
 
-        //[HttpGet("RezerwacjaBiletow")]
-        //public async Task<ActionResult> RezerwacjaBiletow()
-        //{
-        //    List<RezerwacjaModel> list = new List<RezerwacjaModel>()
-        //    {
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 1, Miejsce = 1 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 1, Miejsce = 2 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 3, Miejsce = 3 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 10, Miejsce = 12 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 13, Miejsce = 6 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 7, Rzad = 8, Miejsce = 8 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 7, Rzad = 8, Miejsce = 9 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 7, Rzad = 8, Miejsce = 10 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 7, Rzad = 8, Miejsce = 11 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 7, Rzad = 8, Miejsce = 12 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 9, Rzad = 3, Miejsce = 2 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 6, Miejsce = 10 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 8, Miejsce = 9 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 2, Rzad = 10, Miejsce = 13 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 2, Rzad = 10, Miejsce = 15 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 4, Rzad = 6, Miejsce = 1 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 4, Rzad = 6, Miejsce = 10 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 6, Rzad = 5, Miejsce = 10 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 6, Rzad = 10, Miejsce = 5 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 5, Rzad = 10, Miejsce = 8 },
-        //        new RezerwacjaModel() { KlientId = 1, EmisjaId = 5, Rzad = 8, Miejsce = 3 },
-        //        new RezerwacjaModel() { KlientId = 3, EmisjaId = 1, Rzad = 8, Miejsce = 8 },
-        //        new RezerwacjaModel() { KlientId = 2, EmisjaId = 1, Rzad = 10, Miejsce = 7 },
-        //        new RezerwacjaModel() { KlientId = 3, EmisjaId = 2, Rzad = 12, Miejsce = 11 },
-        //        new RezerwacjaModel() { KlientId = 2, EmisjaId = 2, Rzad = 5, Miejsce = 10 },
-        //        new RezerwacjaModel() { KlientId = 2, EmisjaId = 4, Rzad = 4, Miejsce = 3 },
-        //        new RezerwacjaModel() { KlientId = 3, EmisjaId = 4, Rzad = 7, Miejsce = 5 },
-        //        new RezerwacjaModel() { KlientId = 3, EmisjaId = 6, Rzad = 4, Miejsce = 6 },
-        //        new RezerwacjaModel() { KlientId = 2, EmisjaId = 6, Rzad = 9, Miejsce = 5 },
-        //        new RezerwacjaModel() { KlientId = 3, EmisjaId = 5, Rzad = 9, Miejsce = 8 },
-        //        new RezerwacjaModel() { KlientId = 3, EmisjaId = 5, Rzad = 7, Miejsce = 3 }
-        //    };
+        [HttpGet("RezerwacjaBiletow")]
+        public async Task<ActionResult> RezerwacjaBiletow()
+        {
+            List<RezerwacjaModel> list = new List<RezerwacjaModel>()
+            {
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 1, Miejsce = 1 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 1, Miejsce = 2 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 3, Miejsce = 3 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 10, Miejsce = 12 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 13, Miejsce = 6 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 7, Rzad = 8, Miejsce = 8 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 7, Rzad = 8, Miejsce = 9 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 7, Rzad = 8, Miejsce = 10 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 7, Rzad = 8, Miejsce = 11 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 7, Rzad = 8, Miejsce = 12 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 9, Rzad = 3, Miejsce = 2 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 6, Miejsce = 10 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 1, Rzad = 8, Miejsce = 9 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 2, Rzad = 10, Miejsce = 13 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 2, Rzad = 10, Miejsce = 15 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 4, Rzad = 6, Miejsce = 1 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 4, Rzad = 6, Miejsce = 10 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 6, Rzad = 5, Miejsce = 10 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 6, Rzad = 10, Miejsce = 5 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 5, Rzad = 10, Miejsce = 8 },
+                new RezerwacjaModel() { KlientId = 1, EmisjaId = 5, Rzad = 8, Miejsce = 3 },
+                new RezerwacjaModel() { KlientId = 3, EmisjaId = 1, Rzad = 8, Miejsce = 8 },
+                new RezerwacjaModel() { KlientId = 2, EmisjaId = 1, Rzad = 10, Miejsce = 7 },
+                new RezerwacjaModel() { KlientId = 3, EmisjaId = 2, Rzad = 12, Miejsce = 11 },
+                new RezerwacjaModel() { KlientId = 2, EmisjaId = 2, Rzad = 5, Miejsce = 10 },
+                new RezerwacjaModel() { KlientId = 2, EmisjaId = 4, Rzad = 4, Miejsce = 3 },
+                new RezerwacjaModel() { KlientId = 3, EmisjaId = 4, Rzad = 7, Miejsce = 5 },
+                new RezerwacjaModel() { KlientId = 3, EmisjaId = 6, Rzad = 4, Miejsce = 6 },
+                new RezerwacjaModel() { KlientId = 2, EmisjaId = 6, Rzad = 9, Miejsce = 5 },
+                new RezerwacjaModel() { KlientId = 3, EmisjaId = 5, Rzad = 9, Miejsce = 8 },
+                new RezerwacjaModel() { KlientId = 3, EmisjaId = 5, Rzad = 7, Miejsce = 3 }
+            };
 
-        //    foreach (var x in list)
-        //    {
-        //        try
-        //        {
-        //            HttpResponseMessage response = await _client.PostAsJsonAsync(RezerwacjaPath, x);
-        //            response.EnsureSuccessStatusCode();
-        //        }
-        //        catch (HttpRequestException)
-        //        { }
-        //    }
-        //    return Redirect("/");
-        //}
+            foreach (var x in list)
+            {
+                try
+                {
+                    HttpResponseMessage response = await _client.PostAsJsonAsync(RezerwacjaPath, x);
+                    response.EnsureSuccessStatusCode();
+                }
+                catch (HttpRequestException)
+                { }
+            }
+            return Redirect("/");
+        }
     }
 }

@@ -93,7 +93,7 @@ namespace ProjektMVC.Controllers
 
         [HttpGet("Edit/{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Edit([FromRoute] Guid? id)
+        public async Task<ActionResult> Edit([FromRoute] /*Guid id*/int id)
         {
             HttpResponseMessage response = await client.GetAsync(KlienciPath + id);
             if (response.IsSuccessStatusCode)
@@ -107,7 +107,7 @@ namespace ProjektMVC.Controllers
         [HttpPost("Edit/{id}")]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([FromRoute] Guid id, KlientModel model)
+        public async Task<ActionResult> Edit([FromRoute] /*Guid id*/int id, KlientModel model)
         {
             await PobierzKlientowUzytkownikow();
             model.Uzytkownik = _listaUzytkowniokow.SingleOrDefault(q => q.Login == model.Uzytkownik.Login);
@@ -122,7 +122,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Delete"), Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Delete(Guid? id)
+        public async Task<ActionResult> Delete(/*Guid id*/int id)
         {
             HttpResponseMessage response = await client.GetAsync(KlienciPath + id);
             if (response.IsSuccessStatusCode)
@@ -134,7 +134,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpPost("Delete/{id}"), Authorize(Roles = "Admin"), ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(Guid id)
+        public async Task<ActionResult> DeleteConfirmed(/*Guid id*/int id)
         {
             HttpResponseMessage response = await client.DeleteAsync(KlienciPath + id);
             response.EnsureSuccessStatusCode();
@@ -142,7 +142,7 @@ namespace ProjektMVC.Controllers
         }
 
         [HttpGet("Details/{id}"), Authorize(Roles = "Admin,Pracownik")]
-        public async Task<ActionResult> Details(Guid? id)
+        public async Task<ActionResult> Details(/*Guid id*/int id)
         {
             HttpResponseMessage response = await client.GetAsync(KlienciPath + id);
             if (response.IsSuccessStatusCode)
