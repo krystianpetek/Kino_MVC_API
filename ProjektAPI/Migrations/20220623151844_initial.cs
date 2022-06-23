@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
 
 namespace ProjektAPI.Migrations
 {
-    public partial class kinodb : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
