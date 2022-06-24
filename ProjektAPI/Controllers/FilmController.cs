@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjektAPI.Attributes;
+using ProjektAPI.Database;
 using ProjektAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,11 +25,13 @@ namespace ProjektAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FilmModel>>> Get()
         {
-            return await _context.Filmy.ToListAsync();
+            var model = await _context.Filmy.ToListAsync();
+
+            return model;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<FilmModel>> Get(int id)
+        public async Task<ActionResult<FilmModel>> Get(Guid id/*int id*/)
         {
             var query = await _context.Filmy.FindAsync(id);
             if (query is null)
@@ -43,11 +47,12 @@ namespace ProjektAPI.Controllers
 
             _context.Filmy.Add(model);
             await _context.SaveChangesAsync();
+
             return CreatedAtAction("Get", new { id = model.Id }, model);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id/*int id*/)
         {
             var query = await _context.Filmy.FindAsync(id);
 
@@ -60,7 +65,7 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditAll(int id, [FromBody] FilmModel model)
+        public async Task<IActionResult> EditAll(Guid id/*int id*/, [FromBody] FilmModel model)
         {
             if (id != model.Id)
                 return BadRequest(); // 400
@@ -86,7 +91,7 @@ namespace ProjektAPI.Controllers
             return NoContent(); // 204
         }
 
-        private bool FilmyExists(int id)
+        private bool FilmyExists(Guid id/*int id*/)
         {
             return _context.Filmy.Any(q => q.Id == id);
         }

@@ -1,11 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjektAPI.Models
 {
     public class SalaModel
     {
         [Required, Display(Name = "ID")]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
+        //public int Id { get; set; }
 
         [Required, Display(Name = "Nazwa sali")]
         public string NazwaSali { get; set; }
@@ -18,5 +20,8 @@ namespace ProjektAPI.Models
 
         [Display(Name = "Liczba dostępnych miejsc")]
         public int LiczbaMiejsc => IloscMiejsc * IloscRzedow;
+
+        //[JsonIgnore]
+        //public virtual EmisjaModel Emisja { get; set; }
     }
 }

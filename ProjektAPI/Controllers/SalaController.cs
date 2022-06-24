@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjektAPI.Attributes;
+using ProjektAPI.Database;
 using ProjektAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,7 +29,7 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<SalaModel>> Get(int id)
+        public async Task<ActionResult<SalaModel>> Get(Guid id/*int id*/)
         {
             var query = await _context.SaleKinowe.FindAsync(id);
             if (query is null)
@@ -51,7 +53,7 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id/*int id*/)
         {
             var query = await _context.SaleKinowe.FindAsync(id);
 
@@ -64,7 +66,7 @@ namespace ProjektAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditAll(int id, [FromBody] SalaModel model)
+        public async Task<IActionResult> EditAll(Guid id/*int id*/, [FromBody] SalaModel model)
         {
             if (id != model.Id)
                 return BadRequest();
@@ -90,7 +92,7 @@ namespace ProjektAPI.Controllers
             return NoContent();
         }
 
-        private bool SalaExists(int id)
+        private bool SalaExists(Guid id/*int id*/)
         {
             return _context.SaleKinowe.Any(q => q.Id == id);
         }

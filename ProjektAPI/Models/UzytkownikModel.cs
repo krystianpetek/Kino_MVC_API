@@ -1,11 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ProjektAPI.Models
 {
     public class UzytkownikModel
     {
         [Required, Display(Name = "ID")]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
+        //public int Id { get; set; }
 
         [Required, MinLength(5), StringLength(20), Display(Name = "Login")]
         public string Login { get; set; }
@@ -15,5 +18,8 @@ namespace ProjektAPI.Models
 
         [Required, Display(Name = "Autoryzacja")]
         public Rola RodzajUzytkownika { get; set; }
+
+        [JsonIgnore]
+        public virtual KlientModel Klient { get; set; }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjektAPI.Attributes;
+using ProjektAPI.Database;
 using ProjektAPI.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 namespace ProjektAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -12,7 +12,7 @@ namespace ProjektAPI.Controllers
     [ApiKey]
     public class LoginController : Controller
     {
-        private APIDatabaseContext _context;
+        private readonly APIDatabaseContext _context;
 
         public LoginController(APIDatabaseContext context)
         {
