@@ -1,6 +1,20 @@
 # Aplikacja do zarządzania kinem
 
-Aplikacji typu CRUD zbudowana przy pomocy ASP.NET MVC do zarządzania kinem.
+Aplikacji typu CRUD zbudowana przy pomocy ASP.NET MVC do zarządzania kinem. Cała aplikacja została stworzona z 3 mikroserwisow.
+- `ASP.NET MVC`
+- `ASP.NET Web API`
+- `Console App`
+Aplikacja została stworzona w najnowszej wersji SDK, `.NET 6`.
+
+Projekt `ASP.NET MVC` komunikuje się z Web API przez endpointy które API wystawia publicznie.
+Inaczej sytuacja ma się w przypadku komunikacji pomiędzy ASP.NET MVC a Console App, tutaj komunikacja odbywa się przez system kolejki, zrealizowany przy użyciu RabbitMQ.
+Cała aplikacja została opublikowana jako pliki binarne oraz pliki startujące wszystkie 3 mikroserwisy.
+
+- `API` stworzony przy użyciu `ASP.NET WebAPI` wraz z `Swagger`'em, gdzie możemy zobaczyć wszystkie endpointy które zostały zaimplementowane w API, możemy także wysyłać query oraz commandy z tego poziomu. Aby uderzać do endpointów w API potrzebujemy `API KEY` przekazywanego za każdym razem przez żądanie HTTP. API komunikuje się z bazą danych `Microsoft SQL Server` przy użyciu `ORM`, jednego z najpopularniejszych w .NET mianowicie `Entity Framework Core`.
+
+- `Aplikacja Webowa` stworzony przy użyciu `ASP.NET MVC`, zgodnie z wzorcem MVC, czyli odpowiedzialność podzielona została na 3 warstwy, Model, View oraz Controller. Wszystkie dane dynamiczne, reprezentowane w projekcie pochodzą z API, które zwraca, dodaje, aktualizuje lub usuwa dane przez protokół HTTP, używając odpowiednich czasowników. Widok natomiast jest zrealizowany przy użyciu technologii `Razor Pages`, jest to kod HTML, który implementuje wstawki kodu C#, po odpowiednim oznaczeniu, że w HTML zaczynamy pisać kod C#, oznacza się to przy pomocy @. Ostatnia z ważnych rzeczy zaimplementowanych w webowej aplikacji, to pole do rozsyłania komunikatów o np. Ograniczonej czasowo, ekstra promocji na bilety lub komunikacji o zagrożeniu itp. Która wykorzystuje kolejkowanie `RabbitMQ`.
+
+- Projekt `Console App` jest stworzona, aby odbierać wiadomości z aplikacji webowej, wpisujemy w polu wiadomość i odbieramy je w konsoli.
 
 ## Funkcjonalności
 Funkcje klienta: 
